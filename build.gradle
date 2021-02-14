@@ -1,0 +1,110 @@
+buildscript {
+    ext {
+        springBootVersion = '2.2.2.RELEASE'
+        lombokVersion = '1.18.6'
+        swaggerVersion = '2.9.2'
+        junitVersion = '4.12'
+        jjwtVersion = '0.10.5'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+allprojects {
+    group = 'kr.joljak'
+    version = '1.0.0'
+}
+
+subprojects {
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'java'
+
+
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+
+    repositories {
+        mavenCentral()
+    }
+
+    test { useJUnitPlatform() }
+
+    dependencies {
+        testImplementation('org.springframework.boot:spring-boot-starter-test')
+        testImplementation group: 'junit', name: 'junit', version: "${junitVersion}"
+        compileOnly ("org.projectlombok:lombok:${lombokVersion}")
+        annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+        testAnnotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+    }
+
+    task initSourceFolders {
+        sourceSets*.java.srcDirs*.each {
+            if (!it.exists()) {
+                it.mkdirs()
+            }
+        }
+        sourceSets*.resources.srcDirs*.each {
+            if (!it.exists()) {
+                it.mkdirs()
+            }
+        }
+    }
+}
+project(':joljak-admin-application') {
+    dependencies {
+        implementation("io.springfox:springfox-swagger2:${swaggerVersion}")
+        implementation("io.springfox:springfox-swagger-ui:${swaggerVersion}")
+        implementation("io.springfox:springfox-spring-web:${swaggerVersion}")
+        implementation("org.springframework.boot:spring-boot-starter-web")
+        implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
+        compile("mysql:mysql-connector-java")
+
+        compile project(':joljak-core')
+        compile project(':joljak-domain-rds')
+    }
+}
+
+project(':joljak-application') {
+    dependencies {
+        implementation("io.springfox:springfox-swagger2:${swaggerVersion}")
+        implementation("io.springfox:springfox-swagger-ui:${swaggerVersion}")
+        implementation("io.springfox:springfox-spring-web:${swaggerVersion}")
+        implementation("org.springframework.boot:spring-boot-starter-web")
+        implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
+        compile("mysql:mysql-connector-java")
+
+        compile project(':joljak-core')
+        compile project(':joljak-domain-rds')
+    }
+}
+
+project(':joljak-domain-rds') {
+    bootJar { enabled = false }
+    jar { enabled = true }
+    dependencies {
+        implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+        implementation("io.jsonwebtoken:jjwt-api:${jjwtVersion}")
+
+        runtime("io.jsonwebtoken:jjwt-impl:${jjwtVersion}")
+        runtime("io.jsonwebtoken:jjwt-jackson:${jjwtVersion}")
+        runtime('com.h2database:h2')
+
+        compile("mysql:mysql-connector-java")
+
+        compile project(':joljak-core')
+    }
+}
+project(':joljak-core') {
+    bootJar { enabled = false }
+    jar { enabled = true }
+    dependencies {
+
+    }
+}
