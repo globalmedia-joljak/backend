@@ -55,20 +55,6 @@ subprojects {
         }
     }
 }
-project(':joljak-admin-application') {
-    dependencies {
-        implementation("io.springfox:springfox-swagger2:${swaggerVersion}")
-        implementation("io.springfox:springfox-swagger-ui:${swaggerVersion}")
-        implementation("io.springfox:springfox-spring-web:${swaggerVersion}")
-        implementation("org.springframework.boot:spring-boot-starter-web")
-        implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-
-        compile("mysql:mysql-connector-java")
-
-        compile project(':joljak-core')
-        compile project(':joljak-domain-rds')
-    }
-}
 
 project(':joljak-application') {
     dependencies {
