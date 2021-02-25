@@ -28,7 +28,7 @@ jobs:
       with:
         status: ${{ job.status }}
         author_name: 개발 환경 CI 알림 봇
-        fields: repo,message,commit,author,action,eventName,ref,workflow,job,took # selectable (default: repo,message)
+        fields: repo,message,commit,author,action,eventName,ref,workflow,job,took # selectable
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # optional
         SLACK_WEBHOOK_URL: ${{ secrets.DEV_CI_SLACK_WEBHOOK_URL }} # required
