@@ -1,5 +1,4 @@
 rootProject.name = 'backend'
-include('joljak-admin-application')
 include('joljak-application')
 include('joljak-domain-rds')
 include('joljak-core')

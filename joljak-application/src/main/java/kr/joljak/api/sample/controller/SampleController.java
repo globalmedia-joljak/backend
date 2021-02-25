@@ -13,6 +13,7 @@ public class SampleController {
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
   public String test() {
+
     return "api test";
   }
 }
