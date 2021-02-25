@@ -14,6 +14,6 @@ public class SampleController {
   @ResponseStatus(HttpStatus.OK)
   public String test() {
 
-    return "api test";
+    return "api test2";
   }
 }
