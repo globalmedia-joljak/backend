@@ -8,8 +8,8 @@ files:
 permissions:
   - object: /
     pattern: "**" # 모든 파일의 권한 설정
-    owner: ubuntu
-    group: ubuntu
+    owner: root
+    group: root
 
 hooks:
   AfterInstall:
