@@ -4,7 +4,7 @@
 name: JOLJAK-DEV CI
 
 on:
-  pull_request:
+  push:
     branches: [ develop ]
 
 jobs:
