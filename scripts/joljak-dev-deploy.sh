@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-REPOSITORY=/home/ec2-user/app/deploy
-PROJECT_NAME=AZ-Server
+REPOSITORY=/home/ubuntu/dev/backend/build
+PROJECT_NAME=joljak-dev-server
 
 echo "> Build 파일 복사"
 
@@ -24,4 +24,4 @@ echo "> $JAR_NAME 실행"
 
 source $HOME/.bashrc
 
-nohup java -jar -Dspring.config.location=/home/ec2-user/app/application-real-db.properties $JAR_NAME > $REPOSITORY/zip/nohup.out 2>&1 &
+nohup java -jar -Dspring.config.location=/home/ubuntu/dev/backend/config/application-dev.properties $JAR_NAME > $REPOSITORY/zip/nohup.out 2>&1 &
