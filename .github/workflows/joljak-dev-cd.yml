@@ -58,7 +58,7 @@ jobs:
           --acl private \
           joljak-application-dev-deploy.zip s3://joljak-common/deploy/dev/
 
-      # Deploy
+      # Deploy Joljak DEV
       - name: Deploy Joljak DEV
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
