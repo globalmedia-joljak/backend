@@ -15,4 +15,4 @@ hooks:
   AfterInstall:
     - location: joljak-dev-deploy.sh
       timeout: 60
-      runas: ubuntu
+      runas: root
