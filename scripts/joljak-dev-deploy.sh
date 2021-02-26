@@ -15,7 +15,7 @@ echo "현재 구동중인 애플리케이션 pid:" $CURRENT_PID
 if [  -z "$CURRENT_PID" ]; then
         echo "> 현재 구동 중인 애플리케이션이 없으므로 종료하지 않습니다."
 else
-        echo "> 현재 구동 중인 애플리케이션 삭제."
+        echo "> 현재 구동 중인 애플리케이션 삭."
         echo "> kill -15 $CURRENT_PID"
         kill -15 $CURRENT_PID
         sleep 5
@@ -35,4 +35,4 @@ echo "> $JAR_NAME 실행"
 
 sudo nohup java -jar -Dspring.config.location=/home/ubuntu/dev/backend/config/application-dev.properties $JAR_NAME > $REPOSITORY/zip/nohup.out 2>&1 &
 
-echo "> $JAR_NAME 실행 완료"
+echo "> 배포 완료"
