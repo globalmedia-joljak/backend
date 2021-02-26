@@ -68,7 +68,7 @@ jobs:
           --application-name joljak-dev-deploy \
           --deployment-group-name joljak-dev-deploy \
           --file-exists-behavior OVERWRITE \
-          --s3-location bucket=joljak-common,bundleType=zip,key=joljak-application-dev-deploy.zip \
+          --s3-location bucket=joljak-common,bundleType=zip,key=deploy/devjoljak-application-dev-deploy.zip \
           --region ap-northeast-2
 
       - uses: 8398a7/action-slack@v3
