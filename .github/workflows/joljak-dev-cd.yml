@@ -56,7 +56,7 @@ jobs:
           aws s3 cp \
           --region ap-northeast-2 \
           --acl private \
-          joljak-application-dev-deploy.zip s3://joljak-common/deploy/dev/
+          joljak-application-dev-deploy.zip s3://joljak-common/deploy/dev
 
       # Deploy Joljak DEV
       - name: Deploy Joljak DEV
