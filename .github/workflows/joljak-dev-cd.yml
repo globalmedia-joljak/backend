@@ -31,14 +31,14 @@ jobs:
 
       # 전송할 파일을 담을 디렉토리 생성
       - name: Make Directory for deliver
-        run: mkdir joljak-application-dev/deploy
+        run: mkdir -p joljak-application-dev/deploy
 
       # Jar 파일 Copy
       - name: Copy Jar
-        run: cp joljak-application/build/libs/*.jar joljak-application-dev/deploy
+        run: cp joljak-application/build/libs/*.jar joljak-application-dev/deploy/
 
       - name: Copy appspec-dev
-          run: cp appspec-dev.yml joljak-application-dev/deploy
+        run: cp appspec-dev.yml joljak-application-dev/deploy
 
       - name: Copy shell
         run: cp ./scripts/joljak-dev-deploy.sh joljak-application-dev/deploy
