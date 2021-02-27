@@ -2,17 +2,17 @@ version: 0.0
 os: linux
 files:
   - source:  /
-    destination: /home/ubuntu/dev/backend
+    destination: /home/ubuntu/dev/backend/build
     overwrite: yes
 
 permissions:
   - object: /
-    pattern: "**" # 모든 파일의 권한 설정
-    owner: ubuntu
-    group: ubuntu
+    pattern: "**"
+    owner: root
+    group: root
 
 hooks:
   AfterInstall:
     - location: joljak-dev-deploy.sh
       timeout: 60
-      runas: ubuntu
+      runas: root

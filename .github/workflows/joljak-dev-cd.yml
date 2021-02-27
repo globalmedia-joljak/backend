@@ -4,7 +4,7 @@
 name: JOLJAK-DEV CI
 
 on:
-  pull_request:
+  push:
     branches: [ develop ]
 
 jobs:
@@ -31,17 +31,17 @@ jobs:
 
       # 전송할 파일을 담을 디렉토리 생성
       - name: Make Directory for deliver
-        run: mkdir joljak-application-dev/deploy
+        run: mkdir -p joljak-application-dev/deploy
 
       # Jar 파일 Copy
       - name: Copy Jar
-        run: cp joljak-application/build/libs/*.jar joljak-application-dev/deploy
+        run: cp joljak-application/build/libs/*.jar joljak-application-dev/deploy/
 
       - name: Copy appspec
-          run: cp appspec.yml joljak-application-dev/deploy
+        run: cp ./appspec/dev/appspec.yml joljak-application-dev/deploy/
 
       - name: Copy shell
-        run: cp ./scripts/* joljak-application-dev/deploy
+        run: cp ./scripts/joljak-dev-deploy.sh joljak-application-dev/deploy/
 
       # 압축파일 형태로 전달
       - name: Make zip file
@@ -56,10 +56,10 @@ jobs:
           aws s3 cp \
           --region ap-northeast-2 \
           --acl private \
-          ./joljak-application-dev-deploy.zip s3://joljak-common/deploy/dev
+          joljak-application-dev-deploy.zip s3://joljak-common/deploy/dev/
 
-      # Deploy
-      - name: Deploy
+      # Deploy Joljak DEV
+      - name: Deploy Joljak DEV
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -68,7 +68,7 @@ jobs:
           --application-name joljak-dev-deploy \
           --deployment-group-name joljak-dev-deploy \
           --file-exists-behavior OVERWRITE \
-          --s3-location bucket=joljak-common/deploy/dev,bundleType=zip,key=joljak-application-dev-deploy.zip \
+          --s3-location bucket=joljak-common,bundleType=zip,key=deploy/dev/joljak-application-dev-deploy.zip \
           --region ap-northeast-2
 
       - uses: 8398a7/action-slack@v3
