@@ -14,6 +14,6 @@ public class SampleController {
   @ResponseStatus(HttpStatus.OK)
   public String test() {
 
-    return "TEST CI/CD 2";
+    return "TEST CI/CD";
   }
 }
