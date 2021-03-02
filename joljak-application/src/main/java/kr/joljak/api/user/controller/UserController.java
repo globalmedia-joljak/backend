@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import kr.joljak.api.user.request.SignUpRequest;
 import kr.joljak.api.user.response.SignInResponse;
 
+import kr.joljak.invite.service.InviteService;
 import kr.joljak.jwt.AccessToken;
 import kr.joljak.jwt.JwtTokenProvider;
 import kr.joljak.security.UserRole;
@@ -25,12 +26,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/users")
 public class UserController {
   private final UserService userService;
+  private final InviteService inviteService;
   private final JwtTokenProvider jwtTokenProvider;
 
   @ApiOperation("회원가입 API")
   @PostMapping("/user/signup")
   @ResponseStatus(HttpStatus.OK)
   public SignInResponse signUp(SignUpRequest signUpRequest) {
+    inviteService.validateAndExpireInvite(signUpRequest.getClassOf(), signUpRequest.getInviteCode());
+
     SimpleUser simpleUser = SimpleUser.of(userService.signUp(signUpRequest.toSignUpUser()));
     List<String> userRoles = simpleUser.getUserRoles().stream()
       .map(UserRole::getRoleName)

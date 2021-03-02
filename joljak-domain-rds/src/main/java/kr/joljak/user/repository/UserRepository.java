@@ -9,5 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends ExtendRepository<User> {
   Optional<User> findById(Long userId);
 
+  Boolean existsByClassOf(String classOf);
+
   Optional<User> findByClassOf(String classOf);
 }

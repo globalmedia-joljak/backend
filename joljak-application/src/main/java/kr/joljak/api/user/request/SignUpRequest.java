@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import kr.joljak.security.UserRole;
 import kr.joljak.user.entity.User;
+import kr.joljak.user.entity.UserProjectRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,6 +17,9 @@ public class SignUpRequest {
   private String password;
   private String name;
   private String phoneNumber;
+  private String inviteCode;
+  private UserProjectRole mainProjectRole;
+  private UserProjectRole subProjectRole;
 
   public User toSignUpUser() {
     String hashPassword = new BCryptPasswordEncoder().encode(password);
@@ -27,6 +31,8 @@ public class SignUpRequest {
       .phoneNumber(phoneNumber)
       .name(name)
       .userRoles(userRoles)
+      .mainProjectRole(mainProjectRole)
+      .subProjectRole(subProjectRole)
       .build();
   }
 }

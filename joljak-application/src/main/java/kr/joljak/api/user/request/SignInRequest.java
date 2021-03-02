@@ -8,5 +8,4 @@ import lombok.Getter;
 public class SignInRequest {
   private String classOf;
   private String password;
-
 }

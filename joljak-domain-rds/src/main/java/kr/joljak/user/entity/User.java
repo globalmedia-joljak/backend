@@ -39,17 +39,27 @@ public class User extends ExtendEntity {
   private String phoneNumber;
 
   @Column(nullable = false)
+  @Enumerated(value = EnumType.STRING)
+  private UserProjectRole mainProjectRole;
+
+  @Enumerated(value = EnumType.STRING)
+  private UserProjectRole subProjectRole;
+
+  @Column(nullable = false)
   @ElementCollection
   @Enumerated(value = EnumType.STRING)
   private List<UserRole> userRoles;
 
   @Builder
-  public User(String classOf, String password, String name, String phoneNumber, List<UserRole> userRoles) {
+  public User(String classOf, String password, String name, String phoneNumber,
+    List<UserRole> userRoles, UserProjectRole mainProjectRole, UserProjectRole subProjectRole) {
     this.classOf = classOf;
     this.password = password;
     this.name = name;
     this.phoneNumber = phoneNumber;
     this.userRoles = userRoles;
+    this.mainProjectRole = mainProjectRole;
+    this.subProjectRole = subProjectRole;
   }
 
   public void setPassword(String password) {
