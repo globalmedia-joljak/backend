@@ -63,7 +63,6 @@ project(':joljak-application') {
         implementation("io.springfox:springfox-spring-web:${swaggerVersion}")
         implementation("org.springframework.boot:spring-boot-starter-web")
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-        implementation("org.springframework.boot:spring-boot-starter-security")
 
         compile("mysql:mysql-connector-java")
 
@@ -77,7 +76,10 @@ project(':joljak-domain-rds') {
     jar { enabled = true }
     dependencies {
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+        implementation("io.jsonwebtoken:jjwt-api:${jjwtVersion}")
 
+        runtime("io.jsonwebtoken:jjwt-impl:${jjwtVersion}")
+        runtime("io.jsonwebtoken:jjwt-jackson:${jjwtVersion}")
         runtime('com.h2database:h2')
 
         compile("mysql:mysql-connector-java")
@@ -89,12 +91,6 @@ project(':joljak-core') {
     bootJar { enabled = false }
     jar { enabled = true }
     dependencies {
-        implementation("org.springframework.boot:spring-boot-starter-security")
-        implementation("io.jsonwebtoken:jjwt-api:${jjwtVersion}")
-        implementation("io.jsonwebtoken:jjwt:0.9.1")
 
-
-        runtime("io.jsonwebtoken:jjwt-impl:${jjwtVersion}")
-        runtime("io.jsonwebtoken:jjwt-jackson:${jjwtVersion}")
     }
 }
