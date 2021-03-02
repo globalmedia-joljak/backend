@@ -18,4 +18,19 @@ public class SampleController {
 
     return "TEST CI/CD";
   }
+  @ApiOperation("관리자 테스트")
+  @GetMapping("/user")
+  @ResponseStatus(HttpStatus.OK)
+  public String test2() {
+
+    return "유저 API";
+  }
+
+  @ApiOperation("관리자 테스트")
+  @GetMapping("/admin")
+  @ResponseStatus(HttpStatus.OK)
+  public String test3() {
+
+    return "관리자 API";
+  }
 }
