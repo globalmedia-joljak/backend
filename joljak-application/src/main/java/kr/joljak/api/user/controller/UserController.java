@@ -6,12 +6,12 @@ import java.util.stream.Collectors;
 import kr.joljak.api.user.request.SignUpRequest;
 import kr.joljak.api.user.response.SignInResponse;
 
-import kr.joljak.invite.service.InviteService;
-import kr.joljak.jwt.AccessToken;
-import kr.joljak.jwt.JwtTokenProvider;
-import kr.joljak.security.UserRole;
-import kr.joljak.user.dto.SimpleUser;
-import kr.joljak.user.service.UserService;
+import kr.joljak.domain.invite.service.InviteService;
+import kr.joljak.core.jwt.AccessToken;
+import kr.joljak.core.jwt.JwtTokenProvider;
+import kr.joljak.core.security.UserRole;
+import kr.joljak.domain.user.dto.SimpleUser;
+import kr.joljak.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;

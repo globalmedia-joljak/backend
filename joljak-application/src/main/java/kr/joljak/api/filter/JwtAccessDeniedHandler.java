@@ -2,7 +2,7 @@ package kr.joljak.api.filter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import kr.joljak.jwt.PermissionException;
+import kr.joljak.core.jwt.PermissionException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;

@@ -2,7 +2,7 @@ package kr.joljak.api.filter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import kr.joljak.jwt.InvalidTokenException;
+import kr.joljak.core.jwt.InvalidTokenException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

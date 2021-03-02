@@ -1,7 +1,7 @@
 package kr.joljak.api.config;
 
 import kr.joljak.api.filter.JwtFilter;
-import kr.joljak.jwt.JwtTokenProvider;
+import kr.joljak.core.jwt.JwtTokenProvider;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;

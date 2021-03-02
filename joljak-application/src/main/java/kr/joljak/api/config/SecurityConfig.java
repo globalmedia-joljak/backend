@@ -2,8 +2,8 @@ package kr.joljak.api.config;
 
 import kr.joljak.api.filter.JwtAccessDeniedHandler;
 import kr.joljak.api.filter.JwtAuthenticationEntryPoint;
-import kr.joljak.jwt.JwtTokenProvider;
-import kr.joljak.security.UserRole;
+import kr.joljak.core.jwt.JwtTokenProvider;
+import kr.joljak.core.security.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;

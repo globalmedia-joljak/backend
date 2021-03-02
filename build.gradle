@@ -39,6 +39,7 @@ subprojects {
 
         testImplementation('org.springframework.boot:spring-boot-starter-test')
         testImplementation group: 'junit', name: 'junit', version: "${junitVersion}"
+        testImplementation("com.h2database:h2")
         compileOnly ("org.projectlombok:lombok:${lombokVersion}")
         annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
         testAnnotationProcessor("org.projectlombok:lombok:${lombokVersion}")

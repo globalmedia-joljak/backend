@@ -1,7 +1,7 @@
 package kr.joljak.api.user.response;
 
-import kr.joljak.jwt.AccessToken;
-import kr.joljak.user.dto.SimpleUser;
+import kr.joljak.core.jwt.AccessToken;
+import kr.joljak.domain.user.dto.SimpleUser;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
