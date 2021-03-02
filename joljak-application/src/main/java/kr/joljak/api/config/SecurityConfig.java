@@ -30,41 +30,42 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity httpSecurity) throws Exception {
     httpSecurity
-      .csrf().disable()
-      .httpBasic().disable()
-      .formLogin().disable()
-      .csrf().disable()
-      .logout().disable()
+        .csrf().disable()
+        .httpBasic().disable()
+        .formLogin().disable()
+        .csrf().disable()
+        .logout().disable()
 
-      .exceptionHandling()
-      .authenticationEntryPoint(authenticationErrorHandler)
-      .accessDeniedHandler(jwtAccessDeniedHandler)
+        .exceptionHandling()
+        .authenticationEntryPoint(authenticationErrorHandler)
+        .accessDeniedHandler(jwtAccessDeniedHandler)
 
-      .and()
-      .sessionManagement()
-      .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
-      .and()
-      .authorizeRequests()
-      .antMatchers(
-        HttpMethod.GET, "/", "/csrf", "/v2/api-docs", "/swagger-resources/**",
-        "/swagger-ui/**", "/webjars/**", "/swagger/**"
-      ).permitAll()
-      .antMatchers("/api/v1/users/**").permitAll()
-      .anyRequest().authenticated()
+        .and()
+        .authorizeRequests()
+        .mvcMatchers(
+            "/", "/csrf", "/v2/api-docs", "/swagger-resources/**",
+            "/swagger-ui/**", "/webjars/**", "/swagger/**", "/swagger-ui.html", "/swagger-ui.html/**",
+            "/configuration/**"
+        ).permitAll()
+        .antMatchers("/api/v1/users/**").permitAll()
+        .anyRequest().authenticated()
 
-      .and()
-      .apply(securityConfigurerAdapter());
+        .and()
+        .apply(securityConfigurerAdapter());
   }
 
   @Override
   public void configure(WebSecurity web) {
     web.ignoring()
-      .antMatchers(HttpMethod.OPTIONS, "/**")
-      .antMatchers(
-        "/",
-        "/h2-console/**"
-      );
+        .antMatchers(HttpMethod.OPTIONS, "/**")
+        .antMatchers(
+            "/",
+            "/h2-console/**"
+        );
   }
 
   private JwtConfig securityConfigurerAdapter() {
