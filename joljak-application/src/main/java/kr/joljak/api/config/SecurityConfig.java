@@ -2,7 +2,8 @@ package kr.joljak.api.config;
 
 import kr.joljak.api.filter.JwtAccessDeniedHandler;
 import kr.joljak.api.filter.JwtAuthenticationEntryPoint;
-import kr.joljak.jwt.JwtTokenProvider;
+import kr.joljak.core.jwt.JwtTokenProvider;
+import kr.joljak.core.security.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -33,7 +34,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .csrf().disable()
         .httpBasic().disable()
         .formLogin().disable()
-        .csrf().disable()
         .logout().disable()
 
         .exceptionHandling()
@@ -52,6 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/configuration/**"
         ).permitAll()
         .antMatchers("/api/v1/users/**").permitAll()
+        .antMatchers("/api/v1/invites/**").hasRole(UserRole.ADMIN.getKey())
         .anyRequest().authenticated()
 
         .and()
@@ -61,11 +62,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   public void configure(WebSecurity web) {
     web.ignoring()
-        .antMatchers(HttpMethod.OPTIONS, "/**")
-        .antMatchers(
-            "/",
-            "/h2-console/**"
-        );
+      .antMatchers(HttpMethod.OPTIONS, "/**")
+      .antMatchers(
+        "/",
+        "/h2-console/**"
+      );
   }
 
   private JwtConfig securityConfigurerAdapter() {

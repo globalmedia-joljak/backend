@@ -35,8 +35,11 @@ subprojects {
     test { useJUnitPlatform() }
 
     dependencies {
+        implementation("org.springframework.boot:spring-boot-starter-web")
+
         testImplementation('org.springframework.boot:spring-boot-starter-test')
         testImplementation group: 'junit', name: 'junit', version: "${junitVersion}"
+        testImplementation("com.h2database:h2")
         compileOnly ("org.projectlombok:lombok:${lombokVersion}")
         annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
         testAnnotationProcessor("org.projectlombok:lombok:${lombokVersion}")
@@ -61,10 +64,11 @@ project(':joljak-application') {
         implementation("io.springfox:springfox-swagger2:${swaggerVersion}")
         implementation("io.springfox:springfox-swagger-ui:${swaggerVersion}")
         implementation("io.springfox:springfox-spring-web:${swaggerVersion}")
-        implementation("org.springframework.boot:spring-boot-starter-web")
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
         implementation("org.springframework.boot:spring-boot-starter-security")
+        implementation("com.h2database:h2")
 
+        testImplementation('org.springframework.security:spring-security-test')
         compile("mysql:mysql-connector-java")
 
         compile project(':joljak-core')
