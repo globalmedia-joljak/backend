@@ -1,6 +1,5 @@
 package kr.joljak;
 
-import org.junit.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
