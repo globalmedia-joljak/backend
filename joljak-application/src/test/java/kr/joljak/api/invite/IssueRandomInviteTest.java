@@ -26,7 +26,31 @@ public class IssueRandomInviteTest extends CommonApiTest {
     ).andReturn();
 
     //then
-    System.out.println(mvcResult.getResponse().getErrorMessage());
     assertEquals(201, mvcResult.getResponse().getStatus());
+  }
+
+  @Test
+  public void issueRandomInvite_Fail_AlreadyInviteExistException() throws Exception {
+    // given
+    String classOf = "testClassOf" + nextId++;
+    String request = new ObjectMapper().writeValueAsString(classOf);
+
+    MvcResult mvcResult = mockMvc.perform(
+        post(INVITE_URL + "/issue/random")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(request)
+            .header("Authorization", getAdminAccessToken())
+    ).andReturn();
+
+    // when
+    mvcResult = mockMvc.perform(
+        post(INVITE_URL + "/issue/random")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(request)
+            .header("Authorization", getAdminAccessToken())
+    ).andReturn();
+
+    //then
+    assertEquals(409, mvcResult.getResponse().getStatus());
   }
 }
