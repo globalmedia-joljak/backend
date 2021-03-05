@@ -1,10 +1,10 @@
-package kr.joljak.api.user.controller;
+package kr.joljak.api.auth.controller;
 
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import java.util.stream.Collectors;
-import kr.joljak.api.user.request.SignUpRequest;
-import kr.joljak.api.user.response.SignInResponse;
+import kr.joljak.api.auth.request.SignUpRequest;
+import kr.joljak.api.auth.response.SignInResponse;
 
 import kr.joljak.domain.invite.service.InviteService;
 import kr.joljak.core.jwt.AccessToken;
@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,16 +24,16 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin("*")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/users")
-public class UserController {
+@RequestMapping("/api/v1/auth")
+public class AuthController {
   private final UserService userService;
   private final InviteService inviteService;
   private final JwtTokenProvider jwtTokenProvider;
 
   @ApiOperation("회원가입 API")
-  @PostMapping("/user/signup")
-  @ResponseStatus(HttpStatus.OK)
-  public SignInResponse signUp(SignUpRequest signUpRequest) {
+  @PostMapping("/signup")
+  @ResponseStatus(HttpStatus.CREATED)
+  public SignInResponse signUp(@RequestBody SignUpRequest signUpRequest) {
     inviteService.validateAndExpireInvite(signUpRequest.getClassOf(), signUpRequest.getInviteCode());
 
     SimpleUser simpleUser = SimpleUser.of(userService.signUp(signUpRequest.toSignUpUser()));

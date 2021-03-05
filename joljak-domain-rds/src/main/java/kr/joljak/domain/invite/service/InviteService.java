@@ -7,9 +7,11 @@ import kr.joljak.domain.invite.exception.InvalidInviteException;
 import kr.joljak.domain.invite.exception.InviteNotFoundException;
 import kr.joljak.domain.invite.repository.InviteRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class InviteService {
@@ -17,7 +19,7 @@ public class InviteService {
 
   @Transactional
   public void validateAndExpireInvite(String classOf, String inviteCode) {
-    Invite invite = inviteRepository.findByClassOf(classOf)
+      Invite invite = inviteRepository.findByClassOf(classOf)
       .orElseThrow(InviteNotFoundException::new);
 
     if (!inviteCode.equals(invite.getInviteCode())) {

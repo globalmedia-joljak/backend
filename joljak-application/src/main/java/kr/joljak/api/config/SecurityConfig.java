@@ -34,7 +34,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .csrf().disable()
         .httpBasic().disable()
         .formLogin().disable()
-        .csrf().disable()
         .logout().disable()
 
         .exceptionHandling()
@@ -63,11 +62,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   public void configure(WebSecurity web) {
     web.ignoring()
-        .antMatchers(HttpMethod.OPTIONS, "/**")
-        .antMatchers(
-          "/",
-          "/h2-console/**"
-        );
+      .antMatchers(HttpMethod.OPTIONS, "/**")
+      .antMatchers(
+        "/",
+        "/h2-console/**"
+      );
   }
 
   private JwtConfig securityConfigurerAdapter() {

@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,8 +21,8 @@ public class InviteController {
 
   @ApiOperation("랜덤 인증코드 발급 API")
   @PostMapping("/issue/random")
-  @ResponseStatus(HttpStatus.OK)
-  public Invite issueInvite(String classOf) {
+  @ResponseStatus(HttpStatus.CREATED)
+  public Invite issueRandomInvite(@RequestBody String classOf) {
     return inviteService.issueRandomInvite(classOf);
   }
 }

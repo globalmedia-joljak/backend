@@ -1,4 +1,4 @@
-package kr.joljak.api.user.request;
+package kr.joljak.api.auth.request;
 
 import java.util.ArrayList;
 import java.util.Collections;

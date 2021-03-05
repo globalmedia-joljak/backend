@@ -1,4 +1,4 @@
-package kr.joljak.api.user.response;
+package kr.joljak.api.auth.response;
 
 import kr.joljak.core.jwt.AccessToken;
 import kr.joljak.domain.user.dto.SimpleUser;

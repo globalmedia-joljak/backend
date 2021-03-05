@@ -66,7 +66,9 @@ project(':joljak-application') {
         implementation("io.springfox:springfox-spring-web:${swaggerVersion}")
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
         implementation("org.springframework.boot:spring-boot-starter-security")
+        implementation("com.h2database:h2")
 
+        testImplementation('org.springframework.security:spring-security-test')
         compile("mysql:mysql-connector-java")
 
         compile project(':joljak-core')
