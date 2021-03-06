@@ -41,9 +41,9 @@ public class SignUpTest extends CommonApiTest {
 
     //when
     MvcResult mvcResult = mockMvc.perform(
-        post(AUTH_URL + "/signup")
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .content(request)
+      post(AUTH_URL + "/signup")
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .content(request)
     ).andReturn();
 
     //then
@@ -59,9 +59,9 @@ public class SignUpTest extends CommonApiTest {
 
     //when
     MvcResult mvcResult = mockMvc.perform(
-        post(AUTH_URL + "/signup")
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .content(request)
+      post(AUTH_URL + "/signup")
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .content(request)
     ).andReturn();
 
     //then
@@ -77,9 +77,9 @@ public class SignUpTest extends CommonApiTest {
 
     //when
     MvcResult mvcResult = mockMvc.perform(
-        post(AUTH_URL + "/signup")
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .content(request)
+      post(AUTH_URL + "/signup")
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .content(request)
     ).andReturn();
 
     //then
