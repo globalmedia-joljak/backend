@@ -28,12 +28,14 @@ public class JwtTokenProvider {
 
   private static final String CLASS_OF = "classOf";
   private static final String ROLES = "roles";
+  private static final String ISSUER = "kr.joljak";
 
   public AccessToken generateAccessToken(String classOf, List<String> roles) {
     Date now = new Date();
     Date expireDate = new Date(now.getTime() + expirationTime);
 
     String token = Jwts.builder()
+      .setIssuer(ISSUER)
       .setClaims(createDefaultClaims(classOf, roles))
       .setSubject(JwtToken.ACCESS_TOKEN.getName())
       .setIssuedAt(now)
@@ -47,7 +49,7 @@ public class JwtTokenProvider {
   public String generateRefreshToken(String classOf, List<String> roles) {
 
     return Jwts.builder()
-      .setHeaderParam("typ", "JWT")
+      .setIssuer(ISSUER)
       .setClaims(createDefaultClaims(classOf, roles))
       .setSubject(JwtToken.REFRESH_TOKEN.getName())
       .setIssuedAt(new Date())
@@ -63,13 +65,22 @@ public class JwtTokenProvider {
     return claims;
   }
 
-  public Long getClassOfByToken(String token, JwtToken jwtToken){
+  public String getClassOfByToken(String token, JwtToken jwtToken){
     Claims claims = decodingToken(token);
 
     if(!(claims.getSubject().equals(jwtToken.getName())))
       throw new InvalidTokenException("token subject do not match.");
 
-    return Long.parseLong(claims.get(CLASS_OF).toString());
+    return claims.get(CLASS_OF).toString();
+  }
+
+  public List<String> getRolesByToken(String token, JwtToken jwtToken){
+    Claims claims = decodingToken(token);
+
+    if(!(claims.getSubject().equals(jwtToken.getName())))
+      throw new InvalidTokenException("token subject do not match.");
+
+    return claims.get(ROLES, List.class);
   }
 
   public Authentication getAuthentication(String token) {

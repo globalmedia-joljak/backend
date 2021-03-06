@@ -54,9 +54,9 @@ public class SignInTest extends CommonApiTest {
 
     //when
     MvcResult mvcResult = mockMvc.perform(
-        post(AUTH_URL + "/signin")
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .content(request)
+      post(AUTH_URL + "/signin")
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .content(request)
     ).andReturn();
 
     //then

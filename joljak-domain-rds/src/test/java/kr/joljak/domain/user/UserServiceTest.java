@@ -1,12 +1,9 @@
 package kr.joljak.domain.user;
 
-import static org.junit.Assert.assertEquals;
-
 import kr.joljak.core.security.UserRole;
 import kr.joljak.domain.common.CommonDomainTest;
 import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.exception.AlreadyClassOfExistException;
-import kr.joljak.domain.user.exception.InvalidPasswordException;
 import kr.joljak.domain.user.exception.UserNotFoundException;
 import kr.joljak.domain.user.service.UserService;
 import org.assertj.core.api.Assertions;
@@ -39,7 +36,7 @@ public class UserServiceTest extends CommonDomainTest {
   }
 
   @Test
-  public void checkDuplicateClassOf_Success_NotDuplicate() {
+  public void checkDuplicateClassOf_Success_AlreadyClassOfExistException() {
     // given
     String successClass = "successClass";
 

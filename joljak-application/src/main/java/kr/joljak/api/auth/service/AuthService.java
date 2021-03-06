@@ -6,6 +6,7 @@ import kr.joljak.api.auth.request.SignInRequest;
 import kr.joljak.api.auth.request.SignUpRequest;
 import kr.joljak.api.auth.response.SignInResponse;
 import kr.joljak.core.jwt.AccessToken;
+import kr.joljak.core.jwt.JwtToken;
 import kr.joljak.core.jwt.JwtTokenProvider;
 import kr.joljak.core.security.UserRole;
 import kr.joljak.domain.invite.service.InviteService;
@@ -42,6 +43,13 @@ public class AuthService {
     }
 
     return getSignInResponse(SimpleUser.of(user));
+  }
+
+  public AccessToken reissueAccessToken(String refreshToken) {
+    String classOf = jwtTokenProvider.getClassOfByToken(refreshToken, JwtToken.REFRESH_TOKEN);
+    List<String> roles = jwtTokenProvider.getRolesByToken(refreshToken, JwtToken.REFRESH_TOKEN);
+
+    return jwtTokenProvider.generateAccessToken(classOf, roles);
   }
 
   private SignInResponse getSignInResponse(SimpleUser simpleUser) {
