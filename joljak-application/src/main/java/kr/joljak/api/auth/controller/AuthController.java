@@ -6,11 +6,13 @@ import kr.joljak.api.auth.request.SignUpRequest;
 import kr.joljak.api.auth.response.SignInResponse;
 import kr.joljak.api.auth.service.AuthService;
 
+import kr.joljak.core.jwt.AccessToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,5 +36,12 @@ public class AuthController {
   @ResponseStatus(HttpStatus.OK)
   public SignInResponse signIn(@RequestBody SignInRequest signInRequest) {
     return authService.signIn(signInRequest);
+  }
+
+  @ApiOperation("AccessToken 재발급")
+  @PostMapping("/reissue/accesstoken")
+  @ResponseStatus(HttpStatus.OK)
+  public AccessToken reissueAccessToken(@RequestHeader String refreshToken) {
+    return authService.reissueAccessToken(refreshToken);
   }
 }
