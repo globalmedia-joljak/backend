@@ -1,6 +1,7 @@
 package kr.joljak.api.auth.controller;
 
 import io.swagger.annotations.ApiOperation;
+import kr.joljak.api.auth.request.SignInRequest;
 import kr.joljak.api.auth.request.SignUpRequest;
 import kr.joljak.api.auth.response.SignInResponse;
 import kr.joljak.api.auth.service.AuthService;
@@ -26,5 +27,12 @@ public class AuthController {
   @ResponseStatus(HttpStatus.CREATED)
   public SignInResponse signUp(@RequestBody SignUpRequest signUpRequest) {
     return authService.signUp(signUpRequest);
+  }
+
+  @ApiOperation("로그인 API")
+  @PostMapping("/signin")
+  @ResponseStatus(HttpStatus.OK)
+  public SignInResponse signIn(@RequestBody SignInRequest signInRequest) {
+    return authService.signIn(signInRequest);
   }
 }

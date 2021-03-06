@@ -16,6 +16,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -39,6 +40,7 @@ public abstract class CommonApiTest {
   private String adminRefreshToken;
   private String userAccessToken;
   private String userRefreshToken;
+  private String originalPassword = "12345678901234567890123456789012345678901234567890";
 
   @LocalServerPort
   protected int port;
@@ -69,7 +71,7 @@ public abstract class CommonApiTest {
 
   public User createMockUser(UserRole userRole) {
     List<UserRole> userRoles = new ArrayList<>(Collections.singleton(UserRole.USER));
-
+    String hashPassword = new BCryptPasswordEncoder().encode(originalPassword);
     if (userRole.equals(UserRole.ADMIN)) {
       userRoles.add(UserRole.ADMIN);
     }
@@ -77,7 +79,7 @@ public abstract class CommonApiTest {
     return User.builder()
         .classOf("testUser" + nextId++)
         .mainProjectRole(UserProjectRole.DEVELOPER)
-        .password("123456789012345678901234567890123456789012345678901234")
+        .password(hashPassword)
         .userRoles(userRoles)
         .phoneNumber("010-1234-5678")
         .name("testUser")
@@ -135,5 +137,9 @@ public abstract class CommonApiTest {
 
   public String getUserRefreshToken() {
     return userRefreshToken;
+  }
+
+  public String getOriginalPassword() {
+    return originalPassword;
   }
 }
