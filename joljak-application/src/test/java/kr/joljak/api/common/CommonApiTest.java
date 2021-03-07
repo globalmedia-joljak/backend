@@ -10,6 +10,7 @@ import kr.joljak.domain.invite.entity.Invite;
 import kr.joljak.domain.invite.repository.InviteRepository;
 import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.entity.UserProjectRole;
+import kr.joljak.domain.user.exception.UserNotFoundException;
 import kr.joljak.domain.user.repository.UserRepository;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -34,8 +35,6 @@ public abstract class CommonApiTest {
   @Autowired
   private JwtTokenProvider jwtTokenProvider;
 
-  private User admin;
-  private User user;
   private String adminAccessToken;
   private String adminRefreshToken;
   private String userAccessToken;
@@ -50,9 +49,13 @@ public abstract class CommonApiTest {
 
   protected MockMvc mockMvc;
 
+  protected static final String TEST_ADMIN_CLASS_OF = "testUser0";
+  protected static final String TEST_USER_CLASS_OF = "testUser1";
+
   protected final String URL = "http://localhost:";
   protected final String AUTH_URL = URL + port + "/api/v1/auth";
   protected final String INVITE_URL = URL + port + "/api/v1/invites";
+  protected final String USER_URL = URL + port + "/api/v1/users";
 
   protected static int nextId = 0;
 
@@ -62,10 +65,10 @@ public abstract class CommonApiTest {
       .webAppContextSetup(webApplicationContext)
       .build();
 
-    admin = userRepository.save(createMockUser(UserRole.ADMIN));
+    User admin = userRepository.save(createMockUser(UserRole.ADMIN));
     setToken(admin, UserRole.ADMIN);
 
-    user = userRepository.save(createMockUser(UserRole.USER));
+    User user = userRepository.save(createMockUser(UserRole.USER));
     setToken(user, UserRole.USER);
   }
 
@@ -116,11 +119,16 @@ public abstract class CommonApiTest {
   }
 
   public User getAdmin() {
-    return admin;
+    return getUserByClassOf(TEST_USER_CLASS_OF);
   }
 
   public User getUser() {
-    return user;
+    return getUserByClassOf(TEST_ADMIN_CLASS_OF);
+  }
+
+  public User getUserByClassOf(String classOf) {
+    return userRepository.findByClassOf(classOf)
+        .orElseThrow(UserNotFoundException::new);
   }
 
   public String getAdminAccessToken() {

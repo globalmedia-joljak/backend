@@ -9,6 +9,7 @@ import kr.joljak.core.jwt.JwtTokenProvider;
 import kr.joljak.core.security.UserRole;
 import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.entity.UserProjectRole;
+import kr.joljak.domain.user.exception.UserNotFoundException;
 import kr.joljak.domain.user.repository.UserRepository;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -25,21 +26,22 @@ public abstract class CommonDomainTest {
   @Autowired
   private JwtTokenProvider jwtTokenProvider;
 
-  private User admin;
-  private User user;
   private AccessToken adminAccessToken;
   private String adminRefreshToken;
   private AccessToken userAccessToken;
   private String userRefreshToken;
 
+  public static final String TEST_ADMIN_CLASS_OF = "testUser0";
+  public static final String TEST_USER_CLASS_OF = "testUser1";
+
   protected static int nextId;
 
   @Before
   public void setup() {
-    admin = userRepository.save(createMockUser(UserRole.ADMIN));
+    User admin = userRepository.save(createMockUser(UserRole.ADMIN));
     setToken(admin, UserRole.ADMIN);
 
-    user = userRepository.save(createMockUser(UserRole.USER));
+    User user = userRepository.save(createMockUser(UserRole.USER));
     setToken(user, UserRole.USER);
   }
 
@@ -80,11 +82,16 @@ public abstract class CommonDomainTest {
   }
 
   public User getAdmin() {
-    return admin;
+    return getUserByClassOf(TEST_USER_CLASS_OF);
   }
 
   public User getUser() {
-    return user;
+    return getUserByClassOf(TEST_ADMIN_CLASS_OF);
+  }
+
+  public User getUserByClassOf(String classOf) {
+    return userRepository.findByClassOf(classOf)
+        .orElseThrow(UserNotFoundException::new);
   }
 
   public AccessToken getAdminAccessToken() {

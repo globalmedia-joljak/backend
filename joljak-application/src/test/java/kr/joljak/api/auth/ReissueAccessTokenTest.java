@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 
-public class ReissueAccessToken extends CommonApiTest {
+public class ReissueAccessTokenTest extends CommonApiTest {
 
   @Test
   public void reissueAccessToken_Success() throws Exception {

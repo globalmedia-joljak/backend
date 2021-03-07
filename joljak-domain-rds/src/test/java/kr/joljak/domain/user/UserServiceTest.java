@@ -1,5 +1,7 @@
 package kr.joljak.domain.user;
 
+import static org.junit.Assert.assertEquals;
+
 import kr.joljak.core.security.UserRole;
 import kr.joljak.domain.common.CommonDomainTest;
 import kr.joljak.domain.user.entity.User;
@@ -9,8 +11,10 @@ import kr.joljak.domain.user.service.UserService;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithMockUser;
 
 public class UserServiceTest extends CommonDomainTest {
+
   @Autowired
   private UserService userService;
 
@@ -76,4 +80,48 @@ public class UserServiceTest extends CommonDomainTest {
     // then
   }
 
+  @Test
+  @WithMockUser(username = "testUser1", roles = "USER")
+  public void updatePhoneNumber_success() {
+    // given
+    User user = userService.getUserByClassOf(TEST_USER_CLASS_OF);
+    String changePhoneNumber = user.getPhoneNumber() + nextId++;
+
+    // when
+    userService.updatePhoneNumber(user.getClassOf(), changePhoneNumber);
+    user = userService.getUserByClassOf(user.getClassOf());
+
+    // then
+    assertEquals(user.getPhoneNumber(), changePhoneNumber);
+  }
+
+  @Test
+  @WithMockUser(username = "testUser1", roles = "USER")
+  public void updateInstagramId_success() {
+    // given
+    User user = userService.getUserByClassOf(TEST_USER_CLASS_OF);
+    String changeInstagramId = "changeInstagramId" + nextId++;
+
+    // when
+    userService.updateInstagramId(user.getClassOf(), changeInstagramId);
+    user = userService.getUserByClassOf(user.getClassOf());
+
+    // then
+    assertEquals(user.getInstagramId(), changeInstagramId);
+  }
+
+  @Test
+  @WithMockUser(username = "testUser1", roles = "USER")
+  public void updateKakaoId_success() {
+    // given
+    User user = userService.getUserByClassOf(TEST_USER_CLASS_OF);
+    String changeKakaoId = "changeKakaoId" + nextId++;
+
+    // when
+    userService.updateKakaoId(user.getClassOf(), changeKakaoId);
+    user = userService.getUserByClassOf(user.getClassOf());
+
+    // then
+    assertEquals(user.getKakaoId(), changeKakaoId);
+  }
 }
