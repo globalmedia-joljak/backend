@@ -37,6 +37,9 @@ public class User extends ExtendEntity {
 
   @Column(nullable = false)
   private String phoneNumber;
+  private String instagramId;
+
+  private String kakaoId;
 
   @Column(nullable = false)
   @Enumerated(value = EnumType.STRING)
@@ -68,5 +71,13 @@ public class User extends ExtendEntity {
 
   public void setPhoneNumber(String phoneNumber) {
     this.phoneNumber = phoneNumber;
+  }
+
+  public void setInstagramId(String instagramId) {
+    this.instagramId = instagramId;
+  }
+
+  public void setKakaoId(String kakaoId) {
+    this.kakaoId = kakaoId;
   }
 }

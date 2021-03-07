@@ -47,12 +47,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         .authorizeRequests()
         .mvcMatchers(
-            "/", "/csrf", "/v2/api-docs", "/swagger-resources/**",
-            "/swagger-ui/**", "/webjars/**", "/swagger/**", "/swagger-ui.html", "/swagger-ui.html/**",
-            "/configuration/**"
+          "/", "/csrf", "/v2/api-docs", "/swagger-resources/**",
+          "/swagger-ui/**", "/webjars/**", "/swagger/**", "/swagger-ui.html", "/swagger-ui.html/**",
+          "/configuration/**"
         ).permitAll()
-        .antMatchers("/api/v1/users/**").permitAll()
-        .antMatchers("/api/v1/invites/**").hasRole(UserRole.ADMIN.getKey())
+        .antMatchers(
+          "/api/v1/auth/signup", "/api/v1/auth/signin", "/api/v1/auth/reissue/accesstoken"
+        ).permitAll()
+        .antMatchers(
+          "/api/v1/invites/**"
+        ).hasRole(UserRole.ADMIN.getKey())
         .anyRequest().authenticated()
 
         .and()
@@ -64,8 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     web.ignoring()
       .antMatchers(HttpMethod.OPTIONS, "/**")
       .antMatchers(
-        "/",
-        "/h2-console/**"
+        "/", "/h2-console/**"
       );
   }
 
