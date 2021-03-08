@@ -1,9 +1,12 @@
 package kr.joljak.api.user.controller;
 
 import io.swagger.annotations.ApiOperation;
+import kr.joljak.api.user.response.MyPageResponse;
+import kr.joljak.domain.user.dto.SimpleUser;
 import kr.joljak.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,5 +39,16 @@ public class UserController {
   @ResponseStatus(HttpStatus.OK)
   public void updateKakaoId(@PathVariable String classOf, @RequestBody String kakaoId) {
     userService.updateKakaoId(classOf, kakaoId);
+  }
+
+  @ApiOperation("마이페이지 API")
+  @GetMapping("/{classOf}")
+  @ResponseStatus(HttpStatus.OK)
+  public MyPageResponse myPage(@PathVariable String classOf) {
+    SimpleUser user = userService.getMyPage(classOf);
+
+    return MyPageResponse.builder()
+      .user(user)
+      .build();
   }
 }

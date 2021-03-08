@@ -15,14 +15,19 @@ public class SimpleUser {
   private String classOf;
   private String name;
   private String phoneNumber;
+  private String instagramId;
+  private String kakaoId;
   private List<UserRole> userRoles;
 
   @Builder
-  public SimpleUser(Long id, String classOf, String name, String phoneNumber, List<UserRole> userRoles) {
+  public SimpleUser(Long id, String classOf, String name, String phoneNumber,
+      String instagramId, String kakaoId, List<UserRole> userRoles) {
     this.id = id;
     this.classOf = classOf;
     this.name = name;
     this.phoneNumber = phoneNumber;
+    this.instagramId = instagramId;
+    this.kakaoId = kakaoId;
     this.userRoles = userRoles;
   }
 
@@ -33,6 +38,8 @@ public class SimpleUser {
       .name(user.getName())
       .phoneNumber(user.getPhoneNumber())
       .userRoles(user.getUserRoles())
+      .instagramId(user.getInstagramId())
+      .kakaoId(user.getKakaoId())
       .build();
   }
 }
