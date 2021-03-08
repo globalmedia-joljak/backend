@@ -21,7 +21,33 @@ public class MyPageTest extends CommonApiTest {
     ).andReturn();
 
     //then
-    System.out.println(mvcResult.getResponse().getErrorMessage());
     assertEquals(200, mvcResult.getResponse().getStatus());
+  }
+
+  @Test
+  @WithMockUser(username = "testUser1", roles = "USER")
+  public void myPage_Fail_UserDoesNotMatch() throws Exception {
+    //given, when
+    MvcResult mvcResult = mockMvc.perform(
+        get(USER_URL + "/" + TEST_ADMIN_CLASS_OF)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+    ).andReturn();
+
+    //then
+    System.out.println(mvcResult.getResponse().getErrorMessage());
+    assertEquals(403, mvcResult.getResponse().getStatus());
+  }
+
+  @Test
+  @WithMockUser(username = "notFoundUser", roles = "USER")
+  public void myPage_Fail_NotFoundUser() throws Exception {
+    //given, when
+    MvcResult mvcResult = mockMvc.perform(
+        get(USER_URL + "/" + "notFoundUser")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+    ).andReturn();
+
+    //then
+    assertEquals(404, mvcResult.getResponse().getStatus());
   }
 }
