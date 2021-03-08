@@ -34,7 +34,6 @@ public class MyPageTest extends CommonApiTest {
     ).andReturn();
 
     //then
-    System.out.println(mvcResult.getResponse().getErrorMessage());
     assertEquals(403, mvcResult.getResponse().getStatus());
   }
 
