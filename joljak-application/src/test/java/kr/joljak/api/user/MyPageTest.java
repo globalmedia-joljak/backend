@@ -29,8 +29,8 @@ public class MyPageTest extends CommonApiTest {
   public void myPage_Fail_UserDoesNotMatch() throws Exception {
     //given, when
     MvcResult mvcResult = mockMvc.perform(
-        get(USER_URL + "/" + TEST_ADMIN_CLASS_OF)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+      get(USER_URL + "/" + TEST_ADMIN_CLASS_OF)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
     ).andReturn();
 
     //then
@@ -42,8 +42,8 @@ public class MyPageTest extends CommonApiTest {
   public void myPage_Fail_NotFoundUser() throws Exception {
     //given, when
     MvcResult mvcResult = mockMvc.perform(
-        get(USER_URL + "/" + "notFoundUser")
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+      get(USER_URL + "/" + "notFoundUser")
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
     ).andReturn();
 
     //then
