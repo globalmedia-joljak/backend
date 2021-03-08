@@ -10,8 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import kr.joljak.domain.common.entity.ExtendEntity;
 import kr.joljak.core.security.UserRole;
+import kr.joljak.domain.common.entity.ExtendEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -55,7 +55,7 @@ public class User extends ExtendEntity {
 
   @Builder
   public User(String classOf, String password, String name, String phoneNumber,
-    List<UserRole> userRoles, UserProjectRole mainProjectRole, UserProjectRole subProjectRole) {
+      List<UserRole> userRoles, UserProjectRole mainProjectRole, UserProjectRole subProjectRole) {
     this.classOf = classOf;
     this.password = password;
     this.name = name;

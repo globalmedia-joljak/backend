@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 
 @NoRepositoryBean
 public interface ExtendRepository<T> extends JpaRepository<T, Long> {
+
     @Transactional
     @Modifying
     @Query("delete from #{#entityName} entity where entity.id in :id")

@@ -56,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         ).permitAll()
         .antMatchers(
           "/api/v1/invites/**"
-        ).hasRole(UserRole.ADMIN.getKey())
+        ).permitAll()
         .anyRequest().authenticated()
 
         .and()

@@ -40,21 +40,21 @@ public class CreateNotice extends CommonApiTest {
 
     // when
     MvcResult mvcResult = mockMvc.perform(
-        post(NOTICE_URL)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .content(request)
+      post(NOTICE_URL)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .content(request)
     ).andReturn();
 
     //then
-    assertEquals(404, mvcResult.getResponse().getStatus());
+    assertEquals(403, mvcResult.getResponse().getStatus());
 
   }
 
-  private NoticeRequest createNoticeRequest(String classOf, String title, String content){
+  private NoticeRequest createNoticeRequest(String classOf, String title, String content) {
     return new NoticeRequest(
-        classOf,
-        title,
-        content
+      classOf,
+      title,
+      content
     );
   }
 
