@@ -20,7 +20,7 @@ public class SimpleNotice {
 
   @Builder
   public SimpleNotice(Long id, String classOf, String title, String content,
-      LocalDateTime createdDate, LocalDateTime modifiedDate) {
+    LocalDateTime createdDate, LocalDateTime modifiedDate) {
     this.title = title;
     this.classOf = classOf;
     this.content = content;
@@ -30,13 +30,13 @@ public class SimpleNotice {
 
   public static SimpleNotice of(Notice notice) {
     return SimpleNotice.builder()
-        .id(notice.getId())
-        .classOf(notice.getClassOf())
-        .title(notice.getTitle())
-        .content(notice.getContent())
-        .createdDate(notice.getCreatedDate())
-        .modifiedDate(notice.getModifiedDate())
-        .build();
+      .id(notice.getId())
+      .classOf(notice.getClassOf())
+      .title(notice.getTitle())
+      .content(notice.getContent())
+      .createdDate(notice.getCreatedDate())
+      .modifiedDate(notice.getModifiedDate())
+      .build();
   }
 
 }

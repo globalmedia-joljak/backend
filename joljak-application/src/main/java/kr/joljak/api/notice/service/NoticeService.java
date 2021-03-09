@@ -1,9 +1,10 @@
 package kr.joljak.api.notice.service;
 
 
+import java.util.List;
+import java.util.stream.Collectors;
 import kr.joljak.api.notice.request.NoticeRequest;
 import kr.joljak.api.notice.response.NoticeResponse;
-import kr.joljak.core.security.AuthenticationUtils;
 import kr.joljak.domain.notice.dto.SimpleNotice;
 import kr.joljak.domain.notice.entity.Notice;
 import kr.joljak.domain.notice.repository.NoticeRepository;
@@ -31,12 +32,18 @@ public class NoticeService {
 
   private NoticeResponse getNoticeResponse(SimpleNotice simpleNotice) {
     return NoticeResponse.builder()
-        .classOf(simpleNotice.getClassOf())
-        .title(simpleNotice.getTitle())
-        .content(simpleNotice.getContent())
-        .createdDate(simpleNotice.getCreatedDate())
-        .modifiedDate(simpleNotice.getModifiedDate())
-        .build();
+      .classOf(simpleNotice.getClassOf())
+      .title(simpleNotice.getTitle())
+      .content(simpleNotice.getContent())
+      .createdDate(simpleNotice.getCreatedDate())
+      .modifiedDate(simpleNotice.getModifiedDate())
+      .build();
   }
 
+  public List<NoticeResponse> getAll() {
+    List<Notice> noticeList = noticeRepository.findAll();
+    return noticeList.stream()
+      .map(notice -> getNoticeResponse(SimpleNotice.of(notice)))
+      .collect(Collectors.toList());
+  }
 }

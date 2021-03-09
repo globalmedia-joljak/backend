@@ -18,7 +18,7 @@ public class NoticeResponse {
 
   @Builder
   public NoticeResponse(String classOf, String title, String content, LocalDateTime createdDate,
-      LocalDateTime modifiedDate) {
+    LocalDateTime modifiedDate) {
     this.classOf = classOf;
     this.title = title;
     this.content = content;

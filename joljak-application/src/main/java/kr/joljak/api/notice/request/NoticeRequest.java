@@ -21,11 +21,11 @@ public class NoticeRequest {
   public Notice to(User user) {
 
     return Notice.builder()
-        .title(title)
-        .classOf(classOf)
-        .content(content)
-        .user(user)
-        .build();
+      .title(title)
+      .classOf(classOf)
+      .content(content)
+      .user(user)
+      .build();
   }
 
 }

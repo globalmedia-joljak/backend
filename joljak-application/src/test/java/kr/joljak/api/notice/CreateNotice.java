@@ -27,7 +27,7 @@ public class CreateNotice extends CommonApiTest {
         .content(request)
     ).andReturn();
 
-    //then
+    // then
     assertEquals(201, mvcResult.getResponse().getStatus());
   }
 
@@ -45,9 +45,7 @@ public class CreateNotice extends CommonApiTest {
         .content(request)
     ).andReturn();
 
-    System.out.println(mvcResult.getResponse().getErrorMessage());
-
-    //then
+    // then
     assertEquals(403, mvcResult.getResponse().getStatus());
 
   }
