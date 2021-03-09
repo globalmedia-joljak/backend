@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SimpleNotice {
 
-
   private Long id;
   private String classOf;
   private String title;

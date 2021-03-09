@@ -33,7 +33,7 @@ public class CreateNotice extends CommonApiTest {
 
   @Test
   @WithMockUser(username = "testUser1", roles = "USER")
-  public void create_Fail() throws Exception {
+  public void create_Fail_UserDoesNotMatch() throws Exception {
     // given
     NoticeRequest noticeRequest = createNoticeRequest("testUser2", "test", "test");
     String request = new ObjectMapper().writeValueAsString(noticeRequest);
@@ -44,6 +44,8 @@ public class CreateNotice extends CommonApiTest {
         .contentType(MediaType.APPLICATION_JSON_VALUE)
         .content(request)
     ).andReturn();
+
+    System.out.println(mvcResult.getResponse().getErrorMessage());
 
     //then
     assertEquals(403, mvcResult.getResponse().getStatus());

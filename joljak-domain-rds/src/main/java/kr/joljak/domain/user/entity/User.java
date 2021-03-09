@@ -55,7 +55,7 @@ public class User extends ExtendEntity {
 
   @Builder
   public User(String classOf, String password, String name, String phoneNumber,
-      List<UserRole> userRoles, UserProjectRole mainProjectRole, UserProjectRole subProjectRole) {
+    List<UserRole> userRoles, UserProjectRole mainProjectRole, UserProjectRole subProjectRole) {
     this.classOf = classOf;
     this.password = password;
     this.name = name;
