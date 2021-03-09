@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +39,13 @@ public class NoticeController {
   public List<NoticeResponse> getAllByPages(@RequestParam int page,
     @RequestParam(defaultValue = "10") int size) {
     return noticeService.getNoticesByPageReqeust(page, size);
+  }
+
+  @ApiOperation("공지사항 개별 조회 API")
+  @GetMapping("/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  public NoticeResponse getNoticeById(@PathVariable("id") Long id){
+    return noticeService.getNoticeById(id);
   }
 
 }

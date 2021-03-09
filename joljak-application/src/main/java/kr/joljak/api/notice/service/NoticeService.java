@@ -9,6 +9,7 @@ import kr.joljak.domain.notice.dto.SimpleNotice;
 import kr.joljak.domain.notice.entity.Notice;
 import kr.joljak.domain.notice.repository.NoticeRepository;
 import kr.joljak.domain.user.entity.User;
+import kr.joljak.domain.user.exception.NoNoticeWithSelectedIdException;
 import kr.joljak.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -53,5 +54,11 @@ public class NoticeService {
   private List<Notice> fetchPages(int page, int size) {
     PageRequest pageRequest = PageRequest.of(page, size);
     return noticeRepository.findAll(pageRequest).getContent();
+  }
+
+  public NoticeResponse getNoticeById(Long id) {
+    Notice notice = noticeRepository.findById(id)
+      .orElseThrow(() -> new NoNoticeWithSelectedIdException());
+    return getNoticeResponse(SimpleNotice.of(notice));
   }
 }
