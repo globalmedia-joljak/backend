@@ -1,5 +1,9 @@
 package kr.joljak.core.security;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+
+@JsonFormat(shape = Shape.OBJECT)
 public enum UserRole {
   ADMIN("ROLE_ADMIN"),
   USER("ROLE_USER");

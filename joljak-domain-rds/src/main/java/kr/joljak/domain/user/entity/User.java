@@ -16,6 +16,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @Getter
@@ -37,6 +39,7 @@ public class User extends ExtendEntity {
 
   @Column(nullable = false)
   private String phoneNumber;
+
   private String instagramId;
 
   private String kakaoId;
@@ -49,8 +52,9 @@ public class User extends ExtendEntity {
   private UserProjectRole subProjectRole;
 
   @Column(nullable = false)
-  @ElementCollection
   @Enumerated(value = EnumType.STRING)
+  @ElementCollection
+  @LazyCollection(LazyCollectionOption.FALSE)
   private List<UserRole> userRoles;
 
   @Builder
