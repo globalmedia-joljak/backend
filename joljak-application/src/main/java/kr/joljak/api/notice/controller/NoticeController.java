@@ -1,4 +1,4 @@
-package kr.joljak.api.notice;
+package kr.joljak.api.notice.controller;
 
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,15 +28,16 @@ public class NoticeController {
   @ApiOperation("공지사항 생성 API")
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public NoticeResponse create(@Valid @RequestBody NoticeRequest noticeReqeust) {
-    return noticeService.addNotice(noticeReqeust);
+  public NoticeResponse create(@Valid @RequestBody NoticeRequest noticeRequest) {
+    return noticeService.addNotice(noticeRequest);
   }
 
   @ApiOperation("공지사항 조회 API")
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
-  public List<NoticeResponse> getAll() {
-    return noticeService.getAll();
+  public List<NoticeResponse> getAllByPages(@RequestParam int page,
+    @RequestParam(defaultValue = "10") int size) {
+    return noticeService.getNoticesByPageReqeust(page, size);
   }
 
 }

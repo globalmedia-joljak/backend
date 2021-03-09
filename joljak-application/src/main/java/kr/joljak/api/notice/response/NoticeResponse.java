@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class NoticeResponse {
 
+  private Long id;
   private String classOf;
   private String title;
   private String content;
@@ -17,8 +18,9 @@ public class NoticeResponse {
   private LocalDateTime modifiedDate;
 
   @Builder
-  public NoticeResponse(String classOf, String title, String content, LocalDateTime createdDate,
+  public NoticeResponse(Long id, String classOf, String title, String content, LocalDateTime createdDate,
     LocalDateTime modifiedDate) {
+    this.id = id;
     this.classOf = classOf;
     this.title = title;
     this.content = content;

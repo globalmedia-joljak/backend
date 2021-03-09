@@ -21,6 +21,7 @@ public class SimpleNotice {
   @Builder
   public SimpleNotice(Long id, String classOf, String title, String content,
     LocalDateTime createdDate, LocalDateTime modifiedDate) {
+    this.id = id;
     this.title = title;
     this.classOf = classOf;
     this.content = content;

@@ -11,6 +11,7 @@ import kr.joljak.domain.notice.repository.NoticeRepository;
 import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +33,7 @@ public class NoticeService {
 
   private NoticeResponse getNoticeResponse(SimpleNotice simpleNotice) {
     return NoticeResponse.builder()
+      .id(simpleNotice.getId())
       .classOf(simpleNotice.getClassOf())
       .title(simpleNotice.getTitle())
       .content(simpleNotice.getContent())
@@ -40,10 +42,16 @@ public class NoticeService {
       .build();
   }
 
-  public List<NoticeResponse> getAll() {
-    List<Notice> noticeList = noticeRepository.findAll();
+  public List<NoticeResponse> getNoticesByPageReqeust(int page, int size) {
+    List<Notice> noticeList = fetchPages(page, size);
+
     return noticeList.stream()
       .map(notice -> getNoticeResponse(SimpleNotice.of(notice)))
       .collect(Collectors.toList());
+  }
+
+  private List<Notice> fetchPages(int page, int size) {
+    PageRequest pageRequest = PageRequest.of(page, size);
+    return noticeRepository.findAll(pageRequest).getContent();
   }
 }
