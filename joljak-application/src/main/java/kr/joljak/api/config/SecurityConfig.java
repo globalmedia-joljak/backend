@@ -31,36 +31,36 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity httpSecurity) throws Exception {
     httpSecurity
-        .csrf().disable()
-        .httpBasic().disable()
-        .formLogin().disable()
-        .logout().disable()
+      .csrf().disable()
+      .httpBasic().disable()
+      .formLogin().disable()
+      .logout().disable()
 
-        .exceptionHandling()
-        .authenticationEntryPoint(authenticationErrorHandler)
-        .accessDeniedHandler(jwtAccessDeniedHandler)
+      .exceptionHandling()
+      .authenticationEntryPoint(authenticationErrorHandler)
+      .accessDeniedHandler(jwtAccessDeniedHandler)
 
-        .and()
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+      .and()
+      .sessionManagement()
+      .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
-        .and()
-        .authorizeRequests()
-        .mvcMatchers(
-          "/", "/csrf", "/v2/api-docs", "/swagger-resources/**",
-          "/swagger-ui/**", "/webjars/**", "/swagger/**", "/swagger-ui.html", "/swagger-ui.html/**",
-          "/configuration/**"
-        ).permitAll()
-        .antMatchers(
-          "/api/v1/auth/signup", "/api/v1/auth/signin", "/api/v1/auth/reissue/accesstoken"
-        ).permitAll()
-        .antMatchers(
-          "/api/v1/invites/**"
-        ).hasRole(UserRole.ADMIN.getKey())
-        .anyRequest().authenticated()
+      .and()
+      .authorizeRequests()
+      .mvcMatchers(
+        "/", "/csrf", "/v2/api-docs", "/swagger-resources/**",
+        "/swagger-ui/**", "/webjars/**", "/swagger/**", "/swagger-ui.html", "/swagger-ui.html/**",
+        "/configuration/**"
+      ).permitAll()
+      .antMatchers(
+        "/api/v1/auth/signup", "/api/v1/auth/signin", "/api/v1/auth/reissue/accesstoken"
+      ).permitAll()
+      .antMatchers(
+        "/api/v1/invites/**"
+      ).hasRole(UserRole.ADMIN.getKey())
+      .anyRequest().authenticated()
 
-        .and()
-        .apply(securityConfigurerAdapter());
+      .and()
+      .apply(securityConfigurerAdapter());
   }
 
   @Override
