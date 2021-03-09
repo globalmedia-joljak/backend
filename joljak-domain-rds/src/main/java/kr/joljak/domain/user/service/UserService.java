@@ -2,6 +2,7 @@ package kr.joljak.domain.user.service;
 
 import kr.joljak.core.jwt.PermissionException;
 import kr.joljak.core.security.AuthenticationUtils;
+import kr.joljak.domain.user.dto.SimpleUser;
 import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.exception.AlreadyClassOfExistException;
 import kr.joljak.domain.user.exception.UserNotFoundException;
@@ -19,6 +20,13 @@ public class UserService {
   public User signUp(User user) {
     checkDuplicateClassOf(user.getClassOf());
     return userRepository.save(user);
+  }
+
+  @Transactional(readOnly = true)
+  public SimpleUser getMyPage(String classOf) {
+    validExistClassOf(classOf);
+
+    return SimpleUser.of(getUserByClassOf(classOf));
   }
 
   @Transactional(readOnly = true)
