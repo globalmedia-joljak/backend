@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 import kr.joljak.api.notice.request.NoticeRequest;
 import kr.joljak.api.notice.response.NoticeResponse;
+import kr.joljak.api.notice.response.NoticesResponse;
 import kr.joljak.api.notice.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -36,15 +37,15 @@ public class NoticeController {
   @ApiOperation("공지사항 조회 API")
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
-  public List<NoticeResponse> getAllByPages(@RequestParam int page,
+  public NoticesResponse getNotices(@RequestParam int page,
     @RequestParam(defaultValue = "10") int size) {
-    return noticeService.getNoticesByPageReqeust(page, size);
+    return noticeService.getNoticesByPage(page, size);
   }
 
   @ApiOperation("공지사항 개별 조회 API")
   @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public NoticeResponse getNoticeById(@PathVariable("id") Long id){
+  public NoticeResponse getNotice(@PathVariable("id") Long id) {
     return noticeService.getNoticeById(id);
   }
 

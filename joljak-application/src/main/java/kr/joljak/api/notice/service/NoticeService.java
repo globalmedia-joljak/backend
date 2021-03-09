@@ -5,14 +5,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 import kr.joljak.api.notice.request.NoticeRequest;
 import kr.joljak.api.notice.response.NoticeResponse;
+import kr.joljak.api.notice.response.NoticesResponse;
 import kr.joljak.domain.notice.dto.SimpleNotice;
 import kr.joljak.domain.notice.entity.Notice;
+import kr.joljak.domain.notice.exception.NoticeNotFoundException;
 import kr.joljak.domain.notice.repository.NoticeRepository;
 import kr.joljak.domain.user.entity.User;
-import kr.joljak.domain.user.exception.NoNoticeWithSelectedIdException;
 import kr.joljak.domain.user.service.UserService;
+import kr.joljak.domain.util.FetchPages;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +37,7 @@ public class NoticeService {
     return NoticeResponse.builder()
       .id(simpleNotice.getId())
       .classOf(simpleNotice.getClassOf())
+      .author(simpleNotice.getAuthor())
       .title(simpleNotice.getTitle())
       .content(simpleNotice.getContent())
       .createdDate(simpleNotice.getCreatedDate())
@@ -43,22 +45,29 @@ public class NoticeService {
       .build();
   }
 
-  public List<NoticeResponse> getNoticesByPageReqeust(int page, int size) {
-    List<Notice> noticeList = fetchPages(page, size);
+  @Transactional(readOnly = true)
+  public NoticesResponse getNoticesByPage(int page, int size) {
+    List<Notice> noticeList;
+    if (page < 0) {
+      page = 0;
+    }
 
-    return noticeList.stream()
+    noticeList = noticeRepository.findAll(FetchPages.of(page, size)).getContent();
+
+    List<NoticeResponse> noticeResponseList = noticeList.stream()
       .map(notice -> getNoticeResponse(SimpleNotice.of(notice)))
       .collect(Collectors.toList());
+
+    return NoticesResponse.builder()
+      .noticeResponseList(noticeResponseList)
+      .page(page)
+      .build();
   }
 
-  private List<Notice> fetchPages(int page, int size) {
-    PageRequest pageRequest = PageRequest.of(page, size);
-    return noticeRepository.findAll(pageRequest).getContent();
-  }
-
+  @Transactional(readOnly = true)
   public NoticeResponse getNoticeById(Long id) {
     Notice notice = noticeRepository.findById(id)
-      .orElseThrow(() -> new NoNoticeWithSelectedIdException());
+      .orElseThrow(() -> new NoticeNotFoundException());
     return getNoticeResponse(SimpleNotice.of(notice));
   }
 }

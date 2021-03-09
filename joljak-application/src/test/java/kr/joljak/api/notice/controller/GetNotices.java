@@ -15,12 +15,9 @@ import org.springframework.test.web.servlet.MvcResult;
 
 public class GetNotices extends CommonApiTest {
 
-  @Autowired
-  private NoticeService noticeService;
-
   @Test
   @WithMockUser(username = "testUser1", roles = "User")
-  public void get_Notice_By_Pages() throws Exception {
+  public void getNotices_Success() throws Exception {
 
     MvcResult mvcResult = mockMvc.perform(
       get(NOTICE_URL + "?page=0&size=10")
@@ -30,47 +27,4 @@ public class GetNotices extends CommonApiTest {
     assertEquals(200, mvcResult.getResponse().getStatus());
   }
 
-  @Test
-  @WithMockUser(username = "testUser1", roles = "User")
-  public void get_Notice_By_id_Success() throws Exception {
-
-    NoticeRequest noticeRequest = createNoticeRequest("testUser1", "test", "test");
-
-    NoticeResponse noticeResponse = noticeService.addNotice(noticeRequest);
-    Long id = noticeResponse.getId();
-
-    MvcResult mvcResult = mockMvc.perform(
-      get(NOTICE_URL + "/" + id)
-        .contentType(MediaType.APPLICATION_JSON_VALUE)
-
-    ).andReturn();
-
-    assertEquals(200, mvcResult.getResponse().getStatus());
-  }
-
-  @Test
-  @WithMockUser(username = "testUser1", roles = "User")
-  public void get_Notice_By_id_Fail() throws Exception {
-
-    NoticeRequest noticeRequest = createNoticeRequest("testUser1", "test", "test");
-
-    NoticeResponse noticeResponse = noticeService.addNotice(noticeRequest);
-    Long id = noticeResponse.getId();
-
-    MvcResult mvcResult = mockMvc.perform(
-      get(NOTICE_URL + "/" + id + 1)
-        .contentType(MediaType.APPLICATION_JSON_VALUE)
-
-    ).andReturn();
-
-    assertEquals(404, mvcResult.getResponse().getStatus());
-  }
-
-  private NoticeRequest createNoticeRequest(String classOf, String title, String content) {
-    return new NoticeRequest(
-      classOf,
-      title,
-      content
-    );
-  }
 }

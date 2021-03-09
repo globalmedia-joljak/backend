@@ -12,15 +12,17 @@ public class NoticeResponse {
 
   private Long id;
   private String classOf;
+  private String author;
   private String title;
   private String content;
   private LocalDateTime createdDate;
   private LocalDateTime modifiedDate;
 
   @Builder
-  public NoticeResponse(Long id, String classOf, String title, String content, LocalDateTime createdDate,
+  public NoticeResponse(Long id, String classOf,String author, String title, String content, LocalDateTime createdDate,
     LocalDateTime modifiedDate) {
     this.id = id;
+    this.author = author;
     this.classOf = classOf;
     this.title = title;
     this.content = content;

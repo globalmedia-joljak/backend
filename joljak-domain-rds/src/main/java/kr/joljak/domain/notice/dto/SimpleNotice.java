@@ -13,17 +13,19 @@ public class SimpleNotice {
 
   private Long id;
   private String classOf;
+  private String author;
   private String title;
   private String content;
   private LocalDateTime createdDate;
   private LocalDateTime modifiedDate;
 
   @Builder
-  public SimpleNotice(Long id, String classOf, String title, String content,
+  public SimpleNotice(Long id, String classOf, String author, String title, String content,
     LocalDateTime createdDate, LocalDateTime modifiedDate) {
     this.id = id;
     this.title = title;
     this.classOf = classOf;
+    this.author = author;
     this.content = content;
     this.createdDate = createdDate;
     this.modifiedDate = modifiedDate;
@@ -33,6 +35,7 @@ public class SimpleNotice {
     return SimpleNotice.builder()
       .id(notice.getId())
       .classOf(notice.getClassOf())
+      .author(notice.getUser().getName())
       .title(notice.getTitle())
       .content(notice.getContent())
       .createdDate(notice.getCreatedDate())
