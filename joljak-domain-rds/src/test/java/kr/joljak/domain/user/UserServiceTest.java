@@ -1,6 +1,7 @@
 package kr.joljak.domain.user;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import kr.joljak.core.security.UserRole;
 import kr.joljak.domain.common.CommonDomainTest;
@@ -123,5 +124,21 @@ public class UserServiceTest extends CommonDomainTest {
 
     // then
     assertEquals(user.getKakaoId(), changeKakaoId);
+  }
+
+  @Test
+  @WithMockUser(username = "testUser1", roles = "USER")
+  public void updatePassword_success() {
+    // given
+    User user = userService.getUserByClassOf(TEST_USER_CLASS_OF);
+    String originalHashedPassword = user.getPassword();
+    String afterPassword = "1234567890";
+
+    // when
+    userService.updatePassword(user.getClassOf(), afterPassword);
+    user = userService.getUserByClassOf(user.getClassOf());
+
+    // then
+    assertNotEquals(originalHashedPassword, user.getPassword());
   }
 }
