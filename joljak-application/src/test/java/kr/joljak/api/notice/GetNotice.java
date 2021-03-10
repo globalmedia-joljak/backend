@@ -1,12 +1,14 @@
-package kr.joljak.api.notice.controller;
+package kr.joljak.api.notice;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import kr.joljak.api.common.CommonApiTest;
 import kr.joljak.api.notice.request.NoticeRequest;
-import kr.joljak.api.notice.response.NoticeResponse;
-import kr.joljak.api.notice.service.NoticeService;
+import kr.joljak.domain.notice.entity.Notice;
+import kr.joljak.domain.notice.service.NoticeService;
+import kr.joljak.domain.user.entity.User;
+import kr.joljak.domain.user.service.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -18,14 +20,19 @@ public class GetNotice extends CommonApiTest {
   @Autowired
   private NoticeService noticeService;
 
+  @Autowired
+  private UserService userService;
+
   @Test
   @WithMockUser(username = "testUser1", roles = "User")
   public void getNotice_Success() throws Exception {
 
     NoticeRequest noticeRequest = createNoticeRequest("testUser1", "test", "test");
 
-    NoticeResponse noticeResponse = noticeService.addNotice(noticeRequest);
-    Long id = noticeResponse.getId();
+    User user = userService.getUserByClassOf(noticeRequest.getClassOf());
+    Notice notice = noticeService.addNotice(noticeRequest.toNotice(user));
+
+    Long id = notice.getId();
 
     MvcResult mvcResult = mockMvc.perform(
       get(NOTICE_URL + "/" + id)
@@ -42,8 +49,10 @@ public class GetNotice extends CommonApiTest {
 
     NoticeRequest noticeRequest = createNoticeRequest("testUser1", "test", "test");
 
-    NoticeResponse noticeResponse = noticeService.addNotice(noticeRequest);
-    Long id = noticeResponse.getId();
+    User user = userService.getUserByClassOf(noticeRequest.getClassOf());
+    Notice notice = noticeService.addNotice(noticeRequest.toNotice(user));
+
+    Long id = notice.getId();
 
     MvcResult mvcResult = mockMvc.perform(
       get(NOTICE_URL + "/" + id + 1)

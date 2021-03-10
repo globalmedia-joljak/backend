@@ -18,7 +18,7 @@ public class NoticeRequest {
   @NotNull
   private String content;
 
-  public Notice to(User user) {
+  public Notice toNotice(User user) {
 
     return Notice.builder()
       .title(title)
