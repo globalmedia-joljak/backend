@@ -1,4 +1,4 @@
-package kr.joljak.api.notice.controller;
+package kr.joljak.api.notice;
 
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
