@@ -27,4 +27,28 @@ public class GetNotices extends CommonApiTest {
     assertEquals(200, mvcResult.getResponse().getStatus());
   }
 
+  @Test
+  @WithMockUser(username = "testUser1", roles = "User")
+  public void getNotices_Fail_SizeUnderZero() throws Exception {
+
+    MvcResult mvcResult = mockMvc.perform(
+      get(NOTICE_URL + "?page=0&size=-1")
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+    ).andReturn();
+
+    assertEquals(200, mvcResult.getResponse().getStatus());
+  }
+
+  @Test
+  @WithMockUser(username = "testUser1", roles = "User")
+  public void getNotices_Fail_PageUnderZero() throws Exception {
+
+    MvcResult mvcResult = mockMvc.perform(
+      get(NOTICE_URL + "?page=-1&size=10")
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+    ).andReturn();
+
+    assertEquals(200, mvcResult.getResponse().getStatus());
+  }
+
 }

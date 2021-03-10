@@ -1,6 +1,7 @@
 package kr.joljak.api.notice.service;
 
 
+
 import java.util.List;
 import java.util.stream.Collectors;
 import kr.joljak.api.notice.request.NoticeRequest;
@@ -14,6 +15,7 @@ import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.service.UserService;
 import kr.joljak.domain.util.FetchPages;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,12 +49,9 @@ public class NoticeService {
 
   @Transactional(readOnly = true)
   public NoticesResponse getNoticesByPage(int page, int size) {
-    List<Notice> noticeList;
-    if (page < 0) {
-      page = 0;
-    }
 
-    noticeList = noticeRepository.findAll(FetchPages.of(page, size)).getContent();
+    Pageable pageable = FetchPages.of(page, size);
+    List<Notice> noticeList = noticeRepository.findAll(pageable).getContent();
 
     List<NoticeResponse> noticeResponseList = noticeList.stream()
       .map(notice -> getNoticeResponse(SimpleNotice.of(notice)))
@@ -60,7 +59,7 @@ public class NoticeService {
 
     return NoticesResponse.builder()
       .noticeResponseList(noticeResponseList)
-      .page(page)
+      .page(pageable)
       .build();
   }
 
