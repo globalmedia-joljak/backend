@@ -8,6 +8,7 @@ import kr.joljak.domain.user.exception.AlreadyClassOfExistException;
 import kr.joljak.domain.user.exception.UserNotFoundException;
 import kr.joljak.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,13 @@ public class UserService {
     validExistClassOf(classOf);
 
     return SimpleUser.of(getUserByClassOf(classOf));
+  }
+
+  @Transactional
+  public void updatePassword(String classOf, String password) {
+    validAuthenticationClassOf(classOf);
+    User user = getUserByClassOf(classOf);
+    user.setPassword(new BCryptPasswordEncoder().encode(password));
   }
 
   @Transactional(readOnly = true)
@@ -65,7 +73,7 @@ public class UserService {
   public void updateKakaoId(String classOf, String kakaoId) {
     validExistClassOf(classOf);
     User user = userRepository.findByClassOf(classOf)
-        .orElseThrow(UserNotFoundException::new);
+      .orElseThrow(UserNotFoundException::new);
 
     user.setKakaoId(kakaoId);
   }
