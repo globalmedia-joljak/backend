@@ -29,7 +29,7 @@ public class GetNotices extends CommonApiTest {
 
   @Test
   @WithMockUser(username = "testUser1", roles = "User")
-  public void getNotices_Fail_SizeUnderZero() throws Exception {
+  public void getNotices_Success_SizeUnderZero() throws Exception {
 
     MvcResult mvcResult = mockMvc.perform(
       get(NOTICE_URL + "?page=0&size=-1")
@@ -41,7 +41,7 @@ public class GetNotices extends CommonApiTest {
 
   @Test
   @WithMockUser(username = "testUser1", roles = "User")
-  public void getNotices_Fail_PageUnderZero() throws Exception {
+  public void getNotices_Success_PageUnderZero() throws Exception {
 
     MvcResult mvcResult = mockMvc.perform(
       get(NOTICE_URL + "?page=-1&size=10")
