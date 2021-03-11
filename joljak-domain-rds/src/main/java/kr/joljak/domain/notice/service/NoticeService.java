@@ -26,7 +26,6 @@ public class NoticeService {
 
   }
 
-
   @Transactional(readOnly = true)
   public List<Notice> getNoticesByPage(int page, int size) {
 
