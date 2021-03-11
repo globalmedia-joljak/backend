@@ -20,9 +20,9 @@ public class UpdatePassword extends CommonApiTest {
 
     //when
     MvcResult mvcResult = mockMvc.perform(
-      patch(USER_URL + "/" + TEST_USER_CLASS_OF + "/password")
-        .contentType(MediaType.APPLICATION_JSON_VALUE)
-        .content(request)
+        patch(USER_URL + "/" + TEST_USER_CLASS_OF + "/password")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(request)
     ).andReturn();
 
     //then
@@ -38,9 +38,9 @@ public class UpdatePassword extends CommonApiTest {
 
     //when
     MvcResult mvcResult = mockMvc.perform(
-      patch(USER_URL + "/" + TEST_ADMIN_CLASS_OF + "/password")
-        .contentType(MediaType.APPLICATION_JSON_VALUE)
-        .content(request)
+        patch(USER_URL + "/" + TEST_ADMIN_CLASS_OF + "/password")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(request)
     ).andReturn();
 
     //then
