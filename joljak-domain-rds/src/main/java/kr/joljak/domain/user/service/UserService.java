@@ -40,7 +40,7 @@ public class UserService {
   @Transactional(readOnly = true)
   public User getUserByClassOf(String classOf) {
     return userRepository.findByClassOf(classOf)
-      .orElseThrow(UserNotFoundException::new);
+        .orElseThrow(UserNotFoundException::new);
   }
 
   @Transactional(readOnly = true)

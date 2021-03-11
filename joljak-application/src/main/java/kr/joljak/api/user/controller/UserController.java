@@ -48,8 +48,8 @@ public class UserController {
     SimpleUser user = userService.getMyPage(classOf);
 
     return MyPageResponse.builder()
-      .user(user)
-      .build();
+        .user(user)
+        .build();
   }
 
   @ApiOperation("비밀번호 변경 API")

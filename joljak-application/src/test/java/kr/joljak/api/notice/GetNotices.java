@@ -1,14 +1,10 @@
-package kr.joljak.api.notice.controller;
+package kr.joljak.api.notice;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import kr.joljak.api.common.CommonApiTest;
-import kr.joljak.api.notice.request.NoticeRequest;
-import kr.joljak.api.notice.response.NoticeResponse;
-import kr.joljak.api.notice.service.NoticeService;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MvcResult;

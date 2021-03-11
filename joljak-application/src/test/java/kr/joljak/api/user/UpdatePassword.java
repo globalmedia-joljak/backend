@@ -56,9 +56,9 @@ public class UpdatePassword extends CommonApiTest {
 
     //when
     MvcResult mvcResult = mockMvc.perform(
-        patch(USER_URL + "/" + "notFoundUser" + "/password")
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .content(request)
+      patch(USER_URL + "/" + "notFoundUser" + "/password")
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .content(request)
     ).andReturn();
 
     //then
