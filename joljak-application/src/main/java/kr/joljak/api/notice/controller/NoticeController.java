@@ -46,8 +46,10 @@ public class NoticeController {
   @ApiOperation("공지사항 조회 API")
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
-  public NoticesResponse getNotices(@RequestParam int page,
-    @RequestParam(defaultValue = "10") int size) {
+  public NoticesResponse getNotices(
+    @RequestParam(defaultValue = "10") int page,
+    @RequestParam(defaultValue = "10") int size
+  ) {
     List<Notice> noticeList = noticeService.getNoticesByPage(page, size);
     List<NoticeResponse> noticeResponseList = getNoticeResponseListFrom(noticeList);
     return NoticesResponse.builder()
