@@ -55,7 +55,7 @@ public class UserService {
   public void updatePhoneNumber(String classOf, String phoneNumber) {
     validExistClassOf(classOf);
     User user = userRepository.findByClassOf(classOf)
-        .orElseThrow(UserNotFoundException::new);
+      .orElseThrow(UserNotFoundException::new);
 
     user.setPhoneNumber(phoneNumber);
   }
@@ -64,7 +64,7 @@ public class UserService {
   public void updateInstagramId(String classOf, String instagramId) {
     validExistClassOf(classOf);
     User user = userRepository.findByClassOf(classOf)
-        .orElseThrow(UserNotFoundException::new);
+      .orElseThrow(UserNotFoundException::new);
 
     user.setInstagramId(instagramId);
   }
@@ -73,7 +73,7 @@ public class UserService {
   public void updateKakaoId(String classOf, String kakaoId) {
     validExistClassOf(classOf);
     User user = userRepository.findByClassOf(classOf)
-        .orElseThrow(UserNotFoundException::new);
+      .orElseThrow(UserNotFoundException::new);
 
     user.setKakaoId(kakaoId);
   }
