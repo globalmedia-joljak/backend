@@ -2,6 +2,7 @@ package kr.joljak.domain.notice.service;
 
 
 import java.util.List;
+import kr.joljak.domain.notice.dto.SimpleNoticeRequest;
 import kr.joljak.domain.notice.entity.Notice;
 import kr.joljak.domain.notice.exception.NoticeNotFoundException;
 import kr.joljak.domain.notice.repository.NoticeRepository;
@@ -37,5 +38,14 @@ public class NoticeService {
   public Notice getNoticeById(Long id) {
     return noticeRepository.findById(id)
       .orElseThrow(() -> new NoticeNotFoundException());
+  }
+
+  @Transactional
+  public Notice updateNotice(Long id, SimpleNoticeRequest simpleNoticeRequest) {
+    Notice notice = getNoticeById(id);
+    userService.validAuthenticationClassOf(simpleNoticeRequest.getClassOf());
+    notice.setTitle(simpleNoticeRequest.getTitle());
+    notice.setContent(simpleNoticeRequest.getContent());
+    return notice;
   }
 }
