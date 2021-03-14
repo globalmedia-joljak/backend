@@ -24,17 +24,17 @@ public class UpdateNotice extends CommonApiTest {
   private NoticeService noticeService;
 
   @Test
-  @WithMockUser(username = "testUser1", roles = "USER")
+  @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
   public void updateNotice_Success() throws Exception {
     //given
-    NoticeRequest noticeRequest = createNoticeRequest("testUser1", "test", "test");
+    NoticeRequest noticeRequest = createNoticeRequest(TEST_USER_CLASS_OF, "test", "test");
 
-    User user = userService.getUserByClassOf("testUser1");
+    User user = userService.getUserByClassOf(TEST_USER_CLASS_OF);
     Notice notice = noticeService.addNotice(noticeRequest.toNotice(user));
 
     Long id = notice.getId();
 
-    NoticeRequest newNoticeRequest = createNoticeRequest("testUser1", "test1", "test1");
+    NoticeRequest newNoticeRequest = createNoticeRequest(TEST_USER_CLASS_OF, "test1", "test1");
     String request = new ObjectMapper().writeValueAsString(newNoticeRequest);
 
     //when
@@ -49,12 +49,12 @@ public class UpdateNotice extends CommonApiTest {
   }
 
   @Test
-  @WithMockUser(username = "testUser1", roles = "USER")
+  @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
   public void updateNotice_Fail_UserDoesNotMatch() throws Exception {
     //given
-    NoticeRequest noticeRequest = createNoticeRequest("testUser1", "test", "test");
+    NoticeRequest noticeRequest = createNoticeRequest(TEST_USER_CLASS_OF, "test", "test");
 
-    User user = userService.getUserByClassOf("testUser1");
+    User user = userService.getUserByClassOf(TEST_USER_CLASS_OF);
     Notice notice = noticeService.addNotice(noticeRequest.toNotice(user));
 
     Long id = notice.getId();
@@ -74,13 +74,13 @@ public class UpdateNotice extends CommonApiTest {
   }
 
   @Test
-  @WithMockUser(username = "testUser1", roles = "USER")
+  @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
   public void updateNotice_Fail_NoticeNotFoundException() throws Exception {
 
     //given
-    NoticeRequest noticeRequest = createNoticeRequest("testUser1", "test", "test");
+    NoticeRequest noticeRequest = createNoticeRequest(TEST_USER_CLASS_OF, "test", "test");
 
-    User user = userService.getUserByClassOf("testUser1");
+    User user = userService.getUserByClassOf(TEST_USER_CLASS_OF);
     Notice notice = noticeService.addNotice(noticeRequest.toNotice(user));
 
     Long id = notice.getId();

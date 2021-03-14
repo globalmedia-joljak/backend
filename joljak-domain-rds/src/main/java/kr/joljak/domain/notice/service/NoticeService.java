@@ -34,12 +34,6 @@ public class NoticeService {
     return noticeRepository.findAll(pageable).getContent();
   }
 
-  @Transactional(readOnly = true)
-  public Notice getNoticeById(Long id) {
-    return noticeRepository.findById(id)
-      .orElseThrow(() -> new NoticeNotFoundException());
-  }
-
   @Transactional
   public Notice updateNotice(Long id, SimpleNoticeRequest simpleNoticeRequest) {
     Notice notice = getNoticeById(id);
@@ -48,4 +42,12 @@ public class NoticeService {
     notice.setContent(simpleNoticeRequest.getContent());
     return notice;
   }
+
+  @Transactional(readOnly = true)
+  public Notice getNoticeById(Long id) {
+    return noticeRepository.findById(id)
+      .orElseThrow(() -> new NoticeNotFoundException());
+  }
+
+
 }
