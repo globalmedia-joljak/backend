@@ -25,7 +25,7 @@ public class GetNotices extends CommonApiTest {
 
   @Test
   @WithMockUser(username = "testUser1", roles = "User")
-  public void getNotices_Success_SizeUnderZero() throws Exception {
+  public void getNotices_Success_SizeUnderOne() throws Exception {
 
     MvcResult mvcResult = mockMvc.perform(
       get(NOTICE_URL + "?page=0&size=-1")
