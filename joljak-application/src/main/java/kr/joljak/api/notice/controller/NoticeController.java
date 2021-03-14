@@ -16,6 +16,7 @@ import kr.joljak.domain.util.FetchPages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -78,6 +79,15 @@ public class NoticeController {
     Notice newNotice = noticeService.updateNotice(id, NoticeRequest.to(noticeRequest));
     return getNoticeResponse(SimpleNotice.of(newNotice));
 
+  }
+
+  @ApiOperation("공지사항 삭제 API")
+  @DeleteMapping("/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  public void deleteNotice(
+    @PathVariable("id") Long id
+  ) {
+    noticeService.deleteNotice(id);
   }
 
 

@@ -100,12 +100,5 @@ public class UpdateNotice extends CommonApiTest {
 
   }
 
-  private NoticeRequest createNoticeRequest(String classOf, String title, String content) {
-    return new NoticeRequest(
-      classOf,
-      title,
-      content
-    );
-  }
 
 }

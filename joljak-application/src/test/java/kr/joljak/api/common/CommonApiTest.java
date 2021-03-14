@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import kr.joljak.api.notice.request.NoticeRequest;
 import kr.joljak.core.jwt.JwtTokenProvider;
 import kr.joljak.core.security.UserRole;
 import kr.joljak.domain.invite.entity.Invite;
@@ -26,6 +27,7 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class CommonApiTest {
+
   @Autowired
   private InviteRepository inviteRepository;
 
@@ -81,30 +83,33 @@ public abstract class CommonApiTest {
     }
 
     return User.builder()
-        .classOf("testUser" + nextId++)
-        .mainProjectRole(UserProjectRole.DEVELOPER)
-        .password(hashPassword)
-        .userRoles(userRoles)
-        .phoneNumber("010-1234-5678")
-        .name("testUser")
-        .build();
+      .classOf("testUser" + nextId++)
+      .mainProjectRole(UserProjectRole.DEVELOPER)
+      .password(hashPassword)
+      .userRoles(userRoles)
+      .phoneNumber("010-1234-5678")
+      .name("testUser")
+      .build();
   }
 
   public void setToken(User user, UserRole userRole) {
     final String BEARER = "Bearer";
     List<String> userRoles = user.getUserRoles().stream()
-        .map(UserRole::getRoleName)
-        .collect(Collectors.toList());
+      .map(UserRole::getRoleName)
+      .collect(Collectors.toList());
 
     switch (userRole) {
       case ADMIN:
-        this.adminAccessToken = BEARER + jwtTokenProvider.generateAccessToken(user.getClassOf(), userRoles)
-          .getToken();
-        this.adminRefreshToken = jwtTokenProvider.generateRefreshToken(user.getClassOf(), userRoles);
+        this.adminAccessToken =
+          BEARER + jwtTokenProvider.generateAccessToken(user.getClassOf(), userRoles)
+            .getToken();
+        this.adminRefreshToken = jwtTokenProvider
+          .generateRefreshToken(user.getClassOf(), userRoles);
         break;
       case USER:
-        this.userAccessToken = BEARER + jwtTokenProvider.generateAccessToken(user.getClassOf(), userRoles)
-          .getToken();
+        this.userAccessToken =
+          BEARER + jwtTokenProvider.generateAccessToken(user.getClassOf(), userRoles)
+            .getToken();
         this.userRefreshToken = jwtTokenProvider.generateRefreshToken(user.getClassOf(), userRoles);
         break;
     }
@@ -129,7 +134,7 @@ public abstract class CommonApiTest {
 
   public User getUserByClassOf(String classOf) {
     return userRepository.findByClassOf(classOf)
-        .orElseThrow(UserNotFoundException::new);
+      .orElseThrow(UserNotFoundException::new);
   }
 
   public String getAdminAccessToken() {
@@ -150,5 +155,13 @@ public abstract class CommonApiTest {
 
   public String getOriginalPassword() {
     return originalPassword;
+  }
+
+  public NoticeRequest createNoticeRequest(String classOf, String title, String content) {
+    return new NoticeRequest(
+      classOf,
+      title,
+      content
+    );
   }
 }
