@@ -5,13 +5,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import kr.joljak.api.common.CommonApiTest;
 import kr.joljak.api.notice.request.NoticeRequest;
-import kr.joljak.core.jwt.PermissionException;
+import kr.joljak.core.security.UserRole;
 import kr.joljak.domain.notice.entity.Notice;
 import kr.joljak.domain.notice.service.NoticeService;
 import kr.joljak.domain.user.entity.User;
-import kr.joljak.domain.user.exception.UserNotFoundException;
 import kr.joljak.domain.user.service.UserService;
-import org.hibernate.tool.schema.spi.CommandAcceptanceException;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +30,9 @@ public class DeleteNotice extends CommonApiTest {
   private NoticeRequest noticeRequest;
 
   @Before
-  @WithMockUser(username = TEST_USER_CLASS_OF, roles = "User")
   public void deleteNotice_setup() {
     //given
+    setAuthentication(UserRole.USER);
     noticeRequest = createNoticeRequest(TEST_USER_CLASS_OF, "test", "test");
 
     user = userService.getUserByClassOf(TEST_USER_CLASS_OF);
@@ -48,8 +46,8 @@ public class DeleteNotice extends CommonApiTest {
   public void deleteNotice_Success() throws Exception {
 
     MvcResult mvcResult = mockMvc.perform(
-      delete(NOTICE_URL + "/" + id)
-        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        delete(NOTICE_URL + "/" + id)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
     ).andReturn();
 
     assertEquals(200, mvcResult.getResponse().getStatus());
@@ -57,12 +55,12 @@ public class DeleteNotice extends CommonApiTest {
   }
 
   @Test
-  @WithMockUser(username = TEST_ADMIN_CLASS_OF, roles = "User")
   public void deleteNotice_Fail_NoticeNotFoundException() throws Exception {
+    setAuthentication(UserRole.ADMIN);
 
     MvcResult mvcResult = mockMvc.perform(
-      delete(NOTICE_URL + "/" + id )
-        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        delete(NOTICE_URL + "/" + id )
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
     ).andReturn();
 
     assertEquals(403, mvcResult.getResponse().getStatus());
