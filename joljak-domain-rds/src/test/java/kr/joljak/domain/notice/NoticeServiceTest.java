@@ -10,6 +10,7 @@ import kr.joljak.domain.notice.service.NoticeService;
 import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.exception.UserNotFoundException;
 import kr.joljak.domain.user.service.UserService;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -121,6 +122,7 @@ public class NoticeServiceTest extends CommonDomainTest {
     // when
     Notice updateNotice = noticeService.updateNotice(id + 1, simpleNoticeRequest);
   }
+
 
   @Test
   @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
