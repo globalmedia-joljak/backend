@@ -56,16 +56,6 @@ public class DeleteNotice extends CommonApiTest {
 
   }
 
-  @Test
-  @WithMockUser(username = TEST_ADMIN_CLASS_OF, roles = "User")
-  public void deleteNotice_Fail_NoticeNotFoundException() throws Exception {
 
-    MvcResult mvcResult = mockMvc.perform(
-      delete(NOTICE_URL + "/" + id )
-        .contentType(MediaType.APPLICATION_JSON_VALUE)
-    ).andReturn();
-
-    assertEquals(403, mvcResult.getResponse().getStatus());
-  }
 
 }
