@@ -5,6 +5,7 @@ buildscript {
         swaggerVersion = '2.9.2'
         junitVersion = '4.12'
         jjwtVersion = '0.10.5'
+        awsVersion = '2.2.6.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -37,6 +38,7 @@ subprojects {
     dependencies {
         implementation("org.springframework.boot:spring-boot-starter-web")
         implementation("org.springframework.boot:spring-boot-starter-security")
+        implementation("org.springframework.cloud:spring-cloud-starter-aws:${awsVersion}")
 
         testImplementation('org.springframework.boot:spring-boot-starter-test')
         testImplementation group: 'junit', name: 'junit', version: "${junitVersion}"
@@ -81,6 +83,7 @@ project(':joljak-domain-rds') {
     jar { enabled = true }
     dependencies {
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
         testImplementation('org.springframework.security:spring-security-test')
 
         runtime('com.h2database:h2')
