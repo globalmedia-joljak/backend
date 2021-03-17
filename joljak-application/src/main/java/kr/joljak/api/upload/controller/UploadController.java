@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,8 +29,8 @@ public class UploadController {
   @PostMapping("/files")
   @ResponseStatus(HttpStatus.CREATED)
   public List<MediaInfo> uploadFiles(
-      @RequestParam List<MultipartFile> files,
-      UploadRequest uploadRequest
+    @RequestPart List<MultipartFile> files,
+    @RequestPart UploadRequest uploadRequest
   ) {
     userService.validExistClassOf(uploadRequest.getClassOf());
 
@@ -41,20 +41,20 @@ public class UploadController {
   @PostMapping("/file")
   @ResponseStatus(HttpStatus.CREATED)
   public MediaInfo uploadFile(
-    @RequestParam MultipartFile file,
-    UploadRequest uploadRequest
+    @RequestPart MultipartFile file,
+    @RequestPart UploadRequest uploadRequest
   ) {
     userService.validExistClassOf(uploadRequest.getClassOf());
 
     return uploadService.uploadFile(file, "/" + uploadRequest.getClassOf());
   }
 
-  @ApiOperation("사진 업로드")
+  @ApiOperation("사진 여러개 업로드")
   @PostMapping("/images")
   @ResponseStatus(HttpStatus.CREATED)
   public List<MediaInfo> uploadImages(
-      @RequestParam List<MultipartFile> images,
-      UploadRequest uploadRequest
+    @RequestPart List<MultipartFile> images,
+    @RequestPart UploadRequest uploadRequest
   ) {
     userService.validExistClassOf(uploadRequest.getClassOf());
 
@@ -65,8 +65,8 @@ public class UploadController {
   @PostMapping("/image")
   @ResponseStatus(HttpStatus.CREATED)
   public MediaInfo uploadImage(
-      @RequestParam MultipartFile image,
-      UploadRequest uploadRequest
+    @RequestPart MultipartFile image,
+    @RequestPart UploadRequest uploadRequest
   ) {
     userService.validExistClassOf(uploadRequest.getClassOf());
 
@@ -75,7 +75,7 @@ public class UploadController {
 
   @ApiOperation("파일 삭제")
   @DeleteMapping("/file")
-  @ResponseStatus(HttpStatus.OK)
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteFile(@RequestBody DeleteFileRequest deleteFileRequest) {
     String classOf = deleteFileRequest.getClassOf();
 
