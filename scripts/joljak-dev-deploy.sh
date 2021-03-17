@@ -21,6 +21,6 @@ chmod +x $JAR_NAME
 
 echo "> $JAR_NAME 실행"
 
-sudo nohup java -jar -Dspring.config.location=/home/ubuntu/dev/backend/config/application-dev.properties $JAR_NAME > $REPOSITORY/zip/nohup.out 2>&1 &
+sudo nohup java -jar -Dspring.config.location=/home/ubuntu/dev/backend/config/application-dev.yaml $JAR_NAME > $REPOSITORY/zip/nohup.out 2>&1 &
 
 echo "> 새애플리케이션 배포 완료"
