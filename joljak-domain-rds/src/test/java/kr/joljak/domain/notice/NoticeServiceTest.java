@@ -93,7 +93,7 @@ public class NoticeServiceTest extends CommonDomainTest {
     SimpleNoticeRequest simpleNoticeRequest = createSimpleNoticeRequest(TEST_USER_CLASS_OF,
       "test content", "test");
 
-    User user = userService.getUserByClassOf(TEST_USER_CLASS_OF + "2");
+    User user = userService.getUserByClassOf(TEST_ADMIN_CLASS_OF + "2");
     Notice notice = createNotice(user, simpleNoticeRequest.getTitle(),
       simpleNoticeRequest.getClassOf(), simpleNoticeRequest.getContent());
     notice = noticeService.addNotice(notice);

@@ -82,6 +82,7 @@ project(':joljak-domain-rds') {
     dependencies {
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
+        testImplementation('org.springframework.security:spring-security-test')
         compile("mysql:mysql-connector-java")
 
         compile project(':joljak-core')
