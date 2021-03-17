@@ -2,6 +2,7 @@ package kr.joljak.api.notice.request;
 
 
 import javax.validation.constraints.NotNull;
+import kr.joljak.domain.notice.dto.SimpleNoticeRequest;
 import kr.joljak.domain.notice.entity.Notice;
 import kr.joljak.domain.user.entity.User;
 import lombok.AllArgsConstructor;
@@ -27,5 +28,15 @@ public class NoticeRequest {
       .user(user)
       .build();
   }
+
+  public static SimpleNoticeRequest to(NoticeRequest noticeRequest){
+    return SimpleNoticeRequest.builder()
+      .classOf(noticeRequest.getClassOf())
+      .title(noticeRequest.getTitle())
+      .content(noticeRequest.getContent())
+      .build();
+  }
+
+
 
 }
