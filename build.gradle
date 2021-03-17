@@ -66,7 +66,6 @@ project(':joljak-application') {
         implementation("io.springfox:springfox-swagger-ui:${swaggerVersion}")
         implementation("io.springfox:springfox-spring-web:${swaggerVersion}")
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-        implementation("com.h2database:h2")
 
         testImplementation('org.springframework.security:spring-security-test')
         compile("mysql:mysql-connector-java")
@@ -82,8 +81,6 @@ project(':joljak-domain-rds') {
     dependencies {
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
         testImplementation('org.springframework.security:spring-security-test')
-
-        runtime('com.h2database:h2')
 
         compile("mysql:mysql-connector-java")
 
