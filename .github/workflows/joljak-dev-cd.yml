@@ -79,7 +79,7 @@ jobs:
       - uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
-          author_name: 개발 환경 CI 알림 봇
+          author_name: 개발 환경 CD 알림 봇
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took # selectable
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # optional
