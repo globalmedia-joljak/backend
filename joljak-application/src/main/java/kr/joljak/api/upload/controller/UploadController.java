@@ -4,7 +4,8 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import kr.joljak.api.upload.request.DeleteFileRequest;
 import kr.joljak.api.upload.request.UploadRequest;
-import kr.joljak.domain.upload.entity.MediaInfo;
+import kr.joljak.domain.upload.entity.Media;
+import kr.joljak.domain.upload.entity.MediaType;
 import kr.joljak.domain.upload.service.UploadService;
 import kr.joljak.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ public class UploadController {
   @ApiOperation("여러개 파일 업로드")
   @PostMapping("/files")
   @ResponseStatus(HttpStatus.CREATED)
-  public List<MediaInfo> uploadFiles(
+  public List<Media> uploadFiles(
     @RequestPart List<MultipartFile> files,
     @RequestPart UploadRequest uploadRequest
   ) {
@@ -42,19 +43,19 @@ public class UploadController {
   @ApiOperation("파일 업로드")
   @PostMapping("/file")
   @ResponseStatus(HttpStatus.CREATED)
-  public MediaInfo uploadFile(
+  public Media uploadFile(
     @RequestPart MultipartFile file,
     @RequestPart UploadRequest uploadRequest
   ) {
     userService.validExistClassOf(uploadRequest.getClassOf());
 
-    return uploadService.uploadFile(file, "/" + uploadRequest.getClassOf());
+    return uploadService.uploadFile(file, "/" + uploadRequest.getClassOf(), MediaType.FILE);
   }
 
   @ApiOperation("사진 여러개 업로드")
   @PostMapping("/images")
   @ResponseStatus(HttpStatus.CREATED)
-  public List<MediaInfo> uploadImages(
+  public List<Media> uploadImages(
     @RequestPart List<MultipartFile> images,
     @RequestPart UploadRequest uploadRequest
   ) {
@@ -66,7 +67,7 @@ public class UploadController {
   @ApiOperation("사진 업로드")
   @PostMapping("/image")
   @ResponseStatus(HttpStatus.CREATED)
-  public MediaInfo uploadImage(
+  public Media uploadImage(
     @RequestPart MultipartFile image,
     @RequestPart UploadRequest uploadRequest
   ) {
