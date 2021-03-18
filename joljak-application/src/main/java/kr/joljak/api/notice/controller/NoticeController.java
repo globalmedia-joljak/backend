@@ -76,7 +76,7 @@ public class NoticeController {
     @PathVariable("id") Long id,
     @Valid @RequestBody NoticeRequest noticeRequest
   ) {
-    Notice newNotice = noticeService.updateNotice(id, NoticeRequest.to(noticeRequest));
+    Notice newNotice = noticeService.updateNotice(id, NoticeRequest.toDomainNoticeRequest(noticeRequest));
     return getNoticeResponse(SimpleNotice.of(newNotice));
 
   }
