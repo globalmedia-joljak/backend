@@ -3,6 +3,7 @@ package kr.joljak.domain.user.dto;
 import java.util.List;
 import kr.joljak.core.security.UserRole;
 import kr.joljak.domain.user.entity.User;
+import kr.joljak.domain.user.entity.UserProjectRole;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,10 +19,13 @@ public class SimpleUser {
   private String instagramId;
   private String kakaoId;
   private List<UserRole> userRoles;
+  private UserProjectRole mainProjectRole;
+  private UserProjectRole subProjectRole;
 
   @Builder
   public SimpleUser(Long id, String classOf, String name, String phoneNumber,
-      String instagramId, String kakaoId, List<UserRole> userRoles) {
+      String instagramId, String kakaoId, List<UserRole> userRoles,
+      UserProjectRole mainProjectRole, UserProjectRole subProjectRole) {
     this.id = id;
     this.classOf = classOf;
     this.name = name;
@@ -29,6 +33,8 @@ public class SimpleUser {
     this.instagramId = instagramId;
     this.kakaoId = kakaoId;
     this.userRoles = userRoles;
+    this.mainProjectRole = mainProjectRole;
+    this.subProjectRole = subProjectRole;
   }
 
   public static SimpleUser of(User user) {
@@ -40,6 +46,8 @@ public class SimpleUser {
       .userRoles(user.getUserRoles())
       .instagramId(user.getInstagramId())
       .kakaoId(user.getKakaoId())
+      .mainProjectRole(user.getMainProjectRole())
+      .subProjectRole(user.getSubProjectRole())
       .build();
   }
 }
