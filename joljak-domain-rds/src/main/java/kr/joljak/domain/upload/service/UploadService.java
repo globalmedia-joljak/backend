@@ -6,7 +6,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
-import kr.joljak.domain.upload.entity.MediaInfo;
+import kr.joljak.domain.upload.entity.Media;
+import kr.joljak.domain.upload.entity.MediaType;
 import kr.joljak.domain.upload.exception.FileIsNotImageException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,34 +19,35 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class UploadService {
   private final S3Service s3Service;
+  private final MediaService mediaService;
 
-  public List<MediaInfo> uploadImages(List<MultipartFile> files, String path) {
-    List<MediaInfo> mediaInfos = new ArrayList<>();
+  public List<Media> uploadImages(List<MultipartFile> files, String path) {
+    List<Media> medias = new ArrayList<>();
 
     for (MultipartFile file : files) {
       validateImage(file);
-      mediaInfos.add(uploadFile(file, path));
+      medias.add(uploadFile(file, path, MediaType.IMAGE));
     }
 
-    return mediaInfos;
+    return medias;
   }
 
-  public MediaInfo uploadImage(MultipartFile file, String path) {
+  public Media uploadImage(MultipartFile file, String path) {
     validateImage(file);
-    return uploadFile(file, path);
+    return uploadFile(file, path, MediaType.IMAGE);
   }
 
-  public List<MediaInfo> uploadFiles(List<MultipartFile> files, String path) {
-    List<MediaInfo> mediaInfos = new ArrayList<>();
+  public List<Media> uploadFiles(List<MultipartFile> files, String path) {
+    List<Media> medias = new ArrayList<>();
 
     for (MultipartFile file : files) {
-      mediaInfos.add(uploadFile(file, path));
+      medias.add(uploadFile(file, path, MediaType.FILE));
     }
 
-    return mediaInfos;
+    return medias;
   }
 
-  public MediaInfo uploadFile(MultipartFile file, String path) {
+  public Media uploadFile(MultipartFile file, String path, MediaType mediaType) {
     String originalName = file.getOriginalFilename();
     String fileExtension = getFileExtension(originalName);
     String modifyName = getEraseExtensionFileName(originalName) + getModifyName(fileExtension);
@@ -55,13 +57,17 @@ public class UploadService {
 
     String url = s3Service.uploadFile(file, modifyName, fullPath);
 
-    return MediaInfo.builder()
-      .originalName(originalName)
-      .modifyName(modifyName)
+    Media media =  Media.builder()
+      .mediaType(mediaType)
       .fileExtension(fileExtension)
-      .url(url)
       .fullPath(fullPath)
+      .modifyName(modifyName)
+      .originalName(originalName)
+      .uploadToS3(true)
+      .url(url)
       .build();
+
+    return mediaService.saveMedia(media);
   }
 
   private void validateImage(MultipartFile file) {
