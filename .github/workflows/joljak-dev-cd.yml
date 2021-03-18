@@ -1,7 +1,7 @@
 # This workflow will build a Java project with Gradle
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
-name: JOLJAK-DEV CI
+name: JOLJAK-DEV CD
 
 on:
   push:
@@ -27,6 +27,11 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
+        env:
+          AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+          AWS_BUCKET: ${{ secrets.AWS_BUCKET }}
+          AWS_S3_REGION: ${{ secrets.AWS_S3_REGION }}
         run: ./gradlew :joljak-application:clean :joljak-application:build
 
       # 전송할 파일을 담을 디렉토리 생성
