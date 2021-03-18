@@ -46,4 +46,16 @@ public class Notice extends ExtendEntity {
     this.content = content;
   }
 
+  public void setTitle(String title){
+    this.title = title;
+  }
+
+  public void setClassOf(String classOf){
+    this.classOf = classOf;
+  }
+
+  public void setContent(String content){
+    this.content = content;
+  }
+
 }

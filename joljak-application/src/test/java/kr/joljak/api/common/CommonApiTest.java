@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import kr.joljak.api.notice.request.NoticeRequest;
 import kr.joljak.core.jwt.JwtTokenProvider;
+import kr.joljak.core.security.AuthenticationUtils;
 import kr.joljak.core.security.UserRole;
 import kr.joljak.domain.invite.entity.Invite;
 import kr.joljak.domain.invite.repository.InviteRepository;
@@ -17,6 +19,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -26,6 +32,7 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class CommonApiTest {
+
   @Autowired
   private InviteRepository inviteRepository;
 
@@ -81,30 +88,33 @@ public abstract class CommonApiTest {
     }
 
     return User.builder()
-        .classOf("testUser" + nextId++)
-        .mainProjectRole(UserProjectRole.DEVELOPER)
-        .password(hashPassword)
-        .userRoles(userRoles)
-        .phoneNumber("010-1234-5678")
-        .name("testUser")
-        .build();
+      .classOf("testUser" + nextId++)
+      .mainProjectRole(UserProjectRole.DEVELOPER)
+      .password(hashPassword)
+      .userRoles(userRoles)
+      .phoneNumber("010-1234-5678")
+      .name("testUser")
+      .build();
   }
 
   public void setToken(User user, UserRole userRole) {
     final String BEARER = "Bearer";
     List<String> userRoles = user.getUserRoles().stream()
-        .map(UserRole::getRoleName)
-        .collect(Collectors.toList());
+      .map(UserRole::getRoleName)
+      .collect(Collectors.toList());
 
     switch (userRole) {
       case ADMIN:
-        this.adminAccessToken = BEARER + jwtTokenProvider.generateAccessToken(user.getClassOf(), userRoles)
-          .getToken();
-        this.adminRefreshToken = jwtTokenProvider.generateRefreshToken(user.getClassOf(), userRoles);
+        this.adminAccessToken =
+          BEARER + jwtTokenProvider.generateAccessToken(user.getClassOf(), userRoles)
+            .getToken();
+        this.adminRefreshToken = jwtTokenProvider
+          .generateRefreshToken(user.getClassOf(), userRoles);
         break;
       case USER:
-        this.userAccessToken = BEARER + jwtTokenProvider.generateAccessToken(user.getClassOf(), userRoles)
-          .getToken();
+        this.userAccessToken =
+          BEARER + jwtTokenProvider.generateAccessToken(user.getClassOf(), userRoles)
+            .getToken();
         this.userRefreshToken = jwtTokenProvider.generateRefreshToken(user.getClassOf(), userRoles);
         break;
     }
@@ -119,6 +129,25 @@ public abstract class CommonApiTest {
     return inviteRepository.save(invite);
   }
 
+  public void setAuthentication(UserRole userRole) {
+    String classOf = TEST_USER_CLASS_OF;
+    if (userRole.equals(UserRole.ADMIN)) {
+      classOf = TEST_ADMIN_CLASS_OF;
+    }
+
+    List<String> roles = new ArrayList<>(Collections.singleton(userRole.getRoleName()));
+    List<? extends GrantedAuthority> authorities = roles.stream()
+      .map(SimpleGrantedAuthority::new)
+      .collect(Collectors.toList());
+
+    org.springframework.security.core.userdetails.User principal =
+        new org.springframework.security.core.userdetails.User(classOf, "", authorities);
+
+    SecurityContextHolder.getContext().setAuthentication(
+      new UsernamePasswordAuthenticationToken(principal, null, authorities)
+    );
+  }
+
   public User getAdmin() {
     return getUserByClassOf(TEST_USER_CLASS_OF);
   }
@@ -129,7 +158,7 @@ public abstract class CommonApiTest {
 
   public User getUserByClassOf(String classOf) {
     return userRepository.findByClassOf(classOf)
-        .orElseThrow(UserNotFoundException::new);
+      .orElseThrow(UserNotFoundException::new);
   }
 
   public String getAdminAccessToken() {
@@ -150,5 +179,13 @@ public abstract class CommonApiTest {
 
   public String getOriginalPassword() {
     return originalPassword;
+  }
+
+  public NoticeRequest createNoticeRequest(String classOf, String title, String content) {
+    return new NoticeRequest(
+      classOf,
+      title,
+      content
+    );
   }
 }

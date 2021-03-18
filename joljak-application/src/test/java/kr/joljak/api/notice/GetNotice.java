@@ -24,10 +24,10 @@ public class GetNotice extends CommonApiTest {
   private UserService userService;
 
   @Test
-  @WithMockUser(username = "testUser1", roles = "User")
+  @WithMockUser(username = TEST_USER_CLASS_OF, roles = "User")
   public void getNotice_Success() throws Exception {
 
-    NoticeRequest noticeRequest = createNoticeRequest("testUser1", "test", "test");
+    NoticeRequest noticeRequest = createNoticeRequest(TEST_USER_CLASS_OF, "test", "test");
 
     User user = userService.getUserByClassOf(noticeRequest.getClassOf());
     Notice notice = noticeService.addNotice(noticeRequest.toNotice(user));
@@ -44,10 +44,10 @@ public class GetNotice extends CommonApiTest {
   }
 
   @Test
-  @WithMockUser(username = "testUser1", roles = "User")
+  @WithMockUser(username = TEST_USER_CLASS_OF, roles = "User")
   public void getNotice_Fail_NoticeNotFoundException() throws Exception {
 
-    NoticeRequest noticeRequest = createNoticeRequest("testUser1", "test", "test");
+    NoticeRequest noticeRequest = createNoticeRequest(TEST_USER_CLASS_OF, "test", "test");
 
     User user = userService.getUserByClassOf(noticeRequest.getClassOf());
     Notice notice = noticeService.addNotice(noticeRequest.toNotice(user));
@@ -63,12 +63,5 @@ public class GetNotice extends CommonApiTest {
     assertEquals(404, mvcResult.getResponse().getStatus());
   }
 
-  private NoticeRequest createNoticeRequest(String classOf, String title, String content) {
-    return new NoticeRequest(
-      classOf,
-      title,
-      content
-    );
-  }
 
 }

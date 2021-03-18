@@ -16,7 +16,9 @@ import kr.joljak.domain.util.FetchPages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,7 +49,7 @@ public class NoticeController {
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
   public NoticesResponse getNotices(
-    @RequestParam(defaultValue = "10") int page,
+    @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "10") int size
   ) {
     List<Notice> noticeList = noticeService.getNoticesByPage(page, size);
@@ -67,9 +69,32 @@ public class NoticeController {
     return getNoticeResponse(SimpleNotice.of(notice));
   }
 
+  @ApiOperation("공지사항 수정 API")
+  @PatchMapping("/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  public NoticeResponse updateNotice(
+    @PathVariable("id") Long id,
+    @Valid @RequestBody NoticeRequest noticeRequest
+  ) {
+    Notice newNotice = noticeService.updateNotice(id, NoticeRequest.to(noticeRequest));
+    return getNoticeResponse(SimpleNotice.of(newNotice));
+
+  }
+
+  @ApiOperation("공지사항 삭제 API")
+  @DeleteMapping("/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  public void deleteNotice(
+    @PathVariable("id") Long id
+  ) {
+    noticeService.deleteNotice(id);
+  }
+
+
   private List<NoticeResponse> getNoticeResponseListFrom(List<Notice> noticeList) {
-    return noticeList.stream().map(notice -> getNoticeResponse(SimpleNotice.of(notice))).collect(
-      Collectors.toList());
+    return noticeList.stream()
+      .map(notice -> getNoticeResponse(SimpleNotice.of(notice)))
+      .collect(Collectors.toList());
   }
 
   private NoticeResponse getNoticeResponse(SimpleNotice simpleNotice) {

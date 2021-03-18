@@ -23,4 +23,4 @@ echo "> $JAR_NAME 실행"
 
 sudo nohup java -jar -Dspring.config.location=/home/ubuntu/dev/backend/config/application-dev.yaml $JAR_NAME > $REPOSITORY/zip/nohup.out 2>&1 &
 
-echo "> 새애플리케이션 배포 완료"
+echo "> 새 애플리케이션 배포 완료"
