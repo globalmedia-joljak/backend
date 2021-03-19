@@ -13,14 +13,16 @@ public class MediaInfo {
   private String fileExtension;
   private String fullPath;
   private String url;
+  private MediaType mediaType;
 
   @Builder
   public MediaInfo(String originalName, String modifyName, String fileExtension,
-      String bucketPath, String fullPath, String url) {
+      String bucketPath, String fullPath, String url, MediaType mediaType) {
     this.originalName = originalName;
     this.modifyName = modifyName;
     this.fileExtension = fileExtension;
     this.fullPath = fullPath;
     this.url = url;
+    this.mediaType = mediaType;
   }
 }
