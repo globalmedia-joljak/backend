@@ -1,9 +1,6 @@
-package kr.joljak.api.ideaBoard.request;
+package kr.joljak.domain.IdeaBoard.dto;
 
 import java.util.List;
-import javax.validation.constraints.NotNull;
-import kr.joljak.domain.IdeaBoard.dto.SimpleIdeaBoard;
-import kr.joljak.domain.IdeaBoard.entity.IdeaBoard;
 import kr.joljak.domain.IdeaBoard.entity.IdeaBoard.Status;
 import kr.joljak.domain.user.entity.UserProjectRole;
 import lombok.AccessLevel;
@@ -14,28 +11,23 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class IdeaBoardRequest {
+public class SimpleIdeaBoard {
 
-  @NotNull
   private String title;
-  @NotNull
   private String content;
-  @NotNull
   private String classOf;
-  @NotNull
-  private IdeaBoard.Status status;
   private String contact;
-  // User
+  private Status status;
   private List<UserProjectRole> requiredPosition;
   private String phoneNumber;
   private String name;
   private UserProjectRole mainRole;
-  // File, Image Upload
   private MultipartFile file;
   private MultipartFile image;
 
   @Builder
-  public IdeaBoardRequest(String title, String content, String contact, String classOf, Status status,
+  public SimpleIdeaBoard(String title, String content, String contact, String classOf,
+    Status status,
     List<UserProjectRole> requiredPosition, String phoneNumber, String name,
     UserProjectRole mainRole, MultipartFile file, MultipartFile image) {
     this.title = title;
@@ -49,21 +41,6 @@ public class IdeaBoardRequest {
     this.mainRole = mainRole;
     this.file = file;
     this.image = image;
-  }
-
-  public static SimpleIdeaBoard toDomainIdeaBoardRequest(IdeaBoardRequest ideaBoardRequest) {
-    return SimpleIdeaBoard.builder()
-      .title(ideaBoardRequest.getTitle())
-      .content(ideaBoardRequest.getContent())
-      .classOf(ideaBoardRequest.getClassOf())
-      .status(ideaBoardRequest.getStatus())
-      .contact(ideaBoardRequest.getContact())
-      .requiredPosition(ideaBoardRequest.getRequiredPosition())
-      .phoneNumber(ideaBoardRequest.getPhoneNumber())
-      .name(ideaBoardRequest.getName())
-      .mainRole(ideaBoardRequest.getMainRole())
-      .file(ideaBoardRequest.file)
-      .build();
   }
 
 }
