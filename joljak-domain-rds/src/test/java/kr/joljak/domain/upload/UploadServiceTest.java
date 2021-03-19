@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import kr.joljak.domain.common.CommonDomainTest;
-import kr.joljak.domain.upload.entity.MediaInfo;
+import kr.joljak.domain.upload.entity.Media;
+import kr.joljak.domain.upload.entity.MediaType;
 import kr.joljak.domain.upload.exception.FileIsNotImageException;
 import kr.joljak.domain.upload.service.UploadService;
 import org.assertj.core.api.Assertions;
@@ -34,10 +35,10 @@ public class UploadServiceTest extends CommonDomainTest {
     );
 
     // when
-    List<MediaInfo> mediaInfos = uploadService.uploadFiles(textFiles, path);
+    List<Media> media = uploadService.uploadFiles(textFiles, path);
 
     // then
-    assertEquals(mediaInfos.size(), textFiles.size());
+    assertEquals(media.size(), textFiles.size());
   }
 
   @Test
@@ -48,10 +49,10 @@ public class UploadServiceTest extends CommonDomainTest {
     MockMultipartFile textFile = createMockTextFile("test" + nextId++);
 
     // when
-    MediaInfo mediaInfo = uploadService.uploadFile(textFile, path);
+    Media media = uploadService.uploadFile(textFile, path, MediaType.FILE);
 
     // then
-    Assertions.assertThat(mediaInfo).isNotNull();
+    Assertions.assertThat(media).isNotNull();
   }
 
   @Test
@@ -67,10 +68,10 @@ public class UploadServiceTest extends CommonDomainTest {
     );
 
     // when
-    List<MediaInfo> mediaInfo = uploadService.uploadImages(imageFiles, path);
+    List<Media> medias = uploadService.uploadImages(imageFiles, path);
 
     // then
-    Assertions.assertThat(mediaInfo).isNotNull();
+    Assertions.assertThat(medias).isNotNull();
   }
 
   @Test(expected = FileIsNotImageException.class)
@@ -86,7 +87,7 @@ public class UploadServiceTest extends CommonDomainTest {
     );
 
     // when
-    List<MediaInfo> mediaInfo = uploadService.uploadImages(imageFiles, path);
+    List<Media> medias = uploadService.uploadImages(imageFiles, path);
 
     // then
   }
@@ -99,10 +100,10 @@ public class UploadServiceTest extends CommonDomainTest {
     MockMultipartFile imageFile = createMockImageFile("test" + nextId++);
 
     // when
-    MediaInfo mediaInfo = uploadService.uploadImage(imageFile, path);
+    Media media = uploadService.uploadImage(imageFile, path);
 
     // then
-    Assertions.assertThat(mediaInfo).isNotNull();
+    Assertions.assertThat(media).isNotNull();
   }
 
   @Test(expected = FileIsNotImageException.class)
@@ -113,7 +114,7 @@ public class UploadServiceTest extends CommonDomainTest {
     MockMultipartFile textFile = createMockTextFile("test" + nextId++);
 
     // when
-    MediaInfo mediaInfo = uploadService.uploadImage(textFile, path);
+    Media media = uploadService.uploadImage(textFile, path);
 
     // then
   }
@@ -124,10 +125,10 @@ public class UploadServiceTest extends CommonDomainTest {
     // given
     String path = "/" + TEST_USER_CLASS_OF;
     MockMultipartFile textFile = createMockTextFile("test" + nextId++);
-    MediaInfo mediaInfo = uploadService.uploadFile(textFile, path);
+    Media media = uploadService.uploadFile(textFile, path, MediaType.FILE);
 
     // when, then
-    uploadService.deleteFile(mediaInfo.getModifyName(), "/" + TEST_USER_CLASS_OF );
+    uploadService.deleteFile(media.getModifyName(), "/" + TEST_USER_CLASS_OF );
   }
 
   private MockMultipartFile createMockTextFile(String fileName) {
