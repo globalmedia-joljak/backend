@@ -27,28 +27,22 @@ public class IdeaBoardRequest {
   private String contact;
   // User
   private List<UserProjectRole> requiredPosition;
-  private String phoneNumber;
   private String name;
   private UserProjectRole mainRole;
-  // File, Image Upload
-  private MultipartFile file;
-  private MultipartFile image;
 
   @Builder
-  public IdeaBoardRequest(String title, String content, String contact, String classOf, Status status,
-    List<UserProjectRole> requiredPosition, String phoneNumber, String name,
-    UserProjectRole mainRole, MultipartFile file, MultipartFile image) {
+  public IdeaBoardRequest(String title, String content, String contact, String classOf,
+    Status status,
+    List<UserProjectRole> requiredPosition, String name,
+    UserProjectRole mainRole, MultipartFile file) {
     this.title = title;
     this.content = content;
     this.classOf = classOf;
     this.contact = contact;
     this.status = status;
     this.requiredPosition = requiredPosition;
-    this.phoneNumber = phoneNumber;
     this.name = name;
     this.mainRole = mainRole;
-    this.file = file;
-    this.image = image;
   }
 
   public static SimpleIdeaBoard toDomainIdeaBoardRequest(IdeaBoardRequest ideaBoardRequest) {
@@ -59,10 +53,8 @@ public class IdeaBoardRequest {
       .status(ideaBoardRequest.getStatus())
       .contact(ideaBoardRequest.getContact())
       .requiredPosition(ideaBoardRequest.getRequiredPosition())
-      .phoneNumber(ideaBoardRequest.getPhoneNumber())
       .name(ideaBoardRequest.getName())
       .mainRole(ideaBoardRequest.getMainRole())
-      .file(ideaBoardRequest.file)
       .build();
   }
 

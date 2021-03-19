@@ -11,10 +11,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin("*")
 @RequiredArgsConstructor
@@ -28,10 +29,12 @@ public class IdeaBoardController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public IdeaBoardResponse create(
-    @Valid @RequestBody IdeaBoardRequest ideaBoardRequest
+    @RequestPart("file") MultipartFile file,
+    @Valid @RequestPart("ideaBoardRequest") IdeaBoardRequest ideaBoardRequest
   ) {
-    SimpleIdeaBoard simpleIdeaBoard = ideaBoardRequest.toDomainIdeaBoardRequest(ideaBoardRequest);
-    IdeaBoard ideaBoard = ideaBoardService.addIdeaBoard(simpleIdeaBoard);
+    SimpleIdeaBoard simpleIdeaBoard = ideaBoardRequest
+      .toDomainIdeaBoardRequest(ideaBoardRequest);
+    IdeaBoard ideaBoard = ideaBoardService.addIdeaBoard(simpleIdeaBoard, file);
 
     return getIdeaNoticeBoard(ideaBoard);
   }
@@ -40,14 +43,13 @@ public class IdeaBoardController {
     return IdeaBoardResponse.builder()
       .title(ideaBoard.getTitle())
       .content(ideaBoard.getContent())
-      .classOf(ideaBoard.getUser().getClassOf())
       .status(ideaBoard.getStatus())
       .contact(ideaBoard.getContact())
+      .classOf(ideaBoard.getUser().getClassOf())
       .requiredPosition(ideaBoard.getRequiredPosiotion())
       .name(ideaBoard.getUser().getName())
       .mainProjectRole(ideaBoard.getUser().getMainProjectRole())
-      .file(ideaBoard.getFileInfo())
-      .image(ideaBoard.getImageInfo())
+      .file(ideaBoard.getFile())
       .build();
   }
 }

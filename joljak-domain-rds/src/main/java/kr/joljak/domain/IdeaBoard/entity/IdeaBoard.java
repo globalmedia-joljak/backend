@@ -13,10 +13,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import kr.joljak.domain.common.entity.ExtendEntity;
-import kr.joljak.domain.upload.entity.MediaInfo;
+import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.entity.UserProjectRole;
 import lombok.AccessLevel;
@@ -34,7 +35,7 @@ public class IdeaBoard extends ExtendEntity {
 
   @JsonFormat(shape = Shape.STRING)
   public enum Status {
-    complete, Ongoing
+    Complete, OnGoing
   }
 
   @Id
@@ -54,12 +55,10 @@ public class IdeaBoard extends ExtendEntity {
 
   @Column
   private String contact;
-  //TODO : 민성이가 만든 엔티티랑 연결해야함. 객체를 저장하지 말고
-  @Column
-  private MediaInfo fileInfo;
 
-  @Column
-  private MediaInfo imageInfo;
+  @OneToOne
+  @JoinColumn(name = "file_id")
+  private Media file;
 
   @ManyToOne
   @JoinColumn(name = "user_id")
@@ -73,15 +72,14 @@ public class IdeaBoard extends ExtendEntity {
 
   @Builder
   public IdeaBoard(Status status, String title, String content, String contact, User user,
-    List<UserProjectRole> requiredPosition, MediaInfo fileInfo, MediaInfo imageInfo) {
+    List<UserProjectRole> requiredPosition, Media file) {
     this.status = status;
     this.title = title;
     this.content = content;
     this.contact = contact;
     this.user = user;
     this.requiredPosiotion = requiredPosition;
-    this.fileInfo = fileInfo;
-    this.imageInfo = imageInfo;
+    this.file = file;
   }
 
 }
