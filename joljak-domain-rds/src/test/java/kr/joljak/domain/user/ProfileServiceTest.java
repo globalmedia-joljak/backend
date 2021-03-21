@@ -3,7 +3,6 @@ package kr.joljak.domain.user;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
-import kr.joljak.core.security.UserRole;
 import kr.joljak.domain.common.CommonDomainTest;
 import kr.joljak.domain.user.entity.Profile;
 import kr.joljak.domain.user.entity.UserProjectRole;
@@ -14,7 +13,6 @@ import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithMockUser;
 
 public class ProfileServiceTest extends CommonDomainTest {
