@@ -3,8 +3,7 @@ package kr.joljak.api.ideaBoard.request;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import kr.joljak.domain.IdeaBoard.dto.SimpleIdeaBoard;
-import kr.joljak.domain.IdeaBoard.entity.IdeaBoard;
-import kr.joljak.domain.IdeaBoard.entity.IdeaBoard.Status;
+import kr.joljak.domain.IdeaBoard.entity.ProjectStatus;
 import kr.joljak.domain.user.entity.UserProjectRole;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -21,27 +20,25 @@ public class IdeaBoardRequest {
   @NotNull
   private String content;
   @NotNull
-  private String classOf;
-  @NotNull
-  private IdeaBoard.Status status;
+  private ProjectStatus status;
   private String contact;
-  // User
-  private List<UserProjectRole> requiredPosition;
-  private String name;
+
+  private List<UserProjectRole> requiredPositions;
+
   private UserProjectRole mainRole;
 
   @Builder
-  public IdeaBoardRequest(String title, String content, String contact, String classOf,
-    Status status,
-    List<UserProjectRole> requiredPosition, String name,
+  public IdeaBoardRequest(String title, String content, String contact,
+    ProjectStatus status,
+    List<UserProjectRole> requiredPositions,
     UserProjectRole mainRole, MultipartFile file) {
     this.title = title;
     this.content = content;
-    this.classOf = classOf;
+
     this.contact = contact;
     this.status = status;
-    this.requiredPosition = requiredPosition;
-    this.name = name;
+    this.requiredPositions = requiredPositions;
+
     this.mainRole = mainRole;
   }
 
@@ -49,11 +46,9 @@ public class IdeaBoardRequest {
     return SimpleIdeaBoard.builder()
       .title(ideaBoardRequest.getTitle())
       .content(ideaBoardRequest.getContent())
-      .classOf(ideaBoardRequest.getClassOf())
       .status(ideaBoardRequest.getStatus())
       .contact(ideaBoardRequest.getContact())
-      .requiredPosition(ideaBoardRequest.getRequiredPosition())
-      .name(ideaBoardRequest.getName())
+      .requiredPositions(ideaBoardRequest.getRequiredPositions())
       .mainRole(ideaBoardRequest.getMainRole())
       .build();
   }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import kr.joljak.domain.IdeaBoard.dto.SimpleIdeaBoard;
 import kr.joljak.domain.IdeaBoard.entity.IdeaBoard;
-import kr.joljak.domain.IdeaBoard.entity.IdeaBoard.Status;
+import kr.joljak.domain.IdeaBoard.entity.ProjectStatus;
 import kr.joljak.domain.IdeaBoard.service.IdeaBoardService;
 import kr.joljak.domain.common.CommonDomainTest;
 import kr.joljak.domain.upload.service.UploadService;
@@ -32,8 +32,8 @@ public class IdeaBoardServiceTest extends CommonDomainTest {
 
     MockMultipartFile textFile = createMockTextFile("test" + nextId++);
     SimpleIdeaBoard simpleIdeaBoard = createSimpleIdeaBoard(
-      "test", "test", "010123415678", TEST_USER_CLASS_OF, Status.OnGoing,
-      requiredPosition, "test", UserProjectRole.DEVELOPER);
+      "test", "test", "010123415678", ProjectStatus.ONGOING,
+      requiredPosition, UserProjectRole.DEVELOPER);
     // when
     IdeaBoard ideaBoard = ideaBoardService.addIdeaBoard(simpleIdeaBoard, textFile);
 
@@ -43,19 +43,16 @@ public class IdeaBoardServiceTest extends CommonDomainTest {
   }
 
   private SimpleIdeaBoard createSimpleIdeaBoard(
-    String title, String content, String contact, String classOf,
-    Status status, List<UserProjectRole> requiredPosition,
-    String name, UserProjectRole mainRole
+    String title, String content, String contact,
+    ProjectStatus status, List<UserProjectRole> requiredPositions,
+    UserProjectRole mainRole
   ) {
     return SimpleIdeaBoard.builder()
       .title(title)
       .content(content)
-      .classOf(classOf)
       .contact(contact)
       .status(status)
-      .contact(contact)
-      .requiredPosition(requiredPosition)
-      .name(name)
+      .requiredPositions(requiredPositions)
       .mainRole(mainRole)
       .build();
   }

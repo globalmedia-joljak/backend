@@ -1,7 +1,5 @@
 package kr.joljak.domain.IdeaBoard.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -16,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import kr.joljak.domain.IdeaBoard.dto.SimpleIdeaBoard;
 import kr.joljak.domain.common.entity.ExtendEntity;
 import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.user.entity.User;
@@ -33,18 +32,13 @@ import org.hibernate.annotations.LazyCollectionOption;
 @Table(name = "IdeaBoards")
 public class IdeaBoard extends ExtendEntity {
 
-  @JsonFormat(shape = Shape.STRING)
-  public enum Status {
-    Complete, OnGoing
-  }
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @Column(nullable = false)
   @Enumerated(value = EnumType.STRING)
-  private Status status;
+  private ProjectStatus status;
 
   @Column(nullable = false)
   @NotNull
@@ -68,18 +62,30 @@ public class IdeaBoard extends ExtendEntity {
   @Enumerated(value = EnumType.STRING)
   @ElementCollection
   @LazyCollection(LazyCollectionOption.FALSE)
-  private List<UserProjectRole> requiredPosiotion;
+  private List<UserProjectRole> requiredPosiotions;
 
   @Builder
-  public IdeaBoard(Status status, String title, String content, String contact, User user,
-    List<UserProjectRole> requiredPosition, Media file) {
+  public IdeaBoard(ProjectStatus status, String title, String content, String contact, User user,
+    List<UserProjectRole> requiredPositions, Media file) {
     this.status = status;
     this.title = title;
     this.content = content;
     this.contact = contact;
     this.user = user;
-    this.requiredPosiotion = requiredPosition;
+    this.requiredPosiotions = requiredPositions;
     this.file = file;
+  }
+
+  public static IdeaBoard of(SimpleIdeaBoard simpleIdeaBoard, User user, Media file) {
+    return IdeaBoard.builder()
+      .status(simpleIdeaBoard.getStatus())
+      .title(simpleIdeaBoard.getTitle())
+      .content(simpleIdeaBoard.getContent())
+      .contact(simpleIdeaBoard.getContact())
+      .file(file)
+      .user(user)
+      .requiredPositions(simpleIdeaBoard.getRequiredPositions())
+      .build();
   }
 
 }

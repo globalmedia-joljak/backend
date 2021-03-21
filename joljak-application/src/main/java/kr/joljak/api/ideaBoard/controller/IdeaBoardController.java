@@ -20,7 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 @CrossOrigin("*")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/IdeaBoards")
+@RequestMapping("/api/v1/ideaboards")
 public class IdeaBoardController {
 
   private final IdeaBoardService ideaBoardService;
@@ -36,20 +36,7 @@ public class IdeaBoardController {
       .toDomainIdeaBoardRequest(ideaBoardRequest);
     IdeaBoard ideaBoard = ideaBoardService.addIdeaBoard(simpleIdeaBoard, file);
 
-    return getIdeaNoticeBoard(ideaBoard);
+    return IdeaBoardResponse.of(ideaBoard);
   }
 
-  private IdeaBoardResponse getIdeaNoticeBoard(IdeaBoard ideaBoard) {
-    return IdeaBoardResponse.builder()
-      .title(ideaBoard.getTitle())
-      .content(ideaBoard.getContent())
-      .status(ideaBoard.getStatus())
-      .contact(ideaBoard.getContact())
-      .classOf(ideaBoard.getUser().getClassOf())
-      .requiredPosition(ideaBoard.getRequiredPosiotion())
-      .name(ideaBoard.getUser().getName())
-      .mainProjectRole(ideaBoard.getUser().getMainProjectRole())
-      .file(ideaBoard.getFile())
-      .build();
-  }
 }

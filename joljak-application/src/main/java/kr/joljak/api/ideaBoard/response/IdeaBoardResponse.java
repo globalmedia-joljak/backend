@@ -3,8 +3,8 @@ package kr.joljak.api.ideaBoard.response;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import kr.joljak.domain.IdeaBoard.entity.IdeaBoard;
-import kr.joljak.domain.IdeaBoard.entity.IdeaBoard.Status;
-import kr.joljak.domain.upload.entity.Media;
+import kr.joljak.domain.IdeaBoard.entity.ProjectStatus;
+import kr.joljak.domain.upload.entity.MediaInfo;
 import kr.joljak.domain.user.entity.UserProjectRole;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class IdeaBoardResponse {
 
   @NotNull
-  private IdeaBoard.Status status;
+  private ProjectStatus status;
   @NotNull
   private String title;
   @NotNull
@@ -24,27 +24,39 @@ public class IdeaBoardResponse {
   private String contact;
   @NotNull
   private String classOf;
-  // User
-  private List<UserProjectRole> requiredPosition;
+  private List<UserProjectRole> requiredPositions;
   private String name;
   private UserProjectRole mainProjectRole;
-  // File, Image Upload
-  private Media file;
+  private MediaInfo fileInfo;
 
   @Builder
   public IdeaBoardResponse(String title, String content, String contact, String classOf,
-    Status status,
-    List<UserProjectRole> requiredPosition, String name,
-    UserProjectRole mainProjectRole, Media file) {
+    ProjectStatus status,
+    List<UserProjectRole> requiredPositions, String name,
+    UserProjectRole mainProjectRole, MediaInfo fileInfo) {
     this.title = title;
     this.content = content;
     this.classOf = classOf;
     this.status = status;
     this.contact = contact;
-    this.requiredPosition = requiredPosition;
+    this.requiredPositions = requiredPositions;
     this.name = name;
     this.mainProjectRole = mainProjectRole;
-    this.file = file;
+    this.fileInfo = fileInfo;
+  }
+
+  public static IdeaBoardResponse of(IdeaBoard ideaBoard) {
+    return IdeaBoardResponse.builder()
+      .title(ideaBoard.getTitle())
+      .content(ideaBoard.getContent())
+      .status(ideaBoard.getStatus())
+      .contact(ideaBoard.getContact())
+      .classOf(ideaBoard.getUser().getClassOf())
+      .requiredPositions(ideaBoard.getRequiredPosiotions())
+      .name(ideaBoard.getUser().getName())
+      .mainProjectRole(ideaBoard.getUser().getMainProjectRole())
+      .fileInfo(MediaInfo.of(ideaBoard.getFile()))
+      .build();
   }
 
 }

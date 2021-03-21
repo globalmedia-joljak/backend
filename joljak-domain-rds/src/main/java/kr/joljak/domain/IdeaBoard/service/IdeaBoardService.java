@@ -1,5 +1,6 @@
 package kr.joljak.domain.IdeaBoard.service;
 
+import kr.joljak.core.security.AuthenticationUtils;
 import kr.joljak.domain.IdeaBoard.dto.SimpleIdeaBoard;
 import kr.joljak.domain.IdeaBoard.entity.IdeaBoard;
 import kr.joljak.domain.IdeaBoard.repository.IdeaBoardRepository;
@@ -24,23 +25,20 @@ public class IdeaBoardService {
   @Transactional
   public IdeaBoard addIdeaBoard(SimpleIdeaBoard simpleIdeaBoard, MultipartFile file) {
 
-    userService.validAuthenticationClassOf(simpleIdeaBoard.getClassOf());
-    User user = userService.getUserByClassOf(simpleIdeaBoard.getClassOf());
+    User user = getUserByAuthentication();
 
     Media mediaFile = uploadService
-      .uploadFile(file, "/" + simpleIdeaBoard.getClassOf(), MediaType.FILE);
+      .uploadFile(file, "/" + user.getClassOf(), MediaType.FILE);
 
-    IdeaBoard ideaBoard = IdeaBoard.builder()
-      .status(simpleIdeaBoard.getStatus())
-      .title(simpleIdeaBoard.getTitle())
-      .content(simpleIdeaBoard.getContent())
-      .contact(simpleIdeaBoard.getContact())
-      .file(mediaFile)
-      .user(user)
-      .requiredPosition(simpleIdeaBoard.getRequiredPosition())
-      .build();
+    IdeaBoard ideaBoard = IdeaBoard.of(simpleIdeaBoard, user, mediaFile);
 
     return ideaBoardRepository.save(ideaBoard);
+  }
+
+  public User getUserByAuthentication() {
+    String authenticationClassOf = AuthenticationUtils.getClassOf();
+
+    return userService.getUserByClassOf(authenticationClassOf);
   }
 
 }
