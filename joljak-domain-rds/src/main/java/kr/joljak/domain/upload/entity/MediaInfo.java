@@ -25,4 +25,15 @@ public class MediaInfo {
     this.url = url;
     this.mediaType = mediaType;
   }
+
+  public static MediaInfo of(Media media) {
+    return MediaInfo.builder()
+      .originalName(media.getOriginalName())
+      .modifyName(media.getModifyName())
+      .fileExtension(media.getFileExtension())
+      .fullPath(media.getFullPath())
+      .url(media.getUrl())
+      .mediaType(media.getMediaType())
+      .build();
+  }
 }
