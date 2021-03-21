@@ -19,5 +19,4 @@ public class SimpleNoticeRequest {
     this.content = content;
     this.title = title;
   }
-
 }

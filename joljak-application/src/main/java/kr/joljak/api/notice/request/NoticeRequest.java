@@ -29,7 +29,7 @@ public class NoticeRequest {
       .build();
   }
 
-  public static SimpleNoticeRequest to(NoticeRequest noticeRequest){
+  public static SimpleNoticeRequest toDomainNoticeRequest(NoticeRequest noticeRequest){
     return SimpleNoticeRequest.builder()
       .classOf(noticeRequest.getClassOf())
       .title(noticeRequest.getTitle())
