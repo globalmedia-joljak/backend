@@ -1,6 +1,5 @@
 package kr.joljak.domain.notice.service;
 
-
 import java.util.List;
 import kr.joljak.domain.notice.dto.SimpleNoticeRequest;
 import kr.joljak.domain.notice.entity.Notice;
