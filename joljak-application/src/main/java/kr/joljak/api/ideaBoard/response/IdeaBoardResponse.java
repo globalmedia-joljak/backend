@@ -1,5 +1,6 @@
 package kr.joljak.api.ideaBoard.response;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import kr.joljak.domain.IdeaBoard.entity.IdeaBoard;
@@ -16,6 +17,8 @@ import lombok.NoArgsConstructor;
 public class IdeaBoardResponse {
 
   @NotNull
+  private Long id;
+  @NotNull
   private ProjectStatus status;
   @NotNull
   private String title;
@@ -28,12 +31,16 @@ public class IdeaBoardResponse {
   private String name;
   private UserProjectRole mainProjectRole;
   private MediaInfo fileInfo;
+  private LocalDateTime createDate;
+  private LocalDateTime modifiedDate;
 
   @Builder
-  public IdeaBoardResponse(String title, String content, String contact, String classOf,
+  public IdeaBoardResponse(Long id, String title, String content, String contact, String classOf,
     ProjectStatus status,
     List<UserProjectRole> requiredPositions, String name,
-    UserProjectRole mainProjectRole, MediaInfo fileInfo) {
+    UserProjectRole mainProjectRole, MediaInfo fileInfo,
+    LocalDateTime createDate, LocalDateTime modifiedDate) {
+    this.id = id;
     this.title = title;
     this.content = content;
     this.classOf = classOf;
@@ -43,10 +50,13 @@ public class IdeaBoardResponse {
     this.name = name;
     this.mainProjectRole = mainProjectRole;
     this.fileInfo = fileInfo;
+    this.createDate = createDate;
+    this.modifiedDate = modifiedDate;
   }
 
   public static IdeaBoardResponse of(IdeaBoard ideaBoard) {
     return IdeaBoardResponse.builder()
+      .id(ideaBoard.getId())
       .title(ideaBoard.getTitle())
       .content(ideaBoard.getContent())
       .status(ideaBoard.getStatus())
@@ -56,6 +66,8 @@ public class IdeaBoardResponse {
       .name(ideaBoard.getUser().getName())
       .mainProjectRole(ideaBoard.getUser().getMainProjectRole())
       .fileInfo(MediaInfo.of(ideaBoard.getFile()))
+      .createDate(ideaBoard.getCreatedDate())
+      .modifiedDate(ideaBoard.getModifiedDate())
       .build();
   }
 
