@@ -6,7 +6,6 @@ import kr.joljak.domain.user.dto.SimpleUser;
 import kr.joljak.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin("*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
@@ -30,7 +28,7 @@ public class UserController {
   }
 
   @ApiOperation("유저 인스타 아이디 업데이트")
-  @PatchMapping("/{classOf}/istagramid")
+  @PatchMapping("/{classOf}/instagramid")
   @ResponseStatus(HttpStatus.OK)
   public void updateInstagramId(@PathVariable String classOf, @RequestBody String instagramId) {
     userService.updateInstagramId(classOf, instagramId);
