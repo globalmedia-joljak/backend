@@ -28,7 +28,7 @@ public class ProfileController {
   @PostMapping("/{classOf}")
   @ResponseStatus(HttpStatus.CREATED)
   public GetProfileResponse registerProfile(
-    @RequestPart MultipartFile image,
+    @RequestPart(required = false) MultipartFile image,
     @RequestPart RegisterProfileRequest registerProfileRequest,
     @PathVariable String classOf
   ) {
