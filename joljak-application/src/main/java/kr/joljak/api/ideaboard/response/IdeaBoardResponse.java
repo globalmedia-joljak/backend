@@ -1,4 +1,4 @@
-package kr.joljak.api.ideaBoard.response;
+package kr.joljak.api.ideaboard.response;
 
 import java.util.List;
 import javax.validation.constraints.NotNull;

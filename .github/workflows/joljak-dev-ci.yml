@@ -32,6 +32,7 @@ jobs:
         AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
         AWS_BUCKET: ${{ secrets.AWS_BUCKET }}
         AWS_S3_REGION: ${{ secrets.AWS_S3_REGION }}
+        APP_WEB_NAVIGATOR_ORIGIN: ${{ secrets.APP_WEB_NAVIGATOR_ORIGIN }}
       run: ./gradlew :joljak-application:clean :joljak-application:build
 
     - uses: 8398a7/action-slack@v3
