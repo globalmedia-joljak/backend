@@ -6,7 +6,6 @@ import kr.joljak.api.user.response.GetProfileResponse;
 import kr.joljak.domain.user.dto.SimpleProfile;
 import kr.joljak.domain.user.entity.Profile;
 import kr.joljak.domain.user.service.ProfileService;
-import kr.joljak.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,24 +21,17 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/v1/profiles")
 public class ProfileController {
   private final ProfileService profileService;
-  private final UserService userService;
 
   @ApiOperation("유저 프로필 등록 API")
   @PostMapping("/{classOf}")
   @ResponseStatus(HttpStatus.CREATED)
   public GetProfileResponse registerProfile(
-    @RequestPart MultipartFile image,
+    @RequestPart(required = false) MultipartFile image,
     @RequestPart RegisterProfileRequest registerProfileRequest,
     @PathVariable String classOf
   ) {
-    userService.validExistClassOf(classOf);
 
-    Profile profile = profileService.registerProfile(
-      registerProfileRequest.of(),
-      registerProfileRequest.getMainRole(),
-      registerProfileRequest.getSubRole(),
-      image
-    );
+    Profile profile = profileService.registerProfile(registerProfileRequest.of(classOf, image));
 
     return GetProfileResponse.builder()
       .simpleProfile(SimpleProfile.of(profile))
