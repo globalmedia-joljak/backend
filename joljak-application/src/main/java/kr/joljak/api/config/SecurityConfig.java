@@ -1,10 +1,14 @@
 package kr.joljak.api.config;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import kr.joljak.api.filter.JwtAccessDeniedHandler;
 import kr.joljak.api.filter.JwtAuthenticationEntryPoint;
 import kr.joljak.core.jwt.JwtTokenProvider;
 import kr.joljak.core.security.UserRole;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,6 +18,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -22,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   private final JwtTokenProvider jwtTokenProvider;
   private final JwtAuthenticationEntryPoint authenticationErrorHandler;
   private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+  @Value("${app.web-navigator.origin}") private String webNavigatorOrigin;
 
   @Bean
   public PasswordEncoder passwordEncoder() {
@@ -53,6 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       ).permitAll()
       .antMatchers(
         "/api/v1/auth/signup", "/api/v1/auth/signin", "/api/v1/auth/reissue/accesstoken"
+          , "/api/v1/notices"
       ).permitAll()
       .antMatchers(
         "/api/v1/invites/**"
@@ -70,6 +79,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .antMatchers(
         "/", "/h2-console/**"
       );
+  }
+
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    List<String> origins = new ArrayList<>(
+      Arrays.asList("http://localhost:3000", "http://127.0.0.1:3000", webNavigatorOrigin)
+    );
+    configuration.setAllowedOrigins(origins);
+    configuration.addAllowedHeader("*");
+    configuration.addAllowedMethod("*");
+    configuration.setAllowCredentials(true);
+
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+
+    return source;
   }
 
   private JwtConfig securityConfigurerAdapter() {
