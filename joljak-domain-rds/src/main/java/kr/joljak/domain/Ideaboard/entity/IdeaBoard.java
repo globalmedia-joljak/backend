@@ -1,4 +1,4 @@
-package kr.joljak.domain.IdeaBoard.entity;
+package kr.joljak.domain.Ideaboard.entity;
 
 import java.util.List;
 import javax.persistence.Column;
@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import kr.joljak.domain.IdeaBoard.dto.SimpleIdeaBoard;
+import kr.joljak.domain.Ideaboard.dto.SimpleIdeaBoard;
 import kr.joljak.domain.common.entity.ExtendEntity;
 import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.user.entity.User;

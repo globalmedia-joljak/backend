@@ -1,15 +1,15 @@
-package kr.joljak.api.ideaBoard.controller;
+package kr.joljak.api.ideaboard.controller;
 
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
-import kr.joljak.api.ideaBoard.request.IdeaBoardRequest;
-import kr.joljak.api.ideaBoard.response.IdeaBoardResponse;
-import kr.joljak.api.ideaBoard.response.IdeaBoardsResponse;
-import kr.joljak.domain.IdeaBoard.dto.SimpleIdeaBoard;
-import kr.joljak.domain.IdeaBoard.entity.IdeaBoard;
-import kr.joljak.domain.IdeaBoard.service.IdeaBoardService;
+import kr.joljak.api.ideaboard.request.IdeaBoardRequest;
+import kr.joljak.api.ideaboard.response.IdeaBoardResponse;
+import kr.joljak.api.ideaboard.response.IdeaBoardsResponse;
+import kr.joljak.domain.Ideaboard.dto.SimpleIdeaBoard;
+import kr.joljak.domain.Ideaboard.entity.IdeaBoard;
+import kr.joljak.domain.Ideaboard.service.IdeaBoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;

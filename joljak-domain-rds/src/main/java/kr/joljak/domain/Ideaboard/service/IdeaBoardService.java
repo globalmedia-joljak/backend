@@ -1,9 +1,8 @@
-package kr.joljak.domain.IdeaBoard.service;
+package kr.joljak.domain.Ideaboard.service;
 
 import kr.joljak.core.security.AuthenticationUtils;
-import kr.joljak.domain.IdeaBoard.dto.SimpleIdeaBoard;
-import kr.joljak.domain.IdeaBoard.entity.IdeaBoard;
-import kr.joljak.domain.IdeaBoard.repository.IdeaBoardRepository;
+import kr.joljak.domain.Ideaboard.entity.IdeaBoard;
+import kr.joljak.domain.Ideaboard.repository.IdeaBoardRepository;
 import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.upload.entity.MediaType;
 import kr.joljak.domain.upload.service.UploadService;
@@ -11,8 +10,8 @@ import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.service.UserService;
 import kr.joljak.domain.util.FetchPages;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,7 +25,8 @@ public class IdeaBoardService {
   private final IdeaBoardRepository ideaBoardRepository;
 
   @Transactional
-  public IdeaBoard addIdeaBoard(SimpleIdeaBoard simpleIdeaBoard, MultipartFile file) {
+  public kr.joljak.domain.Ideaboard.entity.IdeaBoard addIdeaBoard(
+    kr.joljak.domain.Ideaboard.dto.SimpleIdeaBoard simpleIdeaBoard, MultipartFile file) {
 
     User user = getUserByAuthentication();
 

@@ -1,8 +1,9 @@
-package kr.joljak.domain.IdeaBoard.dto;
+package kr.joljak.domain.Ideaboard.dto;
 
 import java.util.List;
-import kr.joljak.domain.IdeaBoard.entity.IdeaBoard;
-import kr.joljak.domain.IdeaBoard.entity.ProjectStatus;
+
+import kr.joljak.domain.Ideaboard.entity.IdeaBoard;
+import kr.joljak.domain.Ideaboard.entity.ProjectStatus;
 import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.entity.UserProjectRole;
 import lombok.AccessLevel;

@@ -1,4 +1,4 @@
-package kr.joljak.api.ideaBoard.response;
+package kr.joljak.api.ideaboard.response;
 
 import java.util.List;
 import lombok.AccessLevel;
@@ -15,7 +15,7 @@ public class IdeaBoardsResponse {
   private Pageable page;
 
   @Builder
-  public IdeaBoardsResponse(List<IdeaBoardResponse> ideaBoardResponseList, Pageable page){
+  public IdeaBoardsResponse(List<IdeaBoardResponse> ideaBoardResponseList, Pageable page) {
     this.ideaBoardResponseList = ideaBoardResponseList;
     this.page = page;
   }
