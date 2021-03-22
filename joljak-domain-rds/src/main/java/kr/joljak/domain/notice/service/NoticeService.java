@@ -43,11 +43,16 @@ public class NoticeService {
     return notice;
   }
 
+  @Transactional
+  public void deleteNotice(Long id) {
+    Notice notice = getNoticeById(id);
+    userService.validAuthenticationClassOf(notice.getClassOf());
+    noticeRepository.deleteById(id);
+  }
+
   @Transactional(readOnly = true)
   public Notice getNoticeById(Long id) {
     return noticeRepository.findById(id)
       .orElseThrow(() -> new NoticeNotFoundException());
   }
-
-
 }

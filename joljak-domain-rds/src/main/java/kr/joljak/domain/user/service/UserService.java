@@ -88,6 +88,7 @@ public class UserService {
 
   public static void validAuthenticationClassOf(String classOf) {
     String authenticationClassOf = AuthenticationUtils.getClassOf();
+
     if (!classOf.equals(authenticationClassOf)) {
       throw new PermissionException("User does not match");
     }

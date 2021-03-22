@@ -15,6 +15,10 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
@@ -79,6 +83,25 @@ public abstract class CommonDomainTest {
         this.userRefreshToken = jwtTokenProvider.generateRefreshToken(user.getClassOf(), userRoles);
         break;
     }
+  }
+
+  public void setAuthentication(UserRole userRole) {
+    String classOf = TEST_USER_CLASS_OF;
+    if (userRole.equals(UserRole.ADMIN)) {
+      classOf = TEST_ADMIN_CLASS_OF;
+    }
+
+    List<String> roles = new ArrayList<>(Collections.singleton(userRole.getRoleName()));
+    List<? extends GrantedAuthority> authorities = roles.stream()
+        .map(SimpleGrantedAuthority::new)
+        .collect(Collectors.toList());
+
+    org.springframework.security.core.userdetails.User principal =
+        new org.springframework.security.core.userdetails.User(classOf, "", authorities);
+
+    SecurityContextHolder.getContext().setAuthentication(
+        new UsernamePasswordAuthenticationToken(principal, null, authorities)
+    );
   }
 
   public User getAdmin() {
