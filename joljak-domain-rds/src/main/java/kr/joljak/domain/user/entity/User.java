@@ -84,4 +84,12 @@ public class User extends ExtendEntity {
   public void setKakaoId(String kakaoId) {
     this.kakaoId = kakaoId;
   }
+
+  public void setMainProjectRole(UserProjectRole mainProjectRole) {
+    this.mainProjectRole = mainProjectRole;
+  }
+
+  public void setSubProjectRole(UserProjectRole subProjectRole) {
+    this.subProjectRole = subProjectRole;
+  }
 }
