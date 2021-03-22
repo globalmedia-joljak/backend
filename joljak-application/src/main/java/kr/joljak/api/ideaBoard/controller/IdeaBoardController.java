@@ -10,8 +10,8 @@ import kr.joljak.api.ideaBoard.response.IdeaBoardsResponse;
 import kr.joljak.domain.IdeaBoard.dto.SimpleIdeaBoard;
 import kr.joljak.domain.IdeaBoard.entity.IdeaBoard;
 import kr.joljak.domain.IdeaBoard.service.IdeaBoardService;
-import kr.joljak.domain.util.FetchPages;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,19 +49,21 @@ public class IdeaBoardController {
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
   public IdeaBoardsResponse getAllIdeaBoard(
-      @RequestParam(defaultValue = "0") int page,
-      @RequestParam(defaultValue = "10") int size
-  ){
-    List<IdeaBoard> ideaBoardList = ideaBoardService.getIdeaBoardsByPage(page, size);
-    List<IdeaBoardResponse> ideaBoardResponseList = getIdeaBoardResponseListFrom(ideaBoardList);
+    @RequestParam(defaultValue = "0") int page,
+    @RequestParam(defaultValue = "10") int size
+  ) {
+    Page<IdeaBoard> ideaBoardPage = ideaBoardService.getIdeaBoardsByPage(page, size);
+
+    List<IdeaBoardResponse> ideaBoardResponseList = getIdeaBoardResponseListFrom(
+      ideaBoardPage.getContent());
 
     return IdeaBoardsResponse.builder()
       .ideaBoardResponseList(ideaBoardResponseList)
-      .page(FetchPages.of(page, size))
+      .page(ideaBoardPage.getPageable())
       .build();
   }
 
-  private List<IdeaBoardResponse> getIdeaBoardResponseListFrom(List<IdeaBoard> ideaBoardList){
+  private List<IdeaBoardResponse> getIdeaBoardResponseListFrom(List<IdeaBoard> ideaBoardList) {
     return ideaBoardList.stream()
       .map(ideaBoard -> IdeaBoardResponse.of(ideaBoard))
       .collect(Collectors.toList());

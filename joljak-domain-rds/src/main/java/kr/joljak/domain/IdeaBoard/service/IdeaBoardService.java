@@ -1,6 +1,5 @@
 package kr.joljak.domain.IdeaBoard.service;
 
-import java.util.List;
 import kr.joljak.core.security.AuthenticationUtils;
 import kr.joljak.domain.IdeaBoard.dto.SimpleIdeaBoard;
 import kr.joljak.domain.IdeaBoard.entity.IdeaBoard;
@@ -10,9 +9,9 @@ import kr.joljak.domain.upload.entity.MediaType;
 import kr.joljak.domain.upload.service.UploadService;
 import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.service.UserService;
-import kr.joljak.domain.util.FetchPages;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,8 +44,8 @@ public class IdeaBoardService {
   }
 
   @Transactional(readOnly = true)
-  public List<IdeaBoard> getIdeaBoardsByPage(int page, int size) {
-    Pageable pageable = FetchPages.of(page, size);
-    return ideaBoardRepository.findAll(pageable).getContent();
+  public Page<IdeaBoard> getIdeaBoardsByPage(int page, int size) {
+
+    return ideaBoardRepository.findAll(PageRequest.of(page, size));
   }
 }
