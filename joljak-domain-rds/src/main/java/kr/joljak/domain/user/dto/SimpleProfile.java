@@ -32,6 +32,7 @@ public class SimpleProfile {
     if (profile.getMedia() != null) {
       mediaInfo = MediaInfo.of(profile.getMedia());
     }
+
     return SimpleProfile.builder()
         .id(profile.getId())
         .mediaInfo(mediaInfo)
