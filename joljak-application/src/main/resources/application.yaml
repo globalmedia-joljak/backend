@@ -54,3 +54,4 @@ cloud:
 ## custom
 app.jwt.secret: ${JWT_SECRET_KEY}
 app.jwt.expiration: ${JWT_EXPIRATION_TIME}
+app.web-navigator.origin: ${APP_WEB_NAVIGATOR_ORIGIN}

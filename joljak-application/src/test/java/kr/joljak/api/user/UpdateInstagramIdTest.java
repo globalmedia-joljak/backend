@@ -21,7 +21,7 @@ public class UpdateInstagramIdTest extends CommonApiTest {
 
     //when
     MvcResult mvcResult = mockMvc.perform(
-      patch(USER_URL + "/" + TEST_USER_CLASS_OF + "/istagramid")
+      patch(USER_URL + "/" + TEST_USER_CLASS_OF + "/instagramid")
         .contentType(MediaType.APPLICATION_JSON_VALUE)
         .content(request)
     ).andReturn();
@@ -39,7 +39,7 @@ public class UpdateInstagramIdTest extends CommonApiTest {
 
     //when
     MvcResult mvcResult = mockMvc.perform(
-        patch(USER_URL + "/" + TEST_ADMIN_CLASS_OF + "/istagramid")
+        patch(USER_URL + "/" + TEST_ADMIN_CLASS_OF + "/instagramid")
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .content(request)
     ).andReturn();
@@ -57,7 +57,7 @@ public class UpdateInstagramIdTest extends CommonApiTest {
 
     //when
     MvcResult mvcResult = mockMvc.perform(
-        patch(USER_URL + "/" + "notFoundUser" + "/istagramid")
+        patch(USER_URL + "/" + "notFoundUser" + "/instagramid")
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .content(request)
     ).andReturn();
