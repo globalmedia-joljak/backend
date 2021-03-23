@@ -25,6 +25,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.security.core.parameters.P;
 
 @Entity
 @Getter
@@ -86,6 +87,30 @@ public class IdeaBoard extends ExtendEntity {
       .user(user)
       .requiredPositions(simpleIdeaBoard.getRequiredPositions())
       .build();
+  }
+
+  public void setTitle(String title){
+    this.title = title;
+  }
+
+  public void setContent(String content){
+    this.content = content;
+  }
+
+  public void setStatus(ProjectStatus status){
+    this.status = status;
+  }
+
+  public void setContact(String contact){
+    this.contact = contact;
+  }
+
+  public void setRequiredPosiotions(List<UserProjectRole> requiredPosiotions){
+    this.requiredPosiotions = requiredPosiotions;
+  }
+
+  public void setFile(Media file){
+    this.file = file;
   }
 
 }

@@ -31,11 +31,7 @@ public class IdeaBoardService {
 
     User user = getUserByAuthentication();
 
-    Media mediaFile = null;
-    if (file != null) {
-      mediaFile = uploadService
-        .uploadFile(file, "/" + user.getClassOf(), MediaType.FILE);
-    }
+    Media mediaFile = getMedia(file, user);
 
     IdeaBoard ideaBoard = IdeaBoard.of(simpleIdeaBoard, user, mediaFile);
 
@@ -59,5 +55,32 @@ public class IdeaBoardService {
 
     return ideaBoardRepository.findById(id)
       .orElseThrow(() -> new IdeaBoardNotFoundException(id));
+  }
+
+  public IdeaBoard updateIdeaBoardById(Long id,
+    SimpleIdeaBoard simpleIdeaBoard, MultipartFile file) {
+
+    IdeaBoard ideaBoard = getIdeaBoardsById(id);
+    User user = getUserByAuthentication();
+
+    Media mediaFile = getMedia(file, user);
+
+    ideaBoard.setTitle(simpleIdeaBoard.getTitle());
+    ideaBoard.setContent(simpleIdeaBoard.getContent());
+    ideaBoard.setStatus(simpleIdeaBoard.getStatus());
+    ideaBoard.setContact(simpleIdeaBoard.getContact());
+    ideaBoard.setRequiredPosiotions(simpleIdeaBoard.getRequiredPositions());
+    ideaBoard.setFile(mediaFile);
+
+    return ideaBoard;
+  }
+
+  private Media getMedia(MultipartFile file, User user){
+    Media mediaFile = null;
+    if(file != null){
+      mediaFile = uploadService
+        .uploadFile(file, "/" + user.getClassOf(), MediaType.FILE);
+    }
+    return mediaFile;
   }
 }
