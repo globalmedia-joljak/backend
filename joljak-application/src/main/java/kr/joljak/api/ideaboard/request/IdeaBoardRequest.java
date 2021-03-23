@@ -2,8 +2,10 @@ package kr.joljak.api.ideaboard.request;
 
 import java.util.List;
 import javax.validation.constraints.NotNull;
-import kr.joljak.domain.IdeaBoard.dto.SimpleIdeaBoard;
-import kr.joljak.domain.IdeaBoard.entity.ProjectStatus;
+
+
+import kr.joljak.domain.Ideaboard.dto.SimpleIdeaBoard;
+import kr.joljak.domain.Ideaboard.entity.ProjectStatus;
 import kr.joljak.domain.user.entity.UserProjectRole;
 import lombok.AccessLevel;
 import lombok.Builder;

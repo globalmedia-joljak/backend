@@ -61,6 +61,7 @@ public abstract class CommonApiTest {
 
   protected final String URL = "http://localhost:";
   protected final String NOTICE_URL = URL + port + "/api/v1/notices";
+  protected final String IDEABOARD_URL = URL + port + "/api/v1/ideaboards";
   protected final String AUTH_URL = URL + port + "/api/v1/auth";
   protected final String INVITE_URL = URL + port + "/api/v1/invites";
   protected final String USER_URL = URL + port + "/api/v1/users";
