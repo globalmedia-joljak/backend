@@ -1,6 +1,7 @@
 package kr.joljak.domain.Ideaboard.service;
 
 import kr.joljak.core.security.AuthenticationUtils;
+import kr.joljak.domain.Ideaboard.dto.SimpleIdeaBoard;
 import kr.joljak.domain.Ideaboard.entity.IdeaBoard;
 import kr.joljak.domain.Ideaboard.repository.IdeaBoardRepository;
 import kr.joljak.domain.upload.entity.Media;
@@ -26,14 +27,27 @@ public class IdeaBoardService {
 
   @Transactional
   public kr.joljak.domain.Ideaboard.entity.IdeaBoard addIdeaBoard(
-    kr.joljak.domain.Ideaboard.dto.SimpleIdeaBoard simpleIdeaBoard, MultipartFile file) {
+    SimpleIdeaBoard simpleIdeaBoard, MultipartFile file) {
 
     User user = getUserByAuthentication();
 
-    Media mediaFile = uploadService
-      .uploadFile(file, "/" + user.getClassOf(), MediaType.FILE);
+    Media mediaFile = null;
+    if(file != null){
+      mediaFile = uploadService
+        .uploadFile(file, "/" + user.getClassOf(), MediaType.FILE);
+    }
 
-    IdeaBoard ideaBoard = IdeaBoard.of(simpleIdeaBoard, user, mediaFile);
+    IdeaBoard ideaBoard = IdeaBoard.builder()
+      .status(simpleIdeaBoard.getStatus())
+      .title(simpleIdeaBoard.getTitle())
+      .content(simpleIdeaBoard.getContent())
+      .contact(simpleIdeaBoard.getContact())
+      .file(mediaFile)
+      .user(user)
+      .requiredPositions(simpleIdeaBoard.getRequiredPositions())
+      .build();
+
+//    IdeaBoard ideaBoard = IdeaBoard.of(simpleIdeaBoard, user, mediaFile);
 
     return ideaBoardRepository.save(ideaBoard);
   }
