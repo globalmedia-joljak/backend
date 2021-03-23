@@ -3,6 +3,7 @@ package kr.joljak.domain.Ideaboard.service;
 import kr.joljak.core.security.AuthenticationUtils;
 import kr.joljak.domain.Ideaboard.dto.SimpleIdeaBoard;
 import kr.joljak.domain.Ideaboard.entity.IdeaBoard;
+import kr.joljak.domain.Ideaboard.exception.IdeaBoardNotFoundException;
 import kr.joljak.domain.Ideaboard.repository.IdeaBoardRepository;
 import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.upload.entity.MediaType;
@@ -51,5 +52,12 @@ public class IdeaBoardService {
   public Page<IdeaBoard> getIdeaBoardsByPage(int page, int size) {
 
     return ideaBoardRepository.findAll(FetchPages.of(page, size));
+  }
+
+  @Transactional(readOnly = true)
+  public IdeaBoard getIdeaBoardsById(Long id) {
+
+    return ideaBoardRepository.findById(id)
+      .orElseThrow(() -> new IdeaBoardNotFoundException(id));
   }
 }

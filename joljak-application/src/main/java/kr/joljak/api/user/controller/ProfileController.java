@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/profiles")
 public class ProfileController {
+
   private final ProfileService profileService;
 
   @ApiOperation("유저 프로필 등록 API")
@@ -47,15 +48,16 @@ public class ProfileController {
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
   public GetProfilesResponse getProfiles(
-      @RequestParam(defaultValue = "0") int page,
-      @RequestParam(defaultValue = "10") int size
+    @RequestParam(defaultValue = "0") int page,
+    @RequestParam(defaultValue = "10") int size
   ) {
-    Page<SimpleProfile> simpleProfilePage = profileService.getProfiles(FetchPages.of(page, size))
-        .map(SimpleProfile::of);
+    Page<SimpleProfile> simpleProfilePage = profileService
+      .getProfiles(FetchPages.of(page, size))
+      .map(SimpleProfile::of);
 
     return GetProfilesResponse.builder()
-        .simpleProfilePage(simpleProfilePage)
-        .build();
+      .simpleProfilePage(simpleProfilePage)
+      .build();
   }
 
   @ApiOperation("유저 프로필 상세조회 API")
