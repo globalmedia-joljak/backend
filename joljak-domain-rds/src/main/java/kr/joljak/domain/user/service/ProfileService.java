@@ -6,8 +6,11 @@ import kr.joljak.domain.user.dto.RegisterProfile;
 import kr.joljak.domain.user.entity.Profile;
 import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.exception.AlreadyProfileExistException;
+import kr.joljak.domain.user.exception.ProfileNotFoundException;
 import kr.joljak.domain.user.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,4 +49,14 @@ public class ProfileService {
     }
   }
 
+  @Transactional(readOnly = true)
+  public Page<Profile> getProfiles(PageRequest pageRequest) {
+    return profileRepository.findAll(pageRequest);
+  }
+
+  @Transactional(readOnly = true)
+  public Profile getProfile(String classOf) {
+    return profileRepository.findByUserClassOf(classOf)
+      .orElseThrow(ProfileNotFoundException::new);
+  }
 }
