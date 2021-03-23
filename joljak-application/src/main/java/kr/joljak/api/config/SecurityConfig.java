@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity httpSecurity) throws Exception {
     httpSecurity
-      .csrf().disable()
+      .cors().and().csrf().disable()
       .httpBasic().disable()
       .formLogin().disable()
       .logout().disable()
@@ -63,6 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         "/api/v1/auth/signup", "/api/v1/auth/signin", "/api/v1/auth/reissue/accesstoken"
           , "/api/v1/notices"
       ).permitAll()
+      .antMatchers(HttpMethod.GET, "/api/v1/profiles/**").permitAll()
       .antMatchers(
         "/api/v1/invites/**"
       ).hasRole(UserRole.ADMIN.getKey())
@@ -88,6 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       Arrays.asList("http://localhost:3000", "http://127.0.0.1:3000", webNavigatorOrigin)
     );
     configuration.setAllowedOrigins(origins);
+    configuration.addAllowedOrigin("*");
     configuration.addAllowedHeader("*");
     configuration.addAllowedMethod("*");
     configuration.setAllowCredentials(true);

@@ -28,9 +28,14 @@ public class SimpleProfile {
   }
 
   public static SimpleProfile of(Profile profile) {
+    MediaInfo mediaInfo = null;
+    if (profile.getMedia() != null) {
+      mediaInfo = MediaInfo.of(profile.getMedia());
+    }
+
     return SimpleProfile.builder()
         .id(profile.getId())
-        .mediaInfo(MediaInfo.of(profile.getMedia()))
+        .mediaInfo(mediaInfo)
         .user(SimpleUser.of(profile.getUser()))
         .content(profile.getContent())
         .portfolioLinks(profile.getPortfolioLinks())
