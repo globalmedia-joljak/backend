@@ -64,6 +64,7 @@ public abstract class CommonApiTest {
   protected final String AUTH_URL = URL + port + "/api/v1/auth";
   protected final String INVITE_URL = URL + port + "/api/v1/invites";
   protected final String USER_URL = URL + port + "/api/v1/users";
+  protected final String PROFILE_URL = URL + port + "/api/v1/profiles";
 
   protected static int nextId = 0;
 

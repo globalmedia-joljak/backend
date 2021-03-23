@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
 import kr.joljak.domain.common.CommonDomainTest;
+import kr.joljak.domain.user.dto.RegisterProfile;
 import kr.joljak.domain.user.entity.Profile;
 import kr.joljak.domain.user.entity.UserProjectRole;
 import kr.joljak.domain.user.exception.AlreadyProfileExistException;
@@ -34,14 +35,17 @@ public class ProfileServiceTest extends CommonDomainTest {
       .build();
 
     // when
-    Optional<Profile> profile = profileRepository.getByUserClassOf(TEST_USER_CLASS_OF);
+    RegisterProfile registerProfile = RegisterProfile.builder()
+      .classOf(TEST_USER_CLASS_OF)
+      .mainRole(UserProjectRole.DEVELOPER)
+      .subRole(UserProjectRole.MEDIA_ART)
+      .profile(buildProfile)
+      .image(null)
+      .build();
+
+    Optional<Profile> profile = profileRepository.findByUserClassOf(TEST_USER_CLASS_OF);
     commonProfile = profile.orElseGet(
-      () -> profileService.registerProfile(
-        buildProfile,
-        UserProjectRole.DEVELOPER,
-        UserProjectRole.MEDIA_ART,
-        null
-      )
+      () -> profileService.registerProfile(registerProfile)
     );
 
   }
@@ -57,12 +61,15 @@ public class ProfileServiceTest extends CommonDomainTest {
   @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
   public void registerProfile_Fail_AlreadyProfileExistException() {
     // when
-    profileService.registerProfile(
-      commonProfile,
-      UserProjectRole.DEVELOPER,
-      UserProjectRole.MEDIA_ART,
-      null
-    );
+    RegisterProfile registerProfile = RegisterProfile.builder()
+        .classOf(TEST_USER_CLASS_OF)
+        .mainRole(UserProjectRole.DEVELOPER)
+        .subRole(UserProjectRole.MEDIA_ART)
+        .profile(commonProfile)
+        .image(null)
+        .build();
+
+    profileService.registerProfile(registerProfile);
 
     // then
   }
