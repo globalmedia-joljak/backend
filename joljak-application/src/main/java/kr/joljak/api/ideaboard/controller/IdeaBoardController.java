@@ -36,7 +36,7 @@ public class IdeaBoardController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public IdeaBoardResponse create(
-    @RequestPart("file") MultipartFile file,
+    @RequestPart(required = false) MultipartFile file,
     @Valid @RequestPart("ideaBoardRequest") IdeaBoardRequest ideaBoardRequest
   ) {
     SimpleIdeaBoard simpleIdeaBoard = ideaBoardRequest

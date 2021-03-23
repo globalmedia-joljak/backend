@@ -26,7 +26,7 @@ public class IdeaBoardService {
   private final IdeaBoardRepository ideaBoardRepository;
 
   @Transactional
-  public kr.joljak.domain.Ideaboard.entity.IdeaBoard addIdeaBoard(
+  public IdeaBoard addIdeaBoard(
     SimpleIdeaBoard simpleIdeaBoard, MultipartFile file) {
 
     User user = getUserByAuthentication();
@@ -37,15 +37,7 @@ public class IdeaBoardService {
         .uploadFile(file, "/" + user.getClassOf(), MediaType.FILE);
     }
 
-    IdeaBoard ideaBoard = IdeaBoard.builder()
-      .status(simpleIdeaBoard.getStatus())
-      .title(simpleIdeaBoard.getTitle())
-      .content(simpleIdeaBoard.getContent())
-      .contact(simpleIdeaBoard.getContact())
-      .file(mediaFile)
-      .user(user)
-      .requiredPositions(simpleIdeaBoard.getRequiredPositions())
-      .build();
+    IdeaBoard ideaBoard = IdeaBoard.of(simpleIdeaBoard, user, mediaFile);
 
     return ideaBoardRepository.save(ideaBoard);
   }
