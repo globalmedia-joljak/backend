@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface ProfileRepository extends ExtendRepository<Profile> {
   boolean existsByUserClassOf(String classOf);
 
-  Optional<Profile> getByUserClassOf(String classOf);
+  Optional<Profile> findByUserClassOf(String classOf);
 }
