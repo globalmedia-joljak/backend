@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,10 +64,26 @@ public class IdeaBoardController {
       .build();
   }
 
+  @ApiOperation("아이디어 게시판 개별 조회 API")
+  @GetMapping("/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  public IdeaBoardResponse getIdeaBoard(
+    @PathVariable("id") Long id
+  ){
+    IdeaBoard ideaBoard = ideaBoardService.getIdeaBoardsById(id);
+    return getIdeaBoardResponse(SimpleIdeaBoard.of(ideaBoard));
+  }
+
   private List<IdeaBoardResponse> getIdeaBoardResponseListFrom(List<IdeaBoard> ideaBoardList) {
     return ideaBoardList.stream()
       .map(ideaBoard -> IdeaBoardResponse.of(ideaBoard))
       .collect(Collectors.toList());
+  }
+
+  private IdeaBoardResponse getIdeaBoardResponse(SimpleIdeaBoard simpleIdeaBoard){
+    return IdeaBoardResponse.builder()
+
+      .build();
   }
 
 }

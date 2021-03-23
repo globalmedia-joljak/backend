@@ -3,6 +3,7 @@ package kr.joljak.domain.Ideaboard.service;
 import kr.joljak.core.security.AuthenticationUtils;
 import kr.joljak.domain.Ideaboard.dto.SimpleIdeaBoard;
 import kr.joljak.domain.Ideaboard.entity.IdeaBoard;
+import kr.joljak.domain.Ideaboard.exception.IdeaBoardNotFoundException;
 import kr.joljak.domain.Ideaboard.repository.IdeaBoardRepository;
 import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.upload.entity.MediaType;
@@ -11,7 +12,6 @@ import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.service.UserService;
 import kr.joljak.domain.util.FetchPages;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +32,7 @@ public class IdeaBoardService {
     User user = getUserByAuthentication();
 
     Media mediaFile = null;
-    if(file != null){
+    if (file != null) {
       mediaFile = uploadService
         .uploadFile(file, "/" + user.getClassOf(), MediaType.FILE);
     }
@@ -47,8 +47,6 @@ public class IdeaBoardService {
       .requiredPositions(simpleIdeaBoard.getRequiredPositions())
       .build();
 
-//    IdeaBoard ideaBoard = IdeaBoard.of(simpleIdeaBoard, user, mediaFile);
-
     return ideaBoardRepository.save(ideaBoard);
   }
 
@@ -62,5 +60,11 @@ public class IdeaBoardService {
   public Page<IdeaBoard> getIdeaBoardsByPage(int page, int size) {
 
     return ideaBoardRepository.findAll(FetchPages.of(page, size));
+  }
+
+  public IdeaBoard getIdeaBoardsById(Long id) {
+
+    return ideaBoardRepository.findById(id)
+      .orElseThrow(() -> new IdeaBoardNotFoundException(id));
   }
 }
