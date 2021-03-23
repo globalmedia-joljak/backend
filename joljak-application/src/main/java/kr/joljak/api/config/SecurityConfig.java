@@ -89,6 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       Arrays.asList("http://localhost:3000", "http://127.0.0.1:3000", webNavigatorOrigin)
     );
     configuration.setAllowedOrigins(origins);
+    configuration.addAllowedOrigin("*");
     configuration.addAllowedHeader("*");
     configuration.addAllowedMethod("*");
     configuration.setAllowCredentials(true);
