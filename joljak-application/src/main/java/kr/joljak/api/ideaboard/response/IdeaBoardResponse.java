@@ -3,7 +3,6 @@ package kr.joljak.api.ideaboard.response;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.validation.constraints.NotNull;
-
 import kr.joljak.domain.Ideaboard.entity.IdeaBoard;
 import kr.joljak.domain.Ideaboard.entity.ProjectStatus;
 import kr.joljak.domain.upload.entity.MediaInfo;
@@ -56,6 +55,12 @@ public class IdeaBoardResponse {
   }
 
   public static IdeaBoardResponse of(IdeaBoard ideaBoard) {
+    MediaInfo mediaInfo = null;
+
+    if (ideaBoard.getFile() != null) {
+      mediaInfo = MediaInfo.of(ideaBoard.getFile());
+    }
+
     return IdeaBoardResponse.builder()
       .id(ideaBoard.getId())
       .title(ideaBoard.getTitle())
@@ -66,7 +71,7 @@ public class IdeaBoardResponse {
       .requiredPositions(ideaBoard.getRequiredPosiotions())
       .name(ideaBoard.getUser().getName())
       .mainProjectRole(ideaBoard.getUser().getMainProjectRole())
-      .fileInfo(MediaInfo.of(ideaBoard.getFile()))
+      .fileInfo(mediaInfo)
       .createDate(ideaBoard.getCreatedDate())
       .modifiedDate(ideaBoard.getModifiedDate())
       .build();
