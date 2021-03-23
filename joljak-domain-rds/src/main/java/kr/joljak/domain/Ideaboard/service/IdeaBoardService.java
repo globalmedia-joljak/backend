@@ -54,6 +54,7 @@ public class IdeaBoardService {
     return ideaBoardRepository.findAll(FetchPages.of(page, size));
   }
 
+  @Transactional(readOnly = true)
   public IdeaBoard getIdeaBoardsById(Long id) {
 
     return ideaBoardRepository.findById(id)

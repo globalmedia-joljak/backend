@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import kr.joljak.api.ideaboard.request.IdeaBoardRequest;
+import kr.joljak.api.ideaboard.response.IdeaBoardResponse;
 import kr.joljak.api.notice.request.NoticeRequest;
 import kr.joljak.core.jwt.JwtTokenProvider;
 import kr.joljak.core.security.AuthenticationUtils;
 import kr.joljak.core.security.UserRole;
+import kr.joljak.domain.Ideaboard.entity.ProjectStatus;
 import kr.joljak.domain.invite.entity.Invite;
 import kr.joljak.domain.invite.repository.InviteRepository;
 import kr.joljak.domain.user.entity.User;
@@ -143,7 +146,7 @@ public abstract class CommonApiTest {
       .collect(Collectors.toList());
 
     org.springframework.security.core.userdetails.User principal =
-        new org.springframework.security.core.userdetails.User(classOf, "", authorities);
+      new org.springframework.security.core.userdetails.User(classOf, "", authorities);
 
     SecurityContextHolder.getContext().setAuthentication(
       new UsernamePasswordAuthenticationToken(principal, null, authorities)
@@ -189,5 +192,14 @@ public abstract class CommonApiTest {
       title,
       content
     );
+  }
+
+  public IdeaBoardRequest createIdeaBoardRequest(String title, String content,
+    ProjectStatus status) {
+    return IdeaBoardRequest.builder()
+      .title(title)
+      .content(content)
+      .status(status)
+      .build();
   }
 }

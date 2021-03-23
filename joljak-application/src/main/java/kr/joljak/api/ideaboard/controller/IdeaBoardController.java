@@ -71,7 +71,7 @@ public class IdeaBoardController {
     @PathVariable("id") Long id
   ){
     IdeaBoard ideaBoard = ideaBoardService.getIdeaBoardsById(id);
-    return getIdeaBoardResponse(SimpleIdeaBoard.of(ideaBoard));
+    return IdeaBoardResponse.of(ideaBoard);
   }
 
   private List<IdeaBoardResponse> getIdeaBoardResponseListFrom(List<IdeaBoard> ideaBoardList) {
@@ -79,11 +79,4 @@ public class IdeaBoardController {
       .map(ideaBoard -> IdeaBoardResponse.of(ideaBoard))
       .collect(Collectors.toList());
   }
-
-  private IdeaBoardResponse getIdeaBoardResponse(SimpleIdeaBoard simpleIdeaBoard){
-    return IdeaBoardResponse.builder()
-
-      .build();
-  }
-
 }
