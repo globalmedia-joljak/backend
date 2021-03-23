@@ -25,47 +25,49 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/profiles")
 public class ProfileController {
-  private final ProfileService profileService;
 
-  @ApiOperation("유저 프로필 등록 API")
-  @PostMapping("/{classOf}")
-  @ResponseStatus(HttpStatus.CREATED)
-  public GetProfileResponse registerProfile(
-    @RequestPart(required = false) MultipartFile image,
-    @RequestPart RegisterProfileRequest registerProfileRequest,
-    @PathVariable String classOf
-  ) {
+    private final ProfileService profileService;
 
-    Profile profile = profileService.registerProfile(registerProfileRequest.of(classOf, image));
+    @ApiOperation("유저 프로필 등록 API")
+    @PostMapping("/{classOf}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public GetProfileResponse registerProfile(
+        @RequestPart(required = false) MultipartFile image,
+        @RequestPart RegisterProfileRequest registerProfileRequest,
+        @PathVariable String classOf
+    ) {
 
-    return GetProfileResponse.builder()
-      .simpleProfile(SimpleProfile.of(profile))
-      .build();
-  }
+        Profile profile = profileService.registerProfile(registerProfileRequest.of(classOf, image));
 
-  @ApiOperation("유저 프로필 리스트 API")
-  @GetMapping
-  @ResponseStatus(HttpStatus.OK)
-  public GetProfilesResponse getProfiles(
-      @RequestParam(defaultValue = "0") int page,
-      @RequestParam(defaultValue = "10") int size
-  ) {
-    Page<SimpleProfile> simpleProfilePage = profileService.getProfiles(FetchPages.of(page, size))
-        .map(SimpleProfile::of);
+        return GetProfileResponse.builder()
+            .simpleProfile(SimpleProfile.of(profile))
+            .build();
+    }
 
-    return GetProfilesResponse.builder()
-        .simpleProfilePage(simpleProfilePage)
-        .build();
-  }
+    @ApiOperation("유저 프로필 리스트 API")
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public GetProfilesResponse getProfiles(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<SimpleProfile> simpleProfilePage = profileService
+            .getProfiles(FetchPages.of(page, size))
+            .map(SimpleProfile::of);
 
-  @ApiOperation("유저 프로필 상세조회 API")
-  @GetMapping("/{classOf}")
-  @ResponseStatus(HttpStatus.OK)
-  public GetProfileResponse getProfile(@PathVariable String classOf) {
-    Profile profile = profileService.getProfile(classOf);
+        return GetProfilesResponse.builder()
+            .simpleProfilePage(simpleProfilePage)
+            .build();
+    }
 
-    return GetProfileResponse.builder()
-      .simpleProfile(SimpleProfile.of(profile))
-      .build();
-  }
+    @ApiOperation("유저 프로필 상세조회 API")
+    @GetMapping("/{classOf}")
+    @ResponseStatus(HttpStatus.OK)
+    public GetProfileResponse getProfile(@PathVariable String classOf) {
+        Profile profile = profileService.getProfile(classOf);
+
+        return GetProfileResponse.builder()
+            .simpleProfile(SimpleProfile.of(profile))
+            .build();
+    }
 }
