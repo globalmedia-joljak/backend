@@ -76,8 +76,11 @@ public class ProfileService {
     }
 
     // 새로운 이미지로 등록한 경우
-    Media media = uploadService.uploadImage(updateProfile.getImage(), "/" + classOf);
-    profile.setMedia(media);
+    if (updateProfile.getImage() != null) {
+      Media media = uploadService.uploadImage(updateProfile.getImage(), "/" + classOf);
+      profile.setMedia(media);
+    }
+
 
 
     return profile;
