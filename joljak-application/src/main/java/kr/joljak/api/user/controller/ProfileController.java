@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/profiles")
 public class ProfileController {
+
   private final ProfileService profileService;
 
   @ApiOperation("유저 프로필 등록 API")

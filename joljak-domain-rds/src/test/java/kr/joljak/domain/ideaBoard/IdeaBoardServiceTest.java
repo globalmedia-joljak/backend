@@ -2,10 +2,10 @@ package kr.joljak.domain.ideaBoard;
 
 import java.util.ArrayList;
 import java.util.List;
-import kr.joljak.domain.IdeaBoard.dto.SimpleIdeaBoard;
-import kr.joljak.domain.IdeaBoard.entity.IdeaBoard;
-import kr.joljak.domain.IdeaBoard.entity.ProjectStatus;
-import kr.joljak.domain.IdeaBoard.service.IdeaBoardService;
+import kr.joljak.domain.Ideaboard.dto.SimpleIdeaBoard;
+import kr.joljak.domain.Ideaboard.entity.IdeaBoard;
+import kr.joljak.domain.Ideaboard.entity.ProjectStatus;
+import kr.joljak.domain.Ideaboard.service.IdeaBoardService;
 import kr.joljak.domain.common.CommonDomainTest;
 import kr.joljak.domain.upload.service.UploadService;
 import kr.joljak.domain.user.entity.UserProjectRole;
