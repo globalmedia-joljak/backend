@@ -1,5 +1,6 @@
 package kr.joljak.domain.common;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -101,6 +103,26 @@ public abstract class CommonDomainTest {
 
     SecurityContextHolder.getContext().setAuthentication(
         new UsernamePasswordAuthenticationToken(principal, null, authorities)
+    );
+  }
+
+
+  public MockMultipartFile createMockTextFile(String fileName) {
+    return new MockMultipartFile(
+        "file",
+        fileName + ".txt" ,
+        "text/plain" ,
+        "hello file".getBytes()
+    );
+  }
+
+  public MockMultipartFile createMockImageFile(String fileName) throws Exception {
+    FileInputStream fileInputStream = new FileInputStream("src/test/resources/images/logo.jpg");
+    return new MockMultipartFile(
+        "file",
+        fileName + ".jpg",
+        null,
+        fileInputStream
     );
   }
 
