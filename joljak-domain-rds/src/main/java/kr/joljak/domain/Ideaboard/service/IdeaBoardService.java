@@ -7,6 +7,7 @@ import kr.joljak.domain.Ideaboard.exception.IdeaBoardNotFoundException;
 import kr.joljak.domain.Ideaboard.repository.IdeaBoardRepository;
 import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.upload.entity.MediaType;
+import kr.joljak.domain.upload.exception.NotMatchingFIleNameException;
 import kr.joljak.domain.upload.service.UploadService;
 import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.service.UserService;
@@ -61,30 +62,35 @@ public class IdeaBoardService {
       .orElseThrow(() -> new IdeaBoardNotFoundException(id));
   }
 
+  @Transactional
   public IdeaBoard updateIdeaBoardById(Long id,
     SimpleIdeaBoard simpleIdeaBoard, MultipartFile file) {
 
     IdeaBoard ideaBoard = getIdeaBoardsById(id);
     User user = getUserByAuthentication();
 
-    Media mediaFile = getMedia(file, user);
-
     ideaBoard.setTitle(simpleIdeaBoard.getTitle());
     ideaBoard.setContent(simpleIdeaBoard.getContent());
     ideaBoard.setStatus(simpleIdeaBoard.getStatus());
     ideaBoard.setContact(simpleIdeaBoard.getContact());
     ideaBoard.setRequiredPosiotions(simpleIdeaBoard.getRequiredPositions());
-    ideaBoard.setFile(mediaFile);
+
+    if (simpleIdeaBoard.getDeleteFileName() != null) {
+      Media media = ideaBoard.getFile();
+
+      if (media!=null && !media.getModifyName().equals(simpleIdeaBoard.getDeleteFileName())) {
+        throw new NotMatchingFIleNameException("file name does not match when you delete.");
+      }
+      ideaBoard.setFile(null);
+      uploadService.deleteFile(media.getModifyName(), "/" + ideaBoard.getUser().getClassOf());
+    }
+
+    if (file != null) {
+      Media mediaFile = uploadService
+        .uploadFile(file, "/" + user.getClassOf(), MediaType.FILE);
+      ideaBoard.setFile(mediaFile);
+    }
 
     return ideaBoard;
-  }
-
-  private Media getMedia(MultipartFile file, User user){
-    Media mediaFile = null;
-    if(file != null){
-      mediaFile = uploadService
-        .uploadFile(file, "/" + user.getClassOf(), MediaType.FILE);
-    }
-    return mediaFile;
   }
 }
