@@ -37,7 +37,7 @@ public class Profile {
   @LazyCollection(LazyCollectionOption.FALSE)
   private List<String> portfolioLinks;
 
-  @OneToOne(orphanRemoval = true)
+  @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
   @JoinColumn(name = "media_id")
   private Media media;
 
