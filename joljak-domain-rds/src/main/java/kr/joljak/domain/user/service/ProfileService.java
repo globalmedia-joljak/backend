@@ -55,6 +55,7 @@ public class ProfileService {
   @Transactional
   public Profile updateProfile(UpdateProfile updateProfile) {
     String classOf = updateProfile.getClassOf();
+    UserService.validAuthenticationClassOf(classOf);
     Profile profile = getProfile(classOf);
 
     User user = profile.getUser();
@@ -81,9 +82,18 @@ public class ProfileService {
       profile.setMedia(media);
     }
 
-
-
     return profile;
+  }
+
+  @Transactional
+  public void deleteProfile(String classOf) {
+    UserService.validAuthenticationClassOf(classOf);
+
+    Profile profile = getProfile(classOf);
+    validateUserProfilePermissions(classOf, profile.getUser().getClassOf());
+    profile.setUser(null);
+
+    profileRepository.delete(profile);
   }
 
   private void validateUserProfilePermissions(String classOf, String author) {

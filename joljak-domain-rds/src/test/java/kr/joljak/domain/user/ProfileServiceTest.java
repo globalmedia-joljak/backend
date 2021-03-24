@@ -5,6 +5,8 @@ import static org.junit.Assert.assertNotEquals;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
+import kr.joljak.core.jwt.PermissionException;
+import kr.joljak.core.security.UserRole;
 import kr.joljak.domain.common.CommonDomainTest;
 import kr.joljak.domain.upload.service.UploadService;
 import kr.joljak.domain.user.dto.RegisterProfile;
@@ -114,7 +116,7 @@ public class ProfileServiceTest extends CommonDomainTest {
   }
 
   @Test(expected = ProfileNotFoundException.class)
-  @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
+  @WithMockUser(username = TEST_ADMIN_CLASS_OF, roles = "USER")
   public void updateProfile_Fail_NotFoundProfileException() throws Exception {
     // given
     Profile beforeProfile = commonProfile;
@@ -136,11 +138,55 @@ public class ProfileServiceTest extends CommonDomainTest {
     afterProfile = profileService.updateProfile(updateProfile);
 
     // then
-    Assertions.assertThat(afterProfile.getMedia()).isNotNull();
-    assertNotEquals(beforeProfile.getContent(), afterProfile.getContent());
-    assertNotEquals(beforeProfile.getUser().getMainProjectRole(), beforeProfile.getUser().getSubProjectRole());
-
-    uploadService.deleteFile(afterProfile.getMedia().getModifyName(), "/" + TEST_USER_CLASS_OF);
   }
 
+  @Test(expected = ProfileNotFoundException.class)
+  public void deleteProfile_Success() {
+    setAuthentication(UserRole.ADMIN);
+
+    // given
+    String classOf = TEST_ADMIN_CLASS_OF;
+    Profile buildProfile = Profile.builder()
+        .content("test profile")
+        .portfolioLinks(new ArrayList<>(Collections.singleton("http://localhost:8080")))
+        .build();
+
+    RegisterProfile registerProfile = RegisterProfile.builder()
+      .classOf(TEST_ADMIN_CLASS_OF)
+      .mainRole(UserProjectRole.DEVELOPER)
+      .subRole(UserProjectRole.MEDIA_ART)
+      .profile(buildProfile)
+      .image(null)
+      .build();
+
+    profileService.registerProfile(registerProfile);
+
+    // when
+    profileService.deleteProfile(TEST_ADMIN_CLASS_OF);
+
+    // then
+    profileService.getProfile(TEST_ADMIN_CLASS_OF);
+  }
+
+  @Test(expected = PermissionException.class)
+  @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
+  public void deleteProfile_Fail_PermissionException() {
+    // given, when
+    profileService.deleteProfile(TEST_ADMIN_CLASS_OF);
+
+    // then
+    profileService.getProfile(TEST_ADMIN_CLASS_OF);
+  }
+
+  @Test(expected = ProfileNotFoundException.class)
+  public void deleteProfile_Fail_ProfileNotFoundException() {
+    // given
+    setAuthentication(UserRole.ADMIN);
+
+    // when
+    profileService.deleteProfile(TEST_ADMIN_CLASS_OF);
+
+    // then
+    profileService.getProfile(TEST_ADMIN_CLASS_OF);
+  }
 }
