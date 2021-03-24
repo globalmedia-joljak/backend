@@ -31,7 +31,11 @@ public class IdeaBoardService {
 
     User user = getUserByAuthentication();
 
-    Media mediaFile = getMedia(file, user);
+    Media mediaFile = null;
+    if (file != null) {
+      mediaFile = uploadService
+        .uploadFile(file, "/" + user.getClassOf(), MediaType.FILE);
+    }
 
     IdeaBoard ideaBoard = IdeaBoard.of(simpleIdeaBoard, user, mediaFile);
 

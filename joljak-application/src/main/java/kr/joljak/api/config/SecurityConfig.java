@@ -6,7 +6,6 @@ import java.util.List;
 import kr.joljak.api.filter.JwtAccessDeniedHandler;
 import kr.joljak.api.filter.JwtAuthenticationEntryPoint;
 import kr.joljak.core.jwt.JwtTokenProvider;
-import kr.joljak.core.security.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -29,7 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   private final JwtTokenProvider jwtTokenProvider;
   private final JwtAuthenticationEntryPoint authenticationErrorHandler;
   private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-  @Value("${app.web-navigator.origin}") private String webNavigatorOrigin;
+  @Value("${app.web-navigator.origin}")
+  private String webNavigatorOrigin;
 
   @Bean
   public PasswordEncoder passwordEncoder() {
@@ -61,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       ).permitAll()
       .antMatchers(
         "/api/v1/auth/signup", "/api/v1/auth/signin", "/api/v1/auth/reissue/accesstoken"
-          , "/api/v1/notices"
+        , "/api/v1/notices"
       ).permitAll()
       .antMatchers(HttpMethod.GET, "/api/v1/profiles/**").permitAll()
       .antMatchers(HttpMethod.GET, "/api/v1/ideaboards/**").permitAll()

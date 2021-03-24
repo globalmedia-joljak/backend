@@ -24,21 +24,21 @@ public class UserController {
   @ApiOperation("유저 휴대폰 번호 업데이트")
   @PatchMapping("/{classOf}/phonenumber")
   @ResponseStatus(HttpStatus.OK)
-  public void updatePhoneNumber(@PathVariable String classOf, @RequestBody String phoneNumber) {
+  public void updatePhoneNumber(@PathVariable String classOf, @RequestBody(required = false) String phoneNumber) {
     userService.updatePhoneNumber(classOf, phoneNumber);
   }
 
   @ApiOperation("유저 인스타 아이디 업데이트")
   @PatchMapping("/{classOf}/instagramid")
   @ResponseStatus(HttpStatus.OK)
-  public void updateInstagramId(@PathVariable String classOf, @RequestBody String instagramId) {
+  public void updateInstagramId(@PathVariable String classOf, @RequestBody(required = false) String instagramId) {
     userService.updateInstagramId(classOf, instagramId);
   }
 
   @ApiOperation("유저 카카오 아이디 업데이트")
   @PatchMapping("/{classOf}/kakaoid")
   @ResponseStatus(HttpStatus.OK)
-  public void updateKakaoId(@PathVariable String classOf, @RequestBody String kakaoId) {
+  public void updateKakaoId(@PathVariable String classOf, @RequestBody(required = false) String kakaoId) {
     userService.updateKakaoId(classOf, kakaoId);
   }
 

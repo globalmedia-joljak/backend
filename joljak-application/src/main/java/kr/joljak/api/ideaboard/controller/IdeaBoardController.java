@@ -94,4 +94,5 @@ public class IdeaBoardController {
       .map(ideaBoard -> IdeaBoardResponse.of(ideaBoard))
       .collect(Collectors.toList());
   }
+
 }
