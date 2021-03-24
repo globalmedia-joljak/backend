@@ -31,7 +31,7 @@ public class UploadController {
   @PostMapping("/files")
   @ResponseStatus(HttpStatus.CREATED)
   public List<Media> uploadFiles(
-    @RequestPart List<MultipartFile> files,
+    @RequestPart(required = false) List<MultipartFile> files,
     @RequestPart UploadRequest uploadRequest
   ) {
     userService.validExistClassOf(uploadRequest.getClassOf());
