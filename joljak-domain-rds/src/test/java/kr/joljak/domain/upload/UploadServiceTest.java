@@ -130,23 +130,4 @@ public class UploadServiceTest extends CommonDomainTest {
     // when, then
     uploadService.deleteFile(media.getModifyName(), "/" + TEST_USER_CLASS_OF);
   }
-
-  private MockMultipartFile createMockTextFile(String fileName) {
-    return new MockMultipartFile(
-        "file",
-         fileName + ".txt" ,
-        "text/plain" ,
-        "hello file".getBytes()
-    );
-  }
-
-  private MockMultipartFile createMockImageFile(String fileName) throws Exception {
-    FileInputStream fileInputStream = new FileInputStream("src/test/resources/images/logo.jpg");
-    return new MockMultipartFile(
-      "file",
-      fileName + ".jpg",
-      null,
-      fileInputStream
-    );
-  }
 }

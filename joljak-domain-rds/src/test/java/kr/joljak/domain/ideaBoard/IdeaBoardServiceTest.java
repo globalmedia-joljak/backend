@@ -57,13 +57,4 @@ public class IdeaBoardServiceTest extends CommonDomainTest {
       .build();
   }
 
-  private MockMultipartFile createMockTextFile(String fileName) {
-    return new MockMultipartFile(
-      "file",
-      fileName + ".txt",
-      "text/plain",
-      "hello file".getBytes()
-    );
-  }
-
 }
