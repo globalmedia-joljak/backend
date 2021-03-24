@@ -64,6 +64,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
           , "/api/v1/notices"
       ).permitAll()
       .antMatchers(HttpMethod.GET, "/api/v1/profiles/**").permitAll()
+      .antMatchers(HttpMethod.GET, "/api/v1/ideaboards/**").permitAll()
+      .antMatchers(HttpMethod.GET, "/api/v1/notices/**").permitAll()
       .antMatchers(
         "/api/v1/invites/**"
       ).hasRole(UserRole.ADMIN.getKey())
@@ -89,6 +91,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       Arrays.asList("http://localhost:3000", "http://127.0.0.1:3000", webNavigatorOrigin)
     );
     configuration.setAllowedOrigins(origins);
+    configuration.addAllowedOrigin("*");
     configuration.addAllowedHeader("*");
     configuration.addAllowedMethod("*");
     configuration.setAllowCredentials(true);
