@@ -128,7 +128,7 @@ public class UploadServiceTest extends CommonDomainTest {
     Media media = uploadService.uploadFile(textFile, path, MediaType.FILE);
 
     // when, then
-    uploadService.deleteFile(media.getModifyName(), "/" + TEST_USER_CLASS_OF );
+    uploadService.deleteFile(media.getModifyName(), "/" + TEST_USER_CLASS_OF);
   }
 
   private MockMultipartFile createMockTextFile(String fileName) {

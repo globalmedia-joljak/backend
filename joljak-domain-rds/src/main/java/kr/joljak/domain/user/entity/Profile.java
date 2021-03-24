@@ -37,7 +37,7 @@ public class Profile {
   @LazyCollection(LazyCollectionOption.FALSE)
   private List<String> portfolioLinks;
 
-  @OneToOne
+  @OneToOne(orphanRemoval = true)
   @JoinColumn(name = "media_id")
   private Media media;
 
@@ -55,5 +55,13 @@ public class Profile {
 
   public void setMedia(Media media) {
     this.media = media;
+  }
+
+  public void setContent(String content) {
+    this.content = content;
+  }
+
+  public void setPortfolioLinks(List<String> portfolioLinks) {
+    this.portfolioLinks = portfolioLinks;
   }
 }

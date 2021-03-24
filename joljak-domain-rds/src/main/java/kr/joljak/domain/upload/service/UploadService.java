@@ -12,6 +12,7 @@ import kr.joljak.domain.upload.exception.FileIsNotImageException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
@@ -21,6 +22,7 @@ public class UploadService {
   private final S3Service s3Service;
   private final MediaService mediaService;
 
+  @Transactional
   public List<Media> uploadImages(List<MultipartFile> files, String path) {
     List<Media> medias = new ArrayList<>();
 
@@ -32,11 +34,13 @@ public class UploadService {
     return medias;
   }
 
+  @Transactional
   public Media uploadImage(MultipartFile file, String path) {
     validateImage(file);
     return uploadFile(file, path, MediaType.IMAGE);
   }
 
+  @Transactional
   public List<Media> uploadFiles(List<MultipartFile> files, String path) {
     List<Media> medias = new ArrayList<>();
 
@@ -47,6 +51,7 @@ public class UploadService {
     return medias;
   }
 
+  @Transactional
   public Media uploadFile(MultipartFile file, String path, MediaType mediaType) {
     String originalName = file.getOriginalFilename();
     String fileExtension = getFileExtension(originalName);
@@ -57,7 +62,7 @@ public class UploadService {
 
     String url = s3Service.uploadFile(file, modifyName, fullPath);
 
-    Media media =  Media.builder()
+    Media media = Media.builder()
       .mediaType(mediaType)
       .fileExtension(fileExtension)
       .fullPath(fullPath)
