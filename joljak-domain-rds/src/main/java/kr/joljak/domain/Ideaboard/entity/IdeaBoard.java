@@ -25,7 +25,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-import org.springframework.security.core.parameters.P;
 
 @Entity
 @Getter
@@ -52,8 +51,8 @@ public class IdeaBoard extends ExtendEntity {
   private String contact;
 
   @OneToOne
-  @JoinColumn(name = "file_id")
-  private Media file;
+  @JoinColumn(name = "media_id")
+  private Media media;
 
   @ManyToOne
   @JoinColumn(name = "user_id")
@@ -67,23 +66,23 @@ public class IdeaBoard extends ExtendEntity {
 
   @Builder
   public IdeaBoard(ProjectStatus status, String title, String content, String contact, User user,
-    List<UserProjectRole> requiredPositions, Media file) {
+    List<UserProjectRole> requiredPositions, Media media) {
     this.status = status;
     this.title = title;
     this.content = content;
     this.contact = contact;
     this.user = user;
     this.requiredPosiotions = requiredPositions;
-    this.file = file;
+    this.media = media;
   }
 
-  public static IdeaBoard of(SimpleIdeaBoard simpleIdeaBoard, User user, Media file) {
+  public static IdeaBoard of(SimpleIdeaBoard simpleIdeaBoard, User user, Media media) {
     return IdeaBoard.builder()
       .status(simpleIdeaBoard.getStatus())
       .title(simpleIdeaBoard.getTitle())
       .content(simpleIdeaBoard.getContent())
       .contact(simpleIdeaBoard.getContact())
-      .file(file)
+      .media(media)
       .user(user)
       .requiredPositions(simpleIdeaBoard.getRequiredPositions())
       .build();
@@ -109,8 +108,8 @@ public class IdeaBoard extends ExtendEntity {
     this.requiredPosiotions = requiredPosiotions;
   }
 
-  public void setFile(Media file){
-    this.file = file;
+  public void setMedia(Media media){
+    this.media = media;
   }
 
 }

@@ -2,7 +2,7 @@ package kr.joljak.domain.user.service;
 
 import kr.joljak.core.jwt.PermissionException;
 import kr.joljak.domain.upload.entity.Media;
-import kr.joljak.domain.upload.exception.NotMatchingFIleNameException;
+import kr.joljak.domain.upload.exception.NotMatchingFileNameException;
 import kr.joljak.domain.upload.service.UploadService;
 import kr.joljak.domain.user.dto.RegisterProfile;
 import kr.joljak.domain.user.dto.UpdateProfile;
@@ -69,7 +69,7 @@ public class ProfileService {
     if (updateProfile.getDeleteFileName() != null) {
       Media media = profile.getMedia();
       if (!media.getModifyName().equals(updateProfile.getDeleteFileName())) {
-        throw new NotMatchingFIleNameException("file name does not match when you delete.");
+        throw new NotMatchingFileNameException("file name does not match when you delete.");
       }
       profile.setMedia(null);
       uploadService.deleteFile(media.getModifyName(), "/" + classOf);
