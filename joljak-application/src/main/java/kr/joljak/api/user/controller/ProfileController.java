@@ -12,6 +12,7 @@ import kr.joljak.domain.util.FetchPages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -85,5 +86,12 @@ public class ProfileController {
     return GetProfileResponse.builder()
       .simpleProfile(SimpleProfile.of(profile))
       .build();
+  }
+
+  @ApiOperation("유저 프로필 삭제 API")
+  @DeleteMapping("/{classOf}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void deleteProfile(@PathVariable String classOf) {
+    profileService.deleteProfile(classOf);
   }
 }
