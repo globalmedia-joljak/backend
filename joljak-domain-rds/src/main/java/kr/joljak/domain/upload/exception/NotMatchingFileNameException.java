@@ -3,13 +3,13 @@ package kr.joljak.domain.upload.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-public class NotMatchingFIleNameException extends ResponseStatusException {
+public class NotMatchingFileNameException extends ResponseStatusException {
 
-  public NotMatchingFIleNameException() {
+  public NotMatchingFileNameException() {
     this("file name is not match.");
   }
 
-  public NotMatchingFIleNameException(String message) {
+  public NotMatchingFileNameException(String message) {
     super(HttpStatus.FORBIDDEN, message);
   }
 }

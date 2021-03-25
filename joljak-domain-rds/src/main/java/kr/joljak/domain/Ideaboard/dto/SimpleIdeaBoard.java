@@ -23,12 +23,13 @@ public class SimpleIdeaBoard {
   private List<UserProjectRole> requiredPositions;
   private User user;
   private UserProjectRole mainRole;
+  private String deleteFileName;
 
   @Builder
   public SimpleIdeaBoard(String title, String content, String contact,
       ProjectStatus status, User user,
     List<UserProjectRole> requiredPositions,
-    UserProjectRole mainRole) {
+    UserProjectRole mainRole, String deleteFileName) {
     this.title = title;
     this.content = content;
     this.user = user;
@@ -36,6 +37,7 @@ public class SimpleIdeaBoard {
     this.contact = contact;
     this.requiredPositions = requiredPositions;
     this.mainRole = mainRole;
+    this.deleteFileName = deleteFileName;
   }
 
   public static SimpleIdeaBoard of(IdeaBoard ideaBoard){

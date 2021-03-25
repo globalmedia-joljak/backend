@@ -1,6 +1,7 @@
 package kr.joljak.domain.Ideaboard.entity;
 
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -50,9 +51,9 @@ public class IdeaBoard extends ExtendEntity {
   @Column
   private String contact;
 
-  @OneToOne
-  @JoinColumn(name = "file_id")
-  private Media file;
+  @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
+  @JoinColumn(name = "media_id")
+  private Media media;
 
   @ManyToOne
   @JoinColumn(name = "user_id")
@@ -66,26 +67,50 @@ public class IdeaBoard extends ExtendEntity {
 
   @Builder
   public IdeaBoard(ProjectStatus status, String title, String content, String contact, User user,
-    List<UserProjectRole> requiredPositions, Media file) {
+    List<UserProjectRole> requiredPositions, Media media) {
     this.status = status;
     this.title = title;
     this.content = content;
     this.contact = contact;
     this.user = user;
     this.requiredPosiotions = requiredPositions;
-    this.file = file;
+    this.media = media;
   }
 
-  public static IdeaBoard of(SimpleIdeaBoard simpleIdeaBoard, User user, Media file) {
+  public static IdeaBoard of(SimpleIdeaBoard simpleIdeaBoard, User user, Media media) {
     return IdeaBoard.builder()
       .status(simpleIdeaBoard.getStatus())
       .title(simpleIdeaBoard.getTitle())
       .content(simpleIdeaBoard.getContent())
       .contact(simpleIdeaBoard.getContact())
-      .file(file)
+      .media(media)
       .user(user)
       .requiredPositions(simpleIdeaBoard.getRequiredPositions())
       .build();
+  }
+
+  public void setTitle(String title){
+    this.title = title;
+  }
+
+  public void setContent(String content){
+    this.content = content;
+  }
+
+  public void setStatus(ProjectStatus status){
+    this.status = status;
+  }
+
+  public void setContact(String contact){
+    this.contact = contact;
+  }
+
+  public void setRequiredPosiotions(List<UserProjectRole> requiredPosiotions){
+    this.requiredPosiotions = requiredPosiotions;
+  }
+
+  public void setMedia(Media media){
+    this.media = media;
   }
 
 }
