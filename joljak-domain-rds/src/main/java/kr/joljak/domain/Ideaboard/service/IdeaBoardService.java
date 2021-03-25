@@ -7,7 +7,7 @@ import kr.joljak.domain.Ideaboard.exception.IdeaBoardNotFoundException;
 import kr.joljak.domain.Ideaboard.repository.IdeaBoardRepository;
 import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.upload.entity.MediaType;
-import kr.joljak.domain.upload.exception.NotMatchingFIleNameException;
+import kr.joljak.domain.upload.exception.NotMatchingFileNameException;
 import kr.joljak.domain.upload.service.UploadService;
 import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.service.UserService;
@@ -79,7 +79,7 @@ public class IdeaBoardService {
       Media media = ideaBoard.getFile();
 
       if (media!=null && !media.getModifyName().equals(simpleIdeaBoard.getDeleteFileName())) {
-        throw new NotMatchingFIleNameException("file name does not match when you delete.");
+        throw new NotMatchingFileNameException("file name does not match when you delete.");
       }
       ideaBoard.setFile(null);
       uploadService.deleteFile(media.getModifyName(), "/" + ideaBoard.getUser().getClassOf());
