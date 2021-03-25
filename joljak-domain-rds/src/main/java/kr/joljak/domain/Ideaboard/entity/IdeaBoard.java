@@ -1,6 +1,7 @@
 package kr.joljak.domain.Ideaboard.entity;
 
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -50,7 +51,7 @@ public class IdeaBoard extends ExtendEntity {
   @Column
   private String contact;
 
-  @OneToOne
+  @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
   @JoinColumn(name = "media_id")
   private Media media;
 
