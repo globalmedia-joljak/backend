@@ -28,6 +28,7 @@ public class IdeaBoardService {
 
   @Transactional
   public IdeaBoard addIdeaBoard(
+
     SimpleIdeaBoard simpleIdeaBoard, MultipartFile file) {
 
     User user = getUserByAuthentication();
@@ -79,7 +80,8 @@ public class IdeaBoardService {
     if (simpleIdeaBoard.getDeleteFileName() != null) {
       Media media = ideaBoard.getMedia();
 
-      if (media!=null && !media.getModifyName().equals(simpleIdeaBoard.getDeleteFileName())) {
+      if (media != null && !media.getModifyName()
+        .equals(simpleIdeaBoard.getDeleteFileName())) {
         throw new NotMatchingFileNameException("file name does not match when you delete.");
       }
       ideaBoard.setMedia(null);
@@ -93,5 +95,15 @@ public class IdeaBoardService {
     }
 
     return ideaBoard;
+  }
+
+  @Transactional
+  public void deleteIdeaBoardById(Long id) {
+    IdeaBoard ideaBoard = getIdeaBoardsById(id);
+    String classOf = ideaBoard.getUser().getClassOf();
+    userService.validAuthenticationClassOf(classOf);
+    ideaBoard.setMedia(null);
+
+    ideaBoardRepository.delete(ideaBoard);
   }
 }
