@@ -67,7 +67,8 @@ public class IdeaBoardService {
     SimpleIdeaBoard simpleIdeaBoard, MultipartFile file) {
 
     IdeaBoard ideaBoard = getIdeaBoardsById(id);
-    User user = getUserByAuthentication();
+    String classOf = ideaBoard.getUser().getClassOf();
+    userService.validAuthenticationClassOf(classOf);
 
     ideaBoard.setTitle(simpleIdeaBoard.getTitle());
     ideaBoard.setContent(simpleIdeaBoard.getContent());
@@ -76,19 +77,19 @@ public class IdeaBoardService {
     ideaBoard.setRequiredPosiotions(simpleIdeaBoard.getRequiredPositions());
 
     if (simpleIdeaBoard.getDeleteFileName() != null) {
-      Media media = ideaBoard.getFile();
+      Media media = ideaBoard.getMedia();
 
       if (media!=null && !media.getModifyName().equals(simpleIdeaBoard.getDeleteFileName())) {
         throw new NotMatchingFileNameException("file name does not match when you delete.");
       }
-      ideaBoard.setFile(null);
+      ideaBoard.setMedia(null);
       uploadService.deleteFile(media.getModifyName(), "/" + ideaBoard.getUser().getClassOf());
     }
 
     if (file != null) {
       Media mediaFile = uploadService
-        .uploadFile(file, "/" + user.getClassOf(), MediaType.FILE);
-      ideaBoard.setFile(mediaFile);
+        .uploadFile(file, "/" + classOf, MediaType.FILE);
+      ideaBoard.setMedia(mediaFile);
     }
 
     return ideaBoard;
