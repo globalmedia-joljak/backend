@@ -128,7 +128,7 @@ public class IdeaBoardServiceTest extends CommonDomainTest {
   public void deleteIdeaBoard_Success() {
     setAuthentication(UserRole.USER);
 
-    // given
+    // given, when
     ideaBoardService.deleteIdeaBoardById(ideaBoard.getId());
 
     // then

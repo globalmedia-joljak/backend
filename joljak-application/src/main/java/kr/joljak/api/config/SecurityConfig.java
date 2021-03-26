@@ -6,6 +6,7 @@ import java.util.List;
 import kr.joljak.api.filter.JwtAccessDeniedHandler;
 import kr.joljak.api.filter.JwtAuthenticationEntryPoint;
 import kr.joljak.core.jwt.JwtTokenProvider;
+import kr.joljak.core.security.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -68,7 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .antMatchers(HttpMethod.GET, "/api/v1/notices/**").permitAll()
       .antMatchers(
         "/api/v1/invites/**"
-      ).permitAll()//.hasRole(UserRole.ADMIN.getKey())
+      ).hasRole(UserRole.ADMIN.getKey())
       .anyRequest().authenticated()
 
       .and()
