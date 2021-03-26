@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -87,6 +88,15 @@ public class IdeaBoardController {
       .toDomainIdeaBoardRequest(ideaBoardRequest);
     IdeaBoard ideaBoard = ideaBoardService.updateIdeaBoardById(id, simpleIdeaBoard, file);
     return IdeaBoardResponse.of(ideaBoard);
+  }
+
+  @ApiOperation("아이디어 게시판 삭제 API")
+  @DeleteMapping("/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  public void deleteIdeaBoard(
+    @PathVariable Long id
+  ){
+    ideaBoardService.deleteIdeaBoardById(id);
   }
 
   private List<IdeaBoardResponse> getIdeaBoardResponseListFrom(List<IdeaBoard> ideaBoardList) {

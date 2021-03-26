@@ -1,6 +1,5 @@
 package kr.joljak.domain.ideaBoard;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 import java.util.ArrayList;
@@ -10,6 +9,7 @@ import kr.joljak.core.security.UserRole;
 import kr.joljak.domain.Ideaboard.dto.SimpleIdeaBoard;
 import kr.joljak.domain.Ideaboard.entity.IdeaBoard;
 import kr.joljak.domain.Ideaboard.entity.ProjectStatus;
+import kr.joljak.domain.Ideaboard.exception.IdeaBoardNotFoundException;
 import kr.joljak.domain.Ideaboard.service.IdeaBoardService;
 import kr.joljak.domain.common.CommonDomainTest;
 import kr.joljak.domain.upload.exception.NotMatchingFileNameException;
@@ -36,7 +36,7 @@ public class IdeaBoardServiceTest extends CommonDomainTest {
   private IdeaBoard ideaBoard;
 
   @Before
-  public void initIdeaBoard(){
+  public void initIdeaBoard() {
     setAuthentication(UserRole.USER);
     // given
     requiredPosition = new ArrayList<>();
@@ -74,7 +74,8 @@ public class IdeaBoardServiceTest extends CommonDomainTest {
     IdeaBoard ideaBoard = ideaBoardService.addIdeaBoard(simpleIdeaBoard, textFile);
 
     // when
-    IdeaBoard newIdeaBoard = ideaBoardService.updateIdeaBoardById(ideaBoard.getId(), newSimpleIdeaBoard, newTextFile);
+    IdeaBoard newIdeaBoard = ideaBoardService
+      .updateIdeaBoardById(ideaBoard.getId(), newSimpleIdeaBoard, newTextFile);
 
     // then
     Assertions.assertThat(newIdeaBoard.getMedia()).isNotNull();
@@ -96,7 +97,8 @@ public class IdeaBoardServiceTest extends CommonDomainTest {
     IdeaBoard ideaBoard = ideaBoardService.addIdeaBoard(simpleIdeaBoard, textFile);
 
     // when
-    IdeaBoard newIdeaBoard = ideaBoardService.updateIdeaBoardById(ideaBoard.getId(), newSimpleIdeaBoard, newTextFile);
+    IdeaBoard newIdeaBoard = ideaBoardService
+      .updateIdeaBoardById(ideaBoard.getId(), newSimpleIdeaBoard, newTextFile);
 
     // then
     Assertions.assertThat(newIdeaBoard.getMedia()).isNotNull();
@@ -117,8 +119,36 @@ public class IdeaBoardServiceTest extends CommonDomainTest {
       requiredPosition, UserProjectRole.DEVELOPER, null);
 
     // when
-    IdeaBoard newIdeaBoard = ideaBoardService.updateIdeaBoardById(ideaBoard.getId(), newSimpleIdeaBoard, newTextFile);
+    IdeaBoard newIdeaBoard = ideaBoardService
+      .updateIdeaBoardById(ideaBoard.getId(), newSimpleIdeaBoard, newTextFile);
 
+  }
+
+  @Test(expected = IdeaBoardNotFoundException.class)
+  public void deleteIdeaBoard_Success() {
+    setAuthentication(UserRole.USER);
+
+    // given, when
+    ideaBoardService.deleteIdeaBoardById(ideaBoard.getId());
+
+    // then
+    ideaBoardService.getIdeaBoardsById(ideaBoard.getId());
+  }
+
+  @Test(expected = PermissionException.class)
+  public void deleteIdeaBoard_Fail_PermissionException() {
+    setAuthentication(UserRole.ADMIN);
+
+    // given, when
+    ideaBoardService.deleteIdeaBoardById(ideaBoard.getId());
+  }
+
+  @Test(expected = IdeaBoardNotFoundException.class)
+  public void deleteIdeaBoard_Fail_IdeaBoardNotFoundException() {
+    setAuthentication(UserRole.USER);
+
+    // given, when
+    ideaBoardService.deleteIdeaBoardById(ideaBoard.getId() + 1L);
   }
 
   private SimpleIdeaBoard createSimpleIdeaBoard(
