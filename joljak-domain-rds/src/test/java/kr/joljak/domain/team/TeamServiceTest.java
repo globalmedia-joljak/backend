@@ -7,6 +7,8 @@ import kr.joljak.domain.common.CommonDomainTest;
 import kr.joljak.domain.team.dto.SimpleTeam;
 import kr.joljak.domain.team.entity.Team;
 import kr.joljak.domain.team.service.TeamService;
+import kr.joljak.domain.upload.exception.FileIsNotImageException;
+import kr.joljak.domain.user.exception.UserNotFoundException;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +35,7 @@ public class TeamServiceTest extends CommonDomainTest {
     imageFile = new ArrayList<>(
       Arrays.asList(
         createMockImageFile("test" + nextId++),
-        createMockTextFile("test" + nextId++)
+        createMockImageFile("test" + nextId++)
       )
     );
 
@@ -52,9 +54,9 @@ public class TeamServiceTest extends CommonDomainTest {
     Assertions.assertThat(team).isNotNull();
   }
 
-  @Test(expected = Exception.class)
+  @Test(expected = FileIsNotImageException.class)
   @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
-  public void uploadImages_Fail_FileIsNotImageException() throws Exception {
+  public void createTeam_Fail_FileIsNotImageException() throws Exception {
     // given
     String path = "/" + TEST_USER_CLASS_OF;
     List<MultipartFile> imageFiles = new ArrayList<>(
@@ -66,7 +68,16 @@ public class TeamServiceTest extends CommonDomainTest {
 
     // when, then
     Team team = teamService.addTeam(simpleTeam, imageFiles);
+  }
 
+  @Test(expected = UserNotFoundException.class)
+  @WithMockUser(username = "Worng User", roles = "USER")
+  public void createTeam_Fail_UserNotFoundException() {
+    // when
+    Team team = teamService.addTeam(simpleTeam, imageFile);
+
+    // then
+    Assertions.assertThat(team).isNotNull();
   }
 
   private SimpleTeam createSimpleTeam(

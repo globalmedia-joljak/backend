@@ -7,6 +7,7 @@ import kr.joljak.domain.team.entity.Team;
 import kr.joljak.domain.team.repository.TeamRepository;
 import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.upload.service.UploadService;
+import kr.joljak.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,11 +19,13 @@ public class TeamService {
 
   private final TeamRepository teamRepository;
   private final UploadService uploadService;
+  private final UserService userService;
 
   @Transactional
   public Team addTeam(SimpleTeam simpleTeam, List<MultipartFile> images) {
 
     String authenticationClassOf = AuthenticationUtils.getClassOf();
+    userService.validExistClassOf(authenticationClassOf);
 
     List<Media> imageList = null;
     if (images != null) {
