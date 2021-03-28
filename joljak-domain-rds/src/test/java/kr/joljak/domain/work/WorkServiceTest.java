@@ -1,12 +1,12 @@
-package kr.joljak.domain.team;
+package kr.joljak.domain.work;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import kr.joljak.domain.common.CommonDomainTest;
-import kr.joljak.domain.team.dto.SimpleTeam;
-import kr.joljak.domain.team.entity.Team;
-import kr.joljak.domain.team.service.TeamService;
+import kr.joljak.domain.work.dto.SimpleWork;
+import kr.joljak.domain.work.entity.Work;
+import kr.joljak.domain.work.service.WorkService;
 import kr.joljak.domain.upload.exception.FileIsNotImageException;
 import kr.joljak.domain.user.exception.UserNotFoundException;
 import org.assertj.core.api.Assertions;
@@ -16,17 +16,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.web.multipart.MultipartFile;
 
-public class TeamServiceTest extends CommonDomainTest {
+public class WorkServiceTest extends CommonDomainTest {
 
   @Autowired
-  private TeamService teamService;
+  private WorkService workService;
 
   private List<String> teamMember;
   private List<MultipartFile> imageFile;
-  private SimpleTeam simpleTeam;
+  private SimpleWork simpleWork;
 
   @Before
-  public void initTeam() throws Exception {
+  public void initWork() throws Exception {
     // given
     teamMember = new ArrayList<>();
     teamMember.add("kevin");
@@ -39,24 +39,24 @@ public class TeamServiceTest extends CommonDomainTest {
       )
     );
 
-    simpleTeam = createSimpleTeam(
+    simpleWork = createSimpleWork(
       "test", "test", teamMember, "test", "test"
     );
   }
 
   @Test
   @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
-  public void createTeam_Success() {
+  public void createWork_Success() {
     // when
-    Team team = teamService.addTeam(simpleTeam, imageFile);
+    Work work = workService.addTeam(simpleWork, imageFile);
 
     // then
-    Assertions.assertThat(team).isNotNull();
+    Assertions.assertThat(work).isNotNull();
   }
 
   @Test(expected = FileIsNotImageException.class)
   @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
-  public void createTeam_Fail_FileIsNotImageException() throws Exception {
+  public void createWork_Fail_FileIsNotImageException() throws Exception {
     // given
     String path = "/" + TEST_USER_CLASS_OF;
     List<MultipartFile> imageFiles = new ArrayList<>(
@@ -67,24 +67,24 @@ public class TeamServiceTest extends CommonDomainTest {
     );
 
     // when, then
-    Team team = teamService.addTeam(simpleTeam, imageFiles);
+    Work work = workService.addTeam(simpleWork, imageFiles);
   }
 
   @Test(expected = UserNotFoundException.class)
   @WithMockUser(username = "Worng User", roles = "USER")
-  public void createTeam_Fail_UserNotFoundException() {
+  public void createWork_Fail_UserNotFoundException() {
     // when
-    Team team = teamService.addTeam(simpleTeam, imageFile);
+    Work work = workService.addTeam(simpleWork, imageFile);
 
     // then
-    Assertions.assertThat(team).isNotNull();
+    Assertions.assertThat(work).isNotNull();
   }
 
-  private SimpleTeam createSimpleTeam(
+  private SimpleWork createSimpleWork(
     String workName, String teamName, List<String> teamMember,
     String content, String teamVideoUrl
   ) {
-    return SimpleTeam.builder()
+    return SimpleWork.builder()
       .workName(workName)
       .teamMember(teamMember)
       .teamName(teamName)

@@ -1,12 +1,12 @@
-package kr.joljak.api.team.controller;
+package kr.joljak.api.work.controller;
 
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
-import kr.joljak.api.team.request.TeamRequest;
-import kr.joljak.api.team.response.TeamResponse;
-import kr.joljak.domain.team.dto.SimpleTeam;
-import kr.joljak.domain.team.entity.Team;
-import kr.joljak.domain.team.service.TeamService;
+import kr.joljak.api.work.request.WorkRequest;
+import kr.joljak.api.work.response.WorkResponse;
+import kr.joljak.domain.work.dto.SimpleWork;
+import kr.joljak.domain.work.entity.Work;
+import kr.joljak.domain.work.service.WorkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,21 +20,21 @@ import org.springframework.web.multipart.MultipartFile;
 @CrossOrigin("*")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/teams")
-public class TeamController {
+@RequestMapping("/api/v1/works")
+public class WorkController {
 
-  private final TeamService teamService;
+  private final WorkService workService;
 
   @ApiOperation("팀 목록 게시판 생성 API")
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public TeamResponse create(
-    @RequestPart TeamRequest teamRequest,
+  public WorkResponse create(
+    @RequestPart WorkRequest workRequest,
     @RequestPart(required = false) List<MultipartFile> images
   ) {
-    SimpleTeam simpleTeam = TeamRequest.toDomainTeamRequest(teamRequest);
-    Team team = teamService.addTeam(simpleTeam, images);
-    return TeamResponse.of(team);
+    SimpleWork simpleWork = WorkRequest.toDomainTeamRequest(workRequest);
+    Work work = workService.addTeam(simpleWork, images);
+    return WorkResponse.of(work);
   }
 
 }

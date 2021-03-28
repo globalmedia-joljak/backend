@@ -1,10 +1,10 @@
-package kr.joljak.api.team.response;
+package kr.joljak.api.work.response;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
-import kr.joljak.domain.team.entity.Team;
+import kr.joljak.domain.work.entity.Work;
 import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.upload.entity.MediaInfo;
 import lombok.AccessLevel;
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TeamResponse {
+public class WorkResponse {
 
   @NotNull
   private String workName;
@@ -30,7 +30,7 @@ public class TeamResponse {
   private LocalDateTime modifiedDate;
 
   @Builder
-  public TeamResponse(
+  public WorkResponse(
     String workName, String teamName, List<String> teamMember,
     String content, String teamVideoUrl, List<MediaInfo> imageInfoList,
     LocalDateTime createDate, LocalDateTime modifiedDate
@@ -45,32 +45,24 @@ public class TeamResponse {
     this.modifiedDate = modifiedDate;
   }
 
-  public static TeamResponse of(Team team){
+  public static WorkResponse of(Work work){
     List<MediaInfo> imageList = null;
 
-    System.out.println();
-    System.out.println("!@#!@#");
-    for(Media a : team.getImages()){
-      System.out.println(a);
-    }
-
-    System.out.println();
-
-    if(team.getImages() != null){
-      imageList = team.getImages().stream()
+    if(work.getImages() != null){
+      imageList = work.getImages().stream()
         .map(image -> MediaInfo.of(image))
         .collect(Collectors.toList());
     }
 
-    return TeamResponse.builder()
-      .workName(team.getWorkName())
-      .teamName(team.getTeamName())
-      .teamMember(team.getTeamMember())
-      .content(team.getContent())
-      .teamVideoUrl(team.getTeamVideoUrl())
+    return WorkResponse.builder()
+      .workName(work.getWorkName())
+      .teamName(work.getTeamName())
+      .teamMember(work.getTeamMember())
+      .content(work.getContent())
+      .teamVideoUrl(work.getTeamVideoUrl())
       .imageInfoList(imageList)
-      .createDate(team.getCreatedDate())
-      .modifiedDate(team.getModifiedDate())
+      .createDate(work.getCreatedDate())
+      .modifiedDate(work.getModifiedDate())
       .build();
   }
 }

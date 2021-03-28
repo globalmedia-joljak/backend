@@ -1,9 +1,9 @@
-package kr.joljak.api.team.request;
+package kr.joljak.api.work.request;
 
 
 import java.util.List;
 import javax.validation.constraints.NotNull;
-import kr.joljak.domain.team.dto.SimpleTeam;
+import kr.joljak.domain.work.dto.SimpleWork;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TeamRequest {
+public class WorkRequest {
 
   @NotNull
   private String workName;
@@ -24,7 +24,7 @@ public class TeamRequest {
   private String teamVideoUrl;
 
   @Builder
-  public TeamRequest(String workName, String teamName,
+  public WorkRequest(String workName, String teamName,
     List<String> teamMember, String content, String teamVideoUrl
   ) {
     this.workName = workName;
@@ -34,13 +34,13 @@ public class TeamRequest {
     this.teamVideoUrl = teamVideoUrl;
   }
 
-  public static SimpleTeam toDomainTeamRequest(TeamRequest teamRequest) {
-    return SimpleTeam.builder()
-      .workName(teamRequest.getWorkName())
-      .teamName(teamRequest.getTeamName())
-      .teamMember(teamRequest.getTeamMember())
-      .content(teamRequest.getContent())
-      .teamVideoUrl(teamRequest.getTeamVideoUrl())
+  public static SimpleWork toDomainTeamRequest(WorkRequest workRequest) {
+    return SimpleWork.builder()
+      .workName(workRequest.getWorkName())
+      .teamName(workRequest.getTeamName())
+      .teamMember(workRequest.getTeamMember())
+      .content(workRequest.getContent())
+      .teamVideoUrl(workRequest.getTeamVideoUrl())
       .build();
   }
 

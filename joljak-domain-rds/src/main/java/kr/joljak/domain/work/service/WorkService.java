@@ -1,10 +1,10 @@
-package kr.joljak.domain.team.service;
+package kr.joljak.domain.work.service;
 
 import java.util.List;
 import kr.joljak.core.security.AuthenticationUtils;
-import kr.joljak.domain.team.dto.SimpleTeam;
-import kr.joljak.domain.team.entity.Team;
-import kr.joljak.domain.team.repository.TeamRepository;
+import kr.joljak.domain.work.dto.SimpleWork;
+import kr.joljak.domain.work.entity.Work;
+import kr.joljak.domain.work.repository.WorkRepository;
 import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.upload.service.UploadService;
 import kr.joljak.domain.user.service.UserService;
@@ -15,14 +15,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @Service
-public class TeamService {
+public class WorkService {
 
-  private final TeamRepository teamRepository;
+  private final WorkRepository workRepository;
   private final UploadService uploadService;
   private final UserService userService;
 
   @Transactional
-  public Team addTeam(SimpleTeam simpleTeam, List<MultipartFile> images) {
+  public Work addTeam(SimpleWork simpleWork, List<MultipartFile> images) {
 
     String authenticationClassOf = AuthenticationUtils.getClassOf();
     userService.validExistClassOf(authenticationClassOf);
@@ -33,9 +33,9 @@ public class TeamService {
         .uploadImages(images, "/" + authenticationClassOf);
     }
 
-    Team team = Team.of(simpleTeam, imageList);
+    Work work = Work.of(simpleWork, imageList);
 
-    return teamRepository.save(team);
+    return workRepository.save(work);
   }
 
 }

@@ -1,4 +1,4 @@
-package kr.joljak.domain.team.dto;
+package kr.joljak.domain.work.dto;
 
 import java.util.List;
 import lombok.Builder;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class SimpleTeam {
+public class SimpleWork {
 
   private String workName;
   private String teamName;
@@ -16,7 +16,7 @@ public class SimpleTeam {
   private String teamVideoUrl;
 
   @Builder
-  public SimpleTeam(
+  public SimpleWork(
     String workName, String teamName, List<String> teamMember,
     String content, String teamVideoUrl
   ) {

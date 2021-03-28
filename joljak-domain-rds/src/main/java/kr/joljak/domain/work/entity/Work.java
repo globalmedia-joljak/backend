@@ -1,4 +1,4 @@
-package kr.joljak.domain.team.entity;
+package kr.joljak.domain.work.entity;
 
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import kr.joljak.domain.common.entity.ExtendEntity;
-import kr.joljak.domain.team.dto.SimpleTeam;
+import kr.joljak.domain.work.dto.SimpleWork;
 import kr.joljak.domain.upload.entity.Media;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -23,8 +23,8 @@ import org.hibernate.annotations.LazyCollectionOption;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "Teams")
-public class Team extends ExtendEntity {
+@Table(name = "Works")
+public class Work extends ExtendEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,12 +46,12 @@ public class Team extends ExtendEntity {
 
   private String teamVideoUrl;
 
-  @OneToMany(mappedBy = "team",
+  @OneToMany(mappedBy = "work",
     cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Media> images;
 
   @Builder
-  public Team(String workName, String teamName,
+  public Work(String workName, String teamName,
     List<String> teamMember, String content, String teamVideoUrl,
     List<Media> images
   ) {
@@ -63,13 +63,13 @@ public class Team extends ExtendEntity {
     this.images = images;
   }
 
-  public static Team of(SimpleTeam simpleTeam, List<Media> imageList) {
-    return Team.builder()
-      .workName(simpleTeam.getWorkName())
-      .teamName(simpleTeam.getTeamName())
-      .teamMember(simpleTeam.getTeamMember())
-      .content(simpleTeam.getContent())
-      .teamVideoUrl(simpleTeam.getTeamVideoUrl())
+  public static Work of(SimpleWork simpleWork, List<Media> imageList) {
+    return Work.builder()
+      .workName(simpleWork.getWorkName())
+      .teamName(simpleWork.getTeamName())
+      .teamMember(simpleWork.getTeamMember())
+      .content(simpleWork.getContent())
+      .teamVideoUrl(simpleWork.getTeamVideoUrl())
       .images(imageList)
       .build();
   }
