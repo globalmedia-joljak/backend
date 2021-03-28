@@ -7,6 +7,7 @@ import kr.joljak.domain.Ideaboard.exception.IdeaBoardNotFoundException;
 import kr.joljak.domain.Ideaboard.repository.IdeaBoardRepository;
 import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.upload.entity.MediaType;
+import kr.joljak.domain.upload.exception.NotMatchingFileNameException;
 import kr.joljak.domain.upload.service.UploadService;
 import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.service.UserService;
@@ -27,6 +28,7 @@ public class IdeaBoardService {
 
   @Transactional
   public IdeaBoard addIdeaBoard(
+
     SimpleIdeaBoard simpleIdeaBoard, MultipartFile file) {
 
     User user = getUserByAuthentication();
@@ -59,5 +61,49 @@ public class IdeaBoardService {
 
     return ideaBoardRepository.findById(id)
       .orElseThrow(() -> new IdeaBoardNotFoundException(id));
+  }
+
+  @Transactional
+  public IdeaBoard updateIdeaBoardById(Long id,
+    SimpleIdeaBoard simpleIdeaBoard, MultipartFile file) {
+
+    IdeaBoard ideaBoard = getIdeaBoardsById(id);
+    String classOf = ideaBoard.getUser().getClassOf();
+    userService.validAuthenticationClassOf(classOf);
+
+    ideaBoard.setTitle(simpleIdeaBoard.getTitle());
+    ideaBoard.setContent(simpleIdeaBoard.getContent());
+    ideaBoard.setStatus(simpleIdeaBoard.getStatus());
+    ideaBoard.setContact(simpleIdeaBoard.getContact());
+    ideaBoard.setRequiredPosiotions(simpleIdeaBoard.getRequiredPositions());
+
+    if (simpleIdeaBoard.getDeleteFileName() != null) {
+      Media media = ideaBoard.getMedia();
+
+      if (media != null && !media.getModifyName()
+        .equals(simpleIdeaBoard.getDeleteFileName())) {
+        throw new NotMatchingFileNameException("file name does not match when you delete.");
+      }
+      ideaBoard.setMedia(null);
+      uploadService.deleteFile(media.getModifyName(), "/" + ideaBoard.getUser().getClassOf());
+    }
+
+    if (file != null) {
+      Media mediaFile = uploadService
+        .uploadFile(file, "/" + classOf, MediaType.FILE);
+      ideaBoard.setMedia(mediaFile);
+    }
+
+    return ideaBoard;
+  }
+
+  @Transactional
+  public void deleteIdeaBoardById(Long id) {
+    IdeaBoard ideaBoard = getIdeaBoardsById(id);
+    String classOf = ideaBoard.getUser().getClassOf();
+    userService.validAuthenticationClassOf(classOf);
+    ideaBoard.setMedia(null);
+
+    ideaBoardRepository.delete(ideaBoard);
   }
 }

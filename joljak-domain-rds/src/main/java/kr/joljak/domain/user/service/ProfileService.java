@@ -2,7 +2,7 @@ package kr.joljak.domain.user.service;
 
 import kr.joljak.core.jwt.PermissionException;
 import kr.joljak.domain.upload.entity.Media;
-import kr.joljak.domain.upload.exception.NotMatchingFIleNameException;
+import kr.joljak.domain.upload.exception.NotMatchingFileNameException;
 import kr.joljak.domain.upload.service.UploadService;
 import kr.joljak.domain.user.dto.RegisterProfile;
 import kr.joljak.domain.user.dto.UpdateProfile;
@@ -55,6 +55,7 @@ public class ProfileService {
   @Transactional
   public Profile updateProfile(UpdateProfile updateProfile) {
     String classOf = updateProfile.getClassOf();
+    UserService.validAuthenticationClassOf(classOf);
     Profile profile = getProfile(classOf);
 
     User user = profile.getUser();
@@ -69,7 +70,7 @@ public class ProfileService {
     if (updateProfile.getDeleteFileName() != null) {
       Media media = profile.getMedia();
       if (!media.getModifyName().equals(updateProfile.getDeleteFileName())) {
-        throw new NotMatchingFIleNameException("file name does not match when you delete.");
+        throw new NotMatchingFileNameException("file name does not match when you delete.");
       }
       profile.setMedia(null);
       uploadService.deleteFile(media.getModifyName(), "/" + classOf);
@@ -81,9 +82,18 @@ public class ProfileService {
       profile.setMedia(media);
     }
 
-
-
     return profile;
+  }
+
+  @Transactional
+  public void deleteProfile(String classOf) {
+    UserService.validAuthenticationClassOf(classOf);
+
+    Profile profile = getProfile(classOf);
+    validateUserProfilePermissions(classOf, profile.getUser().getClassOf());
+    profile.setUser(null);
+
+    profileRepository.delete(profile);
   }
 
   private void validateUserProfilePermissions(String classOf, String author) {

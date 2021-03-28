@@ -24,10 +24,9 @@ public class IdeaBoardRequest {
   @NotNull
   private ProjectStatus status;
   private String contact;
-
   private List<UserProjectRole> requiredPositions;
-
   private UserProjectRole mainRole;
+  private String deleteFileName;
 
   @Builder
   public IdeaBoardRequest(String title, String content, String contact,
@@ -36,11 +35,9 @@ public class IdeaBoardRequest {
     UserProjectRole mainRole, MultipartFile file) {
     this.title = title;
     this.content = content;
-
     this.contact = contact;
     this.status = status;
     this.requiredPositions = requiredPositions;
-
     this.mainRole = mainRole;
   }
 
@@ -52,6 +49,7 @@ public class IdeaBoardRequest {
       .contact(ideaBoardRequest.getContact())
       .requiredPositions(ideaBoardRequest.getRequiredPositions())
       .mainRole(ideaBoardRequest.getMainRole())
+      .deleteFileName(ideaBoardRequest.getDeleteFileName())
       .build();
   }
 

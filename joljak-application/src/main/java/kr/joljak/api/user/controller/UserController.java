@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
 public class UserController {
+
   private final UserService userService;
 
   @ApiOperation("유저 휴대폰 번호 업데이트")
@@ -48,8 +49,8 @@ public class UserController {
     SimpleUser user = userService.getMyPage(classOf);
 
     return MyPageResponse.builder()
-        .user(user)
-        .build();
+      .user(user)
+      .build();
   }
 
   @ApiOperation("비밀번호 변경 API")
