@@ -1,7 +1,6 @@
 package kr.joljak.domain.work.service;
 
 import java.util.List;
-import kr.joljak.core.security.AuthenticationUtils;
 import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.upload.service.UploadService;
 import kr.joljak.domain.user.entity.User;
@@ -28,7 +27,7 @@ public class WorkService {
   @Transactional
   public Work addWork(SimpleWork simpleWork, List<MultipartFile> images) {
 
-    User user = getUserByAuthentication();
+    User user = userService.getUserByAuthentication();
     simpleWork.setUser(user);
 
     List<Media> imageList = null;
@@ -42,17 +41,12 @@ public class WorkService {
     return workRepository.save(work);
   }
 
-  public User getUserByAuthentication() {
-    String authenticationClassOf = AuthenticationUtils.getClassOf();
-
-    return userService.getUserByClassOf(authenticationClassOf);
-  }
-
   @Transactional(readOnly = true)
   public Page<Work> getWorksByPage(int page, int size) {
     return workRepository.findAll(FetchPages.of(page, size));
   }
 
+  @Transactional(readOnly = true)
   public Work getWorkById(Long id) {
     return workRepository.findById(id)
       .orElseThrow(() -> new WorkNotFounException(id));
