@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import kr.joljak.api.ideaboard.request.IdeaBoardRequest;
 import kr.joljak.api.ideaboard.response.IdeaBoardResponse;
 import kr.joljak.api.notice.request.NoticeRequest;
+import kr.joljak.api.work.request.WorkRequest;
 import kr.joljak.core.jwt.JwtTokenProvider;
 import kr.joljak.core.security.AuthenticationUtils;
 import kr.joljak.core.security.UserRole;
@@ -201,6 +202,16 @@ public abstract class CommonApiTest {
       .title(title)
       .content(content)
       .status(status)
+      .build();
+  }
+
+  public WorkRequest createWorkRequest(String workName, String teamName, List<String> teamMember,
+    String content) {
+    return WorkRequest.builder()
+      .workName(workName)
+      .teamName(teamName)
+      .teamMember(teamMember)
+      .content(content)
       .build();
   }
 }

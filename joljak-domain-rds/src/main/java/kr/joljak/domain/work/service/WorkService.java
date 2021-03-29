@@ -6,6 +6,7 @@ import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.util.FetchPages;
 import kr.joljak.domain.work.dto.SimpleWork;
 import kr.joljak.domain.work.entity.Work;
+import kr.joljak.domain.work.exception.WorkNotFounException;
 import kr.joljak.domain.work.repository.WorkRepository;
 import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.upload.service.UploadService;
@@ -50,5 +51,10 @@ public class WorkService {
   @Transactional(readOnly = true)
   public Page<Work> getWorksByPage(int page, int size) {
     return workRepository.findAll(FetchPages.of(page, size));
+  }
+
+  public Work getWorkById(Long id) {
+    return workRepository.findById(id)
+      .orElseThrow(() -> new WorkNotFounException(id));
   }
 }

@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -56,6 +57,16 @@ public class WorkController {
       .workResponseList(workResponseList)
       .page(workPage.getPageable())
       .build();
+  }
+
+  @ApiOperation("작품 게시판 개별 조회 API")
+  @GetMapping("/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  public WorkResponse getWork(
+    @PathVariable Long id
+  ){
+    Work work = workService.getWorkById(id);
+    return WorkResponse.of(work);
   }
 
   private List<WorkResponse> getWorkResponseListFrom(List<Work> workList){
