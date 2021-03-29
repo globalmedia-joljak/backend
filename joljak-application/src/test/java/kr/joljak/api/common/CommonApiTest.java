@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import kr.joljak.api.ideaboard.request.IdeaBoardRequest;
 import kr.joljak.api.ideaboard.response.IdeaBoardResponse;
 import kr.joljak.api.notice.request.NoticeRequest;
+import kr.joljak.api.work.request.WorkRequest;
 import kr.joljak.core.jwt.JwtTokenProvider;
 import kr.joljak.core.security.AuthenticationUtils;
 import kr.joljak.core.security.UserRole;
@@ -65,6 +66,7 @@ public abstract class CommonApiTest {
   protected final String URL = "http://localhost:";
   protected final String NOTICE_URL = URL + port + "/api/v1/notices";
   protected final String IDEABOARD_URL = URL + port + "/api/v1/ideaboards";
+  protected final String WORK_URL = URL +port + "/api/v1/works";
   protected final String AUTH_URL = URL + port + "/api/v1/auth";
   protected final String INVITE_URL = URL + port + "/api/v1/invites";
   protected final String USER_URL = URL + port + "/api/v1/users";
@@ -200,6 +202,16 @@ public abstract class CommonApiTest {
       .title(title)
       .content(content)
       .status(status)
+      .build();
+  }
+
+  public WorkRequest createWorkRequest(String workName, String teamName, List<String> teamMember,
+    String content) {
+    return WorkRequest.builder()
+      .workName(workName)
+      .teamName(teamName)
+      .teamMember(teamMember)
+      .content(content)
       .build();
   }
 }

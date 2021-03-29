@@ -1,6 +1,5 @@
 package kr.joljak.domain.Ideaboard.service;
 
-import kr.joljak.core.security.AuthenticationUtils;
 import kr.joljak.domain.Ideaboard.dto.SimpleIdeaBoard;
 import kr.joljak.domain.Ideaboard.entity.IdeaBoard;
 import kr.joljak.domain.Ideaboard.exception.IdeaBoardNotFoundException;
