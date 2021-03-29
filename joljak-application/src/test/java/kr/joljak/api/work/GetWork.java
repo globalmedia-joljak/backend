@@ -12,11 +12,11 @@ import kr.joljak.domain.work.entity.Work;
 import kr.joljak.domain.work.service.WorkService;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.web.util.NestedServletException;
 
 public class GetWork extends CommonApiTest {
 
@@ -44,6 +44,7 @@ public class GetWork extends CommonApiTest {
   @Test
   @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
   public void getWork_Success() throws Exception {
+
     MvcResult mvcResult = mockMvc.perform(
       get(WORK_URL + "/" + id)
         .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -52,15 +53,17 @@ public class GetWork extends CommonApiTest {
     assertEquals(200, mvcResult.getResponse().getStatus());
   }
 
-  @Test(expected = NestedServletException.class)
-  @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
+  @Test
+  @WithMockUser(username = TEST_USER_CLASS_OF, roles = "User")
   public void getWork_Fail_WorkNotFoundException() throws Exception {
 
     MvcResult mvcResult = mockMvc.perform(
       get(WORK_URL + "/" + id + 1)
         .contentType(MediaType.APPLICATION_JSON_VALUE)
+
     ).andReturn();
 
+    assertEquals(404, mvcResult.getResponse().getStatus());
   }
 
 }

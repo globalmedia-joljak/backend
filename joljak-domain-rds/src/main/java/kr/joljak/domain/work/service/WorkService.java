@@ -8,7 +8,7 @@ import kr.joljak.domain.user.service.UserService;
 import kr.joljak.domain.util.FetchPages;
 import kr.joljak.domain.work.dto.SimpleWork;
 import kr.joljak.domain.work.entity.Work;
-import kr.joljak.domain.work.exception.WorkNotFounException;
+import kr.joljak.domain.work.exception.WorkNotFoundException;
 import kr.joljak.domain.work.repository.WorkRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -49,6 +49,6 @@ public class WorkService {
   @Transactional(readOnly = true)
   public Work getWorkById(Long id) {
     return workRepository.findById(id)
-      .orElseThrow(() -> new WorkNotFounException(id));
+      .orElseThrow(() -> new WorkNotFoundException(id));
   }
 }
