@@ -5,6 +5,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -50,7 +51,7 @@ public class Work extends ExtendEntity {
   @Column
   private String teamVideoUrl;
 
-  @OneToMany(mappedBy = "work",
+  @OneToMany(mappedBy = "work",  fetch = FetchType.EAGER,
     cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Media> images;
 
