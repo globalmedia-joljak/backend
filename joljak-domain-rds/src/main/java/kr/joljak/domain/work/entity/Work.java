@@ -8,11 +8,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import kr.joljak.domain.common.entity.ExtendEntity;
-import kr.joljak.domain.work.dto.SimpleWork;
 import kr.joljak.domain.upload.entity.Media;
+import kr.joljak.domain.user.entity.User;
+import kr.joljak.domain.work.dto.SimpleWork;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -44,16 +46,22 @@ public class Work extends ExtendEntity {
   @Column(nullable = false)
   private String content;
 
+  @Column
   private String teamVideoUrl;
 
-  @OneToMany(mappedBy = "work",
-    cascade = CascadeType.ALL, orphanRemoval = true)
+  @Column
+  @ElementCollection
+  @LazyCollection(LazyCollectionOption.FALSE)
   private List<Media> images;
+
+  @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
+  @JoinColumn(name = "user_id")
+  private User user;
 
   @Builder
   public Work(String workName, String teamName,
     List<String> teamMember, String content, String teamVideoUrl,
-    List<Media> images
+    List<Media> images, User user
   ) {
     this.workName = workName;
     this.teamName = teamName;
@@ -61,6 +69,7 @@ public class Work extends ExtendEntity {
     this.content = content;
     this.teamVideoUrl = teamVideoUrl;
     this.images = images;
+    this.user = user;
   }
 
   public static Work of(SimpleWork simpleWork, List<Media> imageList) {
@@ -71,6 +80,7 @@ public class Work extends ExtendEntity {
       .content(simpleWork.getContent())
       .teamVideoUrl(simpleWork.getTeamVideoUrl())
       .images(imageList)
+      .user(simpleWork.getUser())
       .build();
   }
 }

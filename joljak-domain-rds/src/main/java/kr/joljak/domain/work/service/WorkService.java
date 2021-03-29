@@ -2,6 +2,7 @@ package kr.joljak.domain.work.service;
 
 import java.util.List;
 import kr.joljak.core.security.AuthenticationUtils;
+import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.work.dto.SimpleWork;
 import kr.joljak.domain.work.entity.Work;
 import kr.joljak.domain.work.repository.WorkRepository;
@@ -24,18 +25,24 @@ public class WorkService {
   @Transactional
   public Work addTeam(SimpleWork simpleWork, List<MultipartFile> images) {
 
-    String authenticationClassOf = AuthenticationUtils.getClassOf();
-    userService.validExistClassOf(authenticationClassOf);
+    User user = getUserByAuthentication();
+    simpleWork.setUser(user);
 
     List<Media> imageList = null;
     if (images != null) {
       imageList = uploadService
-        .uploadImages(images, "/" + authenticationClassOf);
+        .uploadImages(images, "/" + user.getClassOf());
     }
 
     Work work = Work.of(simpleWork, imageList);
 
     return workRepository.save(work);
+  }
+
+  public User getUserByAuthentication() {
+    String authenticationClassOf = AuthenticationUtils.getClassOf();
+
+    return userService.getUserByClassOf(authenticationClassOf);
   }
 
 }
