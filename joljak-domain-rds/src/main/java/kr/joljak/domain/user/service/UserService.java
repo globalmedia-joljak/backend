@@ -86,6 +86,12 @@ public class UserService {
     }
   }
 
+  public User getUserByAuthentication() {
+    String authenticationClassOf = AuthenticationUtils.getClassOf();
+
+    return getUserByClassOf(authenticationClassOf);
+  }
+
   public static void validAuthenticationClassOf(String classOf) {
     String authenticationClassOf = AuthenticationUtils.getClassOf();
 
