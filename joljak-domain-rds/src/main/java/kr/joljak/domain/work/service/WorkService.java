@@ -23,9 +23,9 @@ public class WorkService {
   private final UserService userService;
 
   @Transactional
-  public Work addTeam(SimpleWork simpleWork, List<MultipartFile> images) {
+  public Work addWork(SimpleWork simpleWork, List<MultipartFile> images) {
 
-    User user = getUserByAuthentication();
+    User user = userService.getUserByAuthentication();
     simpleWork.setUser(user);
 
     List<Media> imageList = null;
@@ -37,12 +37,6 @@ public class WorkService {
     Work work = Work.of(simpleWork, imageList);
 
     return workRepository.save(work);
-  }
-
-  public User getUserByAuthentication() {
-    String authenticationClassOf = AuthenticationUtils.getClassOf();
-
-    return userService.getUserByClassOf(authenticationClassOf);
   }
 
 }

@@ -30,8 +30,8 @@ public class WorkController {
     @RequestPart WorkRequest workRequest,
     @RequestPart(required = false) List<MultipartFile> images
   ) {
-    SimpleWork simpleWork = WorkRequest.toDomainTeamRequest(workRequest);
-    Work work = workService.addTeam(simpleWork, images);
+    SimpleWork simpleWork = WorkRequest.toDomainWorkRequest(workRequest);
+    Work work = workService.addWork(simpleWork, images);
     return WorkResponse.of(work);
   }
 

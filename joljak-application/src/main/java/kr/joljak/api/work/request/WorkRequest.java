@@ -34,7 +34,7 @@ public class WorkRequest {
     this.teamVideoUrl = teamVideoUrl;
   }
 
-  public static SimpleWork toDomainTeamRequest(WorkRequest workRequest) {
+  public static SimpleWork toDomainWorkRequest(WorkRequest workRequest) {
     return SimpleWork.builder()
       .workName(workRequest.getWorkName())
       .teamName(workRequest.getTeamName())

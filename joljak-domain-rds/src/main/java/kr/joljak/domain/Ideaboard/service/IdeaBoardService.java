@@ -31,7 +31,7 @@ public class IdeaBoardService {
 
     SimpleIdeaBoard simpleIdeaBoard, MultipartFile file) {
 
-    User user = getUserByAuthentication();
+    User user = userService.getUserByAuthentication();
 
     Media mediaFile = null;
     if (file != null) {
@@ -42,12 +42,6 @@ public class IdeaBoardService {
     IdeaBoard ideaBoard = IdeaBoard.of(simpleIdeaBoard, user, mediaFile);
 
     return ideaBoardRepository.save(ideaBoard);
-  }
-
-  public User getUserByAuthentication() {
-    String authenticationClassOf = AuthenticationUtils.getClassOf();
-
-    return userService.getUserByClassOf(authenticationClassOf);
   }
 
   @Transactional(readOnly = true)

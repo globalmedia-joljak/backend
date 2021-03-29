@@ -9,12 +9,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import kr.joljak.domain.common.entity.ExtendEntity;
-import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.work.dto.SimpleWork;
+import kr.joljak.domain.upload.entity.Media;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -49,9 +50,8 @@ public class Work extends ExtendEntity {
   @Column
   private String teamVideoUrl;
 
-  @Column
-  @ElementCollection
-  @LazyCollection(LazyCollectionOption.FALSE)
+  @OneToMany(mappedBy = "work",
+    cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Media> images;
 
   @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
