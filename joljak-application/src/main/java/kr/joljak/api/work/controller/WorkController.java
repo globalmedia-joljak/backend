@@ -45,7 +45,7 @@ public class WorkController {
   @ApiOperation("작품 게시판 조회 API")
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
-  public WorksResponse getWork(
+  public WorksResponse getWorks(
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "10") int size
   ) {
@@ -62,7 +62,7 @@ public class WorkController {
   @ApiOperation("작품 게시판 개별 조회 API")
   @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public WorkResponse getWork(
+  public WorkResponse getWorkById(
     @PathVariable Long id
   ) {
     Work work = workService.getWorkById(id);
