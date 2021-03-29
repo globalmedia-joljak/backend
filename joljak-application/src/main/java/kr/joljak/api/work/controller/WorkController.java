@@ -37,8 +37,8 @@ public class WorkController {
     @RequestPart WorkRequest workRequest,
     @RequestPart(required = false) List<MultipartFile> images
   ) {
-    SimpleWork simpleWork = WorkRequest.toDomainTeamRequest(workRequest);
-    Work work = workService.addTeam(simpleWork, images);
+    SimpleWork simpleWork = WorkRequest.toDomainWorkRequest(workRequest);
+    Work work = workService.addWork(simpleWork, images);
     return WorkResponse.of(work);
   }
 
@@ -48,7 +48,7 @@ public class WorkController {
   public WorksResponse getWork(
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "10") int size
-  ){
+  ) {
     Page<Work> workPage = workService.getWorksByPage(page, size);
 
     List<WorkResponse> workResponseList = getWorkResponseListFrom(workPage.getContent());
@@ -64,12 +64,12 @@ public class WorkController {
   @ResponseStatus(HttpStatus.OK)
   public WorkResponse getWork(
     @PathVariable Long id
-  ){
+  ) {
     Work work = workService.getWorkById(id);
     return WorkResponse.of(work);
   }
 
-  private List<WorkResponse> getWorkResponseListFrom(List<Work> workList){
+  private List<WorkResponse> getWorkResponseListFrom(List<Work> workList) {
     return workList.stream()
       .map(work -> WorkResponse.of(work))
       .collect(Collectors.toList());

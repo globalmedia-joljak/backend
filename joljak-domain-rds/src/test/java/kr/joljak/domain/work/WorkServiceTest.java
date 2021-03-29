@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import kr.joljak.domain.common.CommonDomainTest;
+import kr.joljak.domain.upload.exception.FileIsNotImageException;
+import kr.joljak.domain.user.exception.UserNotFoundException;
 import kr.joljak.domain.work.dto.SimpleWork;
 import kr.joljak.domain.work.entity.Work;
 import kr.joljak.domain.work.service.WorkService;
-import kr.joljak.domain.upload.exception.FileIsNotImageException;
-import kr.joljak.domain.user.exception.UserNotFoundException;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,7 +48,7 @@ public class WorkServiceTest extends CommonDomainTest {
   @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
   public void createWork_Success() {
     // when
-    Work work = workService.addTeam(simpleWork, imageFile);
+    Work work = workService.addWork(simpleWork, imageFile);
 
     // then
     Assertions.assertThat(work).isNotNull();
@@ -67,14 +67,14 @@ public class WorkServiceTest extends CommonDomainTest {
     );
 
     // when, then
-    Work work = workService.addTeam(simpleWork, imageFiles);
+    Work work = workService.addWork(simpleWork, imageFiles);
   }
 
   @Test(expected = UserNotFoundException.class)
   @WithMockUser(username = "Worng User", roles = "USER")
   public void createWork_Fail_UserNotFoundException() {
     // when
-    Work work = workService.addTeam(simpleWork, imageFile);
+    Work work = workService.addWork(simpleWork, imageFile);
 
     // then
     Assertions.assertThat(work).isNotNull();

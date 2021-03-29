@@ -2,15 +2,15 @@ package kr.joljak.domain.work.service;
 
 import java.util.List;
 import kr.joljak.core.security.AuthenticationUtils;
+import kr.joljak.domain.upload.entity.Media;
+import kr.joljak.domain.upload.service.UploadService;
 import kr.joljak.domain.user.entity.User;
+import kr.joljak.domain.user.service.UserService;
 import kr.joljak.domain.util.FetchPages;
 import kr.joljak.domain.work.dto.SimpleWork;
 import kr.joljak.domain.work.entity.Work;
 import kr.joljak.domain.work.exception.WorkNotFounException;
 import kr.joljak.domain.work.repository.WorkRepository;
-import kr.joljak.domain.upload.entity.Media;
-import kr.joljak.domain.upload.service.UploadService;
-import kr.joljak.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class WorkService {
   private final UserService userService;
 
   @Transactional
-  public Work addTeam(SimpleWork simpleWork, List<MultipartFile> images) {
+  public Work addWork(SimpleWork simpleWork, List<MultipartFile> images) {
 
     User user = getUserByAuthentication();
     simpleWork.setUser(user);
