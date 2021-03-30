@@ -1,7 +1,10 @@
 package kr.joljak.domain.work.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import kr.joljak.domain.upload.entity.Media;
+import kr.joljak.domain.upload.exception.NotMatchingFileNameException;
 import kr.joljak.domain.upload.service.UploadService;
 import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.service.UserService;
@@ -41,6 +44,56 @@ public class WorkService {
     return workRepository.save(work);
   }
 
+  @Transactional
+  public Work updateWorkById(Long id, SimpleWork simpleWork, List<MultipartFile> images) {
+
+    Work work = getWorkById(id);
+
+    String classOf = work.getUser().getClassOf();
+    userService.validAuthenticationClassOf(classOf);
+
+    work.setWorkName(simpleWork.getWorkName());
+    work.setTeamName(simpleWork.getTeamName());
+    work.setTeamMember(simpleWork.getTeamMember());
+    work.setContent(simpleWork.getContent());
+    work.setTeamVideoUrl(simpleWork.getTeamVideoUrl());
+
+    if (simpleWork.getDeleteFileName() != null) {
+      List<Media> media = work.getImages();
+
+      if (media != null) {
+        Map<String, Media> imageHash = new HashMap<>();
+
+        for (Media image : media) {
+          imageHash.put(image.getModifyName(), image);
+        }
+
+        for (String deleteImage : simpleWork.getDeleteFileName()) {
+          if (!imageHash.containsKey(deleteImage)) {
+            throw new NotMatchingFileNameException("image name does not match when you delete.");
+          }
+        }
+
+        for (String deleteImage : simpleWork.getDeleteFileName()) {
+          work.getImages().remove(imageHash.get(deleteImage));
+          uploadService.deleteFile(deleteImage, "/" + classOf);
+        }
+      }
+    }
+
+    List<Media> imageList = null;
+    if (images != null) {
+      imageList = uploadService
+        .uploadImages(images, "/" + classOf);
+
+      for (Media image : imageList) {
+        work.getImages().add(image);
+      }
+    }
+
+    return work;
+  }
+
   @Transactional(readOnly = true)
   public Page<Work> getWorksByPage(int page, int size) {
     return workRepository.findAll(FetchPages.of(page, size));
@@ -51,4 +104,5 @@ public class WorkService {
     return workRepository.findById(id)
       .orElseThrow(() -> new WorkNotFoundException(id));
   }
+
 }

@@ -23,6 +23,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Getter
@@ -51,8 +53,9 @@ public class Work extends ExtendEntity {
   @Column
   private String teamVideoUrl;
 
-  @OneToMany(mappedBy = "work",  fetch = FetchType.EAGER,
+  @OneToMany(mappedBy = "work", fetch = FetchType.EAGER,
     cascade = CascadeType.ALL, orphanRemoval = true)
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private List<Media> images;
 
   @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
@@ -70,6 +73,34 @@ public class Work extends ExtendEntity {
     this.content = content;
     this.teamVideoUrl = teamVideoUrl;
     this.images = images;
+    this.user = user;
+  }
+
+  public void setWorkName(String workName) {
+    this.workName = workName;
+  }
+
+  public void setTeamName(String teamName) {
+    this.teamName = teamName;
+  }
+
+  public void setTeamMember(List<String> teamMember) {
+    this.teamMember = teamMember;
+  }
+
+  public void setContent(String content) {
+    this.content = content;
+  }
+
+  public void setTeamVideoUrl(String teamVideoUrl) {
+    this.teamVideoUrl = teamVideoUrl;
+  }
+
+  public void setImages(List<Media> images) {
+    this.images = images;
+  }
+
+  public void setUser(User user) {
     this.user = user;
   }
 

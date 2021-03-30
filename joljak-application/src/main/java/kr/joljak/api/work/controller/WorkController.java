@@ -3,6 +3,7 @@ package kr.joljak.api.work.controller;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
 import kr.joljak.api.work.request.WorkRequest;
 import kr.joljak.api.work.response.WorkResponse;
 import kr.joljak.api.work.response.WorksResponse;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,6 +68,19 @@ public class WorkController {
     @PathVariable Long id
   ) {
     Work work = workService.getWorkById(id);
+    return WorkResponse.of(work);
+  }
+
+  @ApiOperation("작품 게시판 수정 API")
+  @PatchMapping("/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  public WorkResponse updateWork(
+    @PathVariable Long id,
+    @RequestPart(required = false) List<MultipartFile> images,
+    @Valid @RequestPart("workRequest") WorkRequest workRequest
+  ){
+    SimpleWork simpleWork = WorkRequest.toDomainWorkRequest(workRequest);
+    Work work = workService.updateWorkById(id, simpleWork, images);
     return WorkResponse.of(work);
   }
 
