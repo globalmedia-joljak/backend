@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SimpleWork {
+public class UpdateWork {
 
   private String workName;
   private String teamName;
@@ -17,11 +17,12 @@ public class SimpleWork {
   private String content;
   private String teamVideoUrl;
   private User user;
+  private List<String> deleteFileName;
 
   @Builder
-  public SimpleWork(
+  public UpdateWork(
     String workName, String teamName, List<String> teamMember,
-    String content, String teamVideoUrl, User user
+    String content, String teamVideoUrl, User user, List<String> deleteFileName
   ) {
     this.workName = workName;
     this.teamName = teamName;
@@ -29,10 +30,6 @@ public class SimpleWork {
     this.content = content;
     this.teamVideoUrl = teamVideoUrl;
     this.user = user;
-
-  }
-
-  public void setUser(User user){
-    this.user = user;
+    this.deleteFileName = deleteFileName;
   }
 }

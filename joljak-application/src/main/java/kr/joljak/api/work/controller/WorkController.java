@@ -4,10 +4,12 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
-import kr.joljak.api.work.request.WorkRequest;
+import kr.joljak.api.work.request.RegisterWorkRequest;
+import kr.joljak.api.work.request.UpdateWorkRequest;
 import kr.joljak.api.work.response.WorkResponse;
 import kr.joljak.api.work.response.WorksResponse;
 import kr.joljak.domain.work.dto.SimpleWork;
+import kr.joljak.domain.work.dto.UpdateWork;
 import kr.joljak.domain.work.entity.Work;
 import kr.joljak.domain.work.service.WorkService;
 import lombok.RequiredArgsConstructor;
@@ -36,10 +38,10 @@ public class WorkController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public WorkResponse create(
-    @RequestPart WorkRequest workRequest,
+    @RequestPart RegisterWorkRequest registerWorkRequest,
     @RequestPart(required = false) List<MultipartFile> images
   ) {
-    SimpleWork simpleWork = WorkRequest.toDomainWorkRequest(workRequest);
+    SimpleWork simpleWork = RegisterWorkRequest.toDomainWorkRequest(registerWorkRequest);
     Work work = workService.addWork(simpleWork, images);
     return WorkResponse.of(work);
   }
@@ -77,10 +79,10 @@ public class WorkController {
   public WorkResponse updateWork(
     @PathVariable Long id,
     @RequestPart(required = false) List<MultipartFile> images,
-    @Valid @RequestPart("workRequest") WorkRequest workRequest
-  ){
-    SimpleWork simpleWork = WorkRequest.toDomainWorkRequest(workRequest);
-    Work work = workService.updateWorkById(id, simpleWork, images);
+    @Valid @RequestPart UpdateWorkRequest updateWorkRequest
+  ) {
+    UpdateWork updateWork = UpdateWorkRequest.toDomainWorkRequest(updateWorkRequest);
+    Work work = workService.updateWorkById(id, updateWork, images);
     return WorkResponse.of(work);
   }
 

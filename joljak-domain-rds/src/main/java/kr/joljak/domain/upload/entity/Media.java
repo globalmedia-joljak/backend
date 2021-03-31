@@ -42,7 +42,6 @@ public class Media extends ExtendEntity {
   private MediaType mediaType;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "work_id")
   private Work work;
 
   @Builder

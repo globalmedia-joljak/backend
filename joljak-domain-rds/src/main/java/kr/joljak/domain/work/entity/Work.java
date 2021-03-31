@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import kr.joljak.domain.common.entity.ExtendEntity;
 import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.user.entity.User;
@@ -23,8 +24,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Getter
@@ -53,9 +52,10 @@ public class Work extends ExtendEntity {
   @Column
   private String teamVideoUrl;
 
-  @OneToMany(mappedBy = "work", fetch = FetchType.EAGER,
+  @OneToMany(fetch = FetchType.EAGER,
     cascade = CascadeType.ALL, orphanRemoval = true)
-  @OnDelete(action = OnDeleteAction.CASCADE)
+  @JoinColumn(name = "work_id")
+  @Size(max = 5)
   private List<Media> images;
 
   @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
