@@ -31,7 +31,7 @@ public class UpdateWorkRequest {
     this.deleteFileName = deleteFileName;
   }
 
-  public static UpdateWork toDomainWorkRequest(UpdateWorkRequest updateWorkRequest) {
+  public static UpdateWork toUpdateWork(UpdateWorkRequest updateWorkRequest) {
     return UpdateWork.builder()
       .workName(updateWorkRequest.getWorkName())
       .teamName(updateWorkRequest.getTeamName())

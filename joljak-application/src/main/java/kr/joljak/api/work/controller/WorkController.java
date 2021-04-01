@@ -81,7 +81,7 @@ public class WorkController {
     @RequestPart(required = false) List<MultipartFile> images,
     @Valid @RequestPart UpdateWorkRequest updateWorkRequest
   ) {
-    UpdateWork updateWork = UpdateWorkRequest.toDomainWorkRequest(updateWorkRequest);
+    UpdateWork updateWork = UpdateWorkRequest.toUpdateWork(updateWorkRequest);
     Work work = workService.updateWorkById(id, updateWork, images);
     return WorkResponse.of(work);
   }

@@ -77,7 +77,7 @@ public class WorkService {
   }
 
   @Transactional
-  public void deleteImageByModifyFileName(Work work, UpdateWork updateWork) {
+  private void deleteImageByModifyFileName(Work work, UpdateWork updateWork) {
     List<Media> mediaList = work.getImages();
 
     if (mediaList != null && updateWork.getDeleteFileName() != null) {
@@ -97,7 +97,7 @@ public class WorkService {
     }
   }
 
-  public void checkDeleteFileNameExist(Map<String, Media> imageHash, List<String> deleteFileName) {
+  private void checkDeleteFileNameExist(Map<String, Media> imageHash, List<String> deleteFileName) {
 
     for (String deleteImage : deleteFileName) {
       if (!imageHash.containsKey(deleteImage)) {
@@ -107,7 +107,7 @@ public class WorkService {
   }
 
   @Transactional
-  public void addImages(List<MultipartFile> images, Work work) {
+  private void addImages(List<MultipartFile> images, Work work) {
 
     List<Media> imageList = null;
     if (images != null) {
