@@ -3,16 +3,20 @@ package kr.joljak.api.work.controller;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import java.util.stream.Collectors;
-import kr.joljak.api.work.request.WorkRequest;
+import javax.validation.Valid;
+import kr.joljak.api.work.request.RegisterWorkRequest;
+import kr.joljak.api.work.request.UpdateWorkRequest;
 import kr.joljak.api.work.response.WorkResponse;
 import kr.joljak.api.work.response.WorksResponse;
 import kr.joljak.domain.work.dto.SimpleWork;
+import kr.joljak.domain.work.dto.UpdateWork;
 import kr.joljak.domain.work.entity.Work;
 import kr.joljak.domain.work.service.WorkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,10 +38,10 @@ public class WorkController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public WorkResponse create(
-    @RequestPart WorkRequest workRequest,
+    @RequestPart RegisterWorkRequest registerWorkRequest,
     @RequestPart(required = false) List<MultipartFile> images
   ) {
-    SimpleWork simpleWork = WorkRequest.toDomainWorkRequest(workRequest);
+    SimpleWork simpleWork = RegisterWorkRequest.toDomainWorkRequest(registerWorkRequest);
     Work work = workService.addWork(simpleWork, images);
     return WorkResponse.of(work);
   }
@@ -66,6 +70,19 @@ public class WorkController {
     @PathVariable Long id
   ) {
     Work work = workService.getWorkById(id);
+    return WorkResponse.of(work);
+  }
+
+  @ApiOperation("작품 게시판 수정 API")
+  @PatchMapping("/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  public WorkResponse updateWork(
+    @PathVariable Long id,
+    @RequestPart(required = false) List<MultipartFile> images,
+    @Valid @RequestPart UpdateWorkRequest updateWorkRequest
+  ) {
+    UpdateWork updateWork = UpdateWorkRequest.toUpdateWork(updateWorkRequest);
+    Work work = workService.updateWorkById(id, updateWork, images);
     return WorkResponse.of(work);
   }
 

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class WorkRequest {
+public class RegisterWorkRequest {
 
   @NotNull
   private String workName;
@@ -24,7 +24,7 @@ public class WorkRequest {
   private String teamVideoUrl;
 
   @Builder
-  public WorkRequest(String workName, String teamName,
+  public RegisterWorkRequest(String workName, String teamName,
     List<String> teamMember, String content, String teamVideoUrl
   ) {
     this.workName = workName;
@@ -34,13 +34,13 @@ public class WorkRequest {
     this.teamVideoUrl = teamVideoUrl;
   }
 
-  public static SimpleWork toDomainWorkRequest(WorkRequest workRequest) {
+  public static SimpleWork toDomainWorkRequest(RegisterWorkRequest registerWorkRequest) {
     return SimpleWork.builder()
-      .workName(workRequest.getWorkName())
-      .teamName(workRequest.getTeamName())
-      .teamMember(workRequest.getTeamMember())
-      .content(workRequest.getContent())
-      .teamVideoUrl(workRequest.getTeamVideoUrl())
+      .workName(registerWorkRequest.getWorkName())
+      .teamName(registerWorkRequest.getTeamName())
+      .teamMember(registerWorkRequest.getTeamMember())
+      .content(registerWorkRequest.getContent())
+      .teamVideoUrl(registerWorkRequest.getTeamVideoUrl())
       .build();
   }
 

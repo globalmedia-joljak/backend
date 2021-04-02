@@ -1,12 +1,18 @@
 package kr.joljak.domain.work;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javax.validation.ConstraintViolationException;
 import kr.joljak.domain.common.CommonDomainTest;
 import kr.joljak.domain.upload.exception.FileIsNotImageException;
+import kr.joljak.domain.upload.exception.NotMatchingFileNameException;
 import kr.joljak.domain.user.exception.UserNotFoundException;
 import kr.joljak.domain.work.dto.SimpleWork;
+import kr.joljak.domain.work.dto.UpdateWork;
 import kr.joljak.domain.work.entity.Work;
 import kr.joljak.domain.work.service.WorkService;
 import org.assertj.core.api.Assertions;
@@ -23,7 +29,9 @@ public class WorkServiceTest extends CommonDomainTest {
 
   private List<String> teamMember;
   private List<MultipartFile> imageFile;
+  private List<MultipartFile> updateImageFile;
   private SimpleWork simpleWork;
+  private UpdateWork updateWork;
 
   @Before
   public void initWork() throws Exception {
@@ -34,15 +42,17 @@ public class WorkServiceTest extends CommonDomainTest {
 
     imageFile = new ArrayList<>(
       Arrays.asList(
-        createMockImageFile("test" + nextId++),
-        createMockImageFile("test" + nextId++)
+        createMockImageFile("test1" + nextId++),
+        createMockImageFile("test2" + nextId++)
       )
     );
 
     simpleWork = createSimpleWork(
       "test", "test", teamMember, "test", "test"
     );
+
   }
+
 
   @Test
   @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
@@ -70,6 +80,24 @@ public class WorkServiceTest extends CommonDomainTest {
     Work work = workService.addWork(simpleWork, imageFiles);
   }
 
+  @Test(expected = ConstraintViolationException.class)
+  @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
+  public void createWork_Fail_TooManyFiles() throws Exception {
+
+    List<MultipartFile> manyImageFiles = new ArrayList<>(
+      Arrays.asList(
+        createMockImageFile("test1" + nextId++),
+        createMockImageFile("test2" + nextId++),
+        createMockImageFile("test3" + nextId++),
+        createMockImageFile("test4" + nextId++),
+        createMockImageFile("test5" + nextId++),
+        createMockImageFile("test6" + nextId++)
+      )
+    );
+
+    workService.addWork(simpleWork, manyImageFiles);
+  }
+
   @Test(expected = UserNotFoundException.class)
   @WithMockUser(username = "Worng User", roles = "USER")
   public void createWork_Fail_UserNotFoundException() {
@@ -78,6 +106,86 @@ public class WorkServiceTest extends CommonDomainTest {
 
     // then
     Assertions.assertThat(work).isNotNull();
+  }
+
+  @Test
+  @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
+  public void updateWork_Success() throws Exception {
+
+    updateImageFile = new ArrayList<>(
+      Arrays.asList(
+        createMockImageFile("update test" + nextId++)
+      )
+    );
+
+    Work work = workService.addWork(simpleWork, imageFile);
+
+    List<String> deleteFileName = new ArrayList<>(
+      Arrays.asList(
+        work.getImages().get(0).getModifyName()
+      )
+    );
+
+    updateWork = createUpdateWork(
+      "update test", "update test", teamMember,
+      "update test", "update test", deleteFileName);
+
+    Work newWork = workService.updateWorkById(work.getId(), updateWork, updateImageFile);
+
+    Assertions.assertThat(newWork.getImages()).isNotNull();
+    assertEquals(newWork.getImages().size(), 2);
+    assertNotEquals(newWork.getWorkName(), work.getWorkName());
+    assertNotEquals(newWork.getImages().get(0).getOriginalName(),
+      work.getImages().get(0).getOriginalName());
+  }
+
+  @Test(expected = NotMatchingFileNameException.class)
+  @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
+  public void updateWork_Fail_NotMatchingFileNameException() throws Exception {
+    updateImageFile = new ArrayList<>(
+      Arrays.asList(
+        createMockImageFile("update test" + nextId++)
+      )
+    );
+
+    Work work = workService.addWork(simpleWork, imageFile);
+
+    List<String> deleteFileName = new ArrayList<>(
+      Arrays.asList(
+        "no image.jpg"
+      )
+    );
+
+    updateWork = createUpdateWork(
+      "update test", "update test", teamMember,
+      "update test", "update test", deleteFileName);
+
+    Work newWork = workService.updateWorkById(work.getId(), updateWork, updateImageFile);
+  }
+
+  @Test(expected = UserNotFoundException.class)
+  @WithMockUser(username = "Wrong User", roles = "USER")
+  public void updateWork_Fail_UserNotFoundException() throws Exception {
+
+    updateImageFile = new ArrayList<>(
+      Arrays.asList(
+        createMockImageFile("update test" + nextId++)
+      )
+    );
+
+    Work work = workService.addWork(simpleWork, imageFile);
+
+    List<String> deleteFileName = new ArrayList<>(
+      Arrays.asList(
+        work.getImages().get(0).getModifyName()
+      )
+    );
+
+    updateWork = createUpdateWork(
+      "update test", "update test", teamMember,
+      "update test", "update test", deleteFileName);
+
+    Work newWork = workService.updateWorkById(work.getId(), updateWork, updateImageFile);
   }
 
   private SimpleWork createSimpleWork(
@@ -90,6 +198,20 @@ public class WorkServiceTest extends CommonDomainTest {
       .teamName(teamName)
       .content(content)
       .teamVideoUrl(teamVideoUrl)
+      .build();
+  }
+
+  private UpdateWork createUpdateWork(
+    String workName, String teamName, List<String> teamMember,
+    String content, String teamVideoUrl, List<String> deleteFileName
+  ) {
+    return UpdateWork.builder()
+      .workName(workName)
+      .teamMember(teamMember)
+      .teamName(teamName)
+      .content(content)
+      .teamVideoUrl(teamVideoUrl)
+      .deleteFileName(deleteFileName)
       .build();
   }
 

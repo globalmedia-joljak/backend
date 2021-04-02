@@ -16,6 +16,8 @@ import lombok.NoArgsConstructor;
 public class WorkResponse {
 
   @NotNull
+  private Long id;
+  @NotNull
   private String workName;
   @NotNull
   private String teamName;
@@ -30,10 +32,11 @@ public class WorkResponse {
 
   @Builder
   public WorkResponse(
-    String workName, String teamName, List<String> teamMember,
+    Long id, String workName, String teamName, List<String> teamMember,
     String content, String teamVideoUrl, List<MediaInfo> imageInfoList,
     LocalDateTime createDate, LocalDateTime modifiedDate
-  ){
+  ) {
+    this.id = id;
     this.workName = workName;
     this.teamName = teamName;
     this.teamMember = teamMember;
@@ -44,16 +47,17 @@ public class WorkResponse {
     this.modifiedDate = modifiedDate;
   }
 
-  public static WorkResponse of(Work work){
+  public static WorkResponse of(Work work) {
     List<MediaInfo> imageList = null;
 
-    if(work.getImages() != null){
+    if (work.getImages() != null) {
       imageList = work.getImages().stream()
         .map(image -> MediaInfo.of(image))
         .collect(Collectors.toList());
     }
 
     return WorkResponse.builder()
+      .id(work.getId())
       .workName(work.getWorkName())
       .teamName(work.getTeamName())
       .teamMember(work.getTeamMember())

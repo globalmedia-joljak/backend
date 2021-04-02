@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "medias")
 public class Media extends ExtendEntity {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -41,13 +42,12 @@ public class Media extends ExtendEntity {
   private MediaType mediaType;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "work_id")
   private Work work;
 
   @Builder
   public Media(Long id, String originalName, String modifyName, String fileExtension,
-      String fullPath, String url, boolean uploadToS3,
-      MediaType mediaType, Work work) {
+    String fullPath, String url, boolean uploadToS3,
+    MediaType mediaType, Work work) {
     this.id = id;
     this.originalName = originalName;
     this.modifyName = modifyName;

@@ -6,13 +6,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import java.util.ArrayList;
 import java.util.List;
 import kr.joljak.api.common.CommonApiTest;
-import kr.joljak.api.work.request.WorkRequest;
+import kr.joljak.api.work.request.RegisterWorkRequest;
 import kr.joljak.domain.work.dto.SimpleWork;
 import kr.joljak.domain.work.entity.Work;
 import kr.joljak.domain.work.service.WorkService;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -23,7 +22,7 @@ public class GetWork extends CommonApiTest {
   @Autowired
   private WorkService workService;
 
-  private WorkRequest workRequest;
+  private RegisterWorkRequest registerWorkRequest;
   private SimpleWork simpleWork;
   private Long id;
 
@@ -32,11 +31,11 @@ public class GetWork extends CommonApiTest {
     List<String> teamMember = new ArrayList<>();
 
     teamMember.add("test");
-    workRequest = createWorkRequest(
+    registerWorkRequest = createWorkRequest(
       "test workName", "test teamName",
       teamMember, "test content");
 
-    simpleWork = WorkRequest.toDomainWorkRequest(workRequest);
+    simpleWork = RegisterWorkRequest.toDomainWorkRequest(registerWorkRequest);
     Work work = workService.addWork(simpleWork, null);
     id = work.getId();
   }
