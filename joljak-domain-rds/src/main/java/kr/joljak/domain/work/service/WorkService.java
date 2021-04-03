@@ -3,6 +3,7 @@ package kr.joljak.domain.work.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.upload.exception.NotMatchingFileNameException;
 import kr.joljak.domain.upload.service.UploadService;
@@ -59,7 +60,7 @@ public class WorkService {
     work.setContent(updateWork.getContent());
     work.setTeamVideoUrl(updateWork.getTeamVideoUrl());
 
-    deleteImageByModifyFileName(work, updateWork);
+    deleteImageByModifyFileName(work, updateWork.getDeleteFileName());
     addImages(images, work);
 
     return work;
@@ -77,10 +78,25 @@ public class WorkService {
   }
 
   @Transactional
-  private void deleteImageByModifyFileName(Work work, UpdateWork updateWork) {
+  public void deleteWorkById(Long id) {
+    Work work = getWorkById(id);
+    String classOf = work.getUser().getClassOf();
+    userService.validExistClassOf(classOf);
+
+    List<String> deleteFileName = work.getImages().stream()
+      .map(Media::getModifyName)
+      .collect(Collectors.toList());
+
+    deleteImageByModifyFileName(work, deleteFileName);
+
+    workRepository.delete(work);
+  }
+
+  @Transactional
+  private void deleteImageByModifyFileName(Work work, List<String> deleteFileName) {
     List<Media> mediaList = work.getImages();
 
-    if (mediaList != null && updateWork.getDeleteFileName() != null) {
+    if (mediaList != null && deleteFileName != null) {
 
       Map<String, Media> imageHash = new HashMap<>();
 
@@ -88,9 +104,9 @@ public class WorkService {
         imageHash.put(image.getModifyName(), image);
       }
 
-      checkDeleteFileNameExist(imageHash, updateWork.getDeleteFileName());
+      checkDeleteFileNameExist(imageHash, deleteFileName);
 
-      for (String deleteImage : updateWork.getDeleteFileName()) {
+      for (String deleteImage : deleteFileName) {
         work.getImages().remove(imageHash.get(deleteImage));
         uploadService.deleteFile(deleteImage, "/" + work.getUser().getClassOf());
       }
@@ -120,13 +136,4 @@ public class WorkService {
     }
   }
 
-  @Transactional
-  public void deleteWorkById(Long id) {
-    Work work = getWorkById(id);
-    String classOf = work.getUser().getClassOf();
-    userService.validExistClassOf(classOf);
-    work.setImages(null);
-
-    workRepository.delete(work);
-  }
 }
