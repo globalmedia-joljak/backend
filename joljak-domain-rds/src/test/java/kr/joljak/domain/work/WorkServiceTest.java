@@ -2,11 +2,14 @@ package kr.joljak.domain.work;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.validation.ConstraintViolationException;
+import kr.joljak.core.jwt.PermissionException;
+import kr.joljak.core.security.UserRole;
 import kr.joljak.domain.common.CommonDomainTest;
 import kr.joljak.domain.upload.exception.FileIsNotImageException;
 import kr.joljak.domain.upload.exception.NotMatchingFileNameException;
@@ -14,6 +17,7 @@ import kr.joljak.domain.user.exception.UserNotFoundException;
 import kr.joljak.domain.work.dto.SimpleWork;
 import kr.joljak.domain.work.dto.UpdateWork;
 import kr.joljak.domain.work.entity.Work;
+import kr.joljak.domain.work.exception.WorkNotFoundException;
 import kr.joljak.domain.work.service.WorkService;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
@@ -32,9 +36,11 @@ public class WorkServiceTest extends CommonDomainTest {
   private List<MultipartFile> updateImageFile;
   private SimpleWork simpleWork;
   private UpdateWork updateWork;
+  private Work deleteWork;
 
   @Before
   public void initWork() throws Exception {
+
     // given
     teamMember = new ArrayList<>();
     teamMember.add("kevin");
@@ -50,7 +56,6 @@ public class WorkServiceTest extends CommonDomainTest {
     simpleWork = createSimpleWork(
       "test", "test", teamMember, "test", "test"
     );
-
   }
 
 
@@ -77,7 +82,7 @@ public class WorkServiceTest extends CommonDomainTest {
     );
 
     // when, then
-    Work work = workService.addWork(simpleWork, imageFiles);
+    workService.addWork(simpleWork, imageFiles);
   }
 
   @Test(expected = ConstraintViolationException.class)
@@ -99,13 +104,12 @@ public class WorkServiceTest extends CommonDomainTest {
   }
 
   @Test(expected = UserNotFoundException.class)
-  @WithMockUser(username = "Worng User", roles = "USER")
+  @WithMockUser(username = "Wrong User", roles = "USER")
   public void createWork_Fail_UserNotFoundException() {
+
     // when
     Work work = workService.addWork(simpleWork, imageFile);
 
-    // then
-    Assertions.assertThat(work).isNotNull();
   }
 
   @Test
@@ -186,6 +190,42 @@ public class WorkServiceTest extends CommonDomainTest {
       "update test", "update test", deleteFileName);
 
     Work newWork = workService.updateWorkById(work.getId(), updateWork, updateImageFile);
+  }
+
+  @Test(expected = WorkNotFoundException.class)
+  @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
+  public void deleteWork_Success() throws Exception {
+
+    Work work = workService.addWork(simpleWork, imageFile);
+    // when
+    workService.deleteWorkById(work.getId());
+
+    // then
+    workService.getWorkById(work.getId());
+  }
+
+  @Test(expected = PermissionException.class)
+  @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
+  public void deleteWork_Fail_PermissionException() {
+
+    // given
+    setAuthentication(UserRole.USER);
+    Work work = workService.addWork(simpleWork, imageFile);
+
+    // when, then
+    setAuthentication(UserRole.ADMIN);
+    workService.deleteWorkById(work.getId());
+  }
+
+  @Test(expected = WorkNotFoundException.class)
+  @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
+  public void deleteWork_Fail_WorkNotFoundException() {
+
+    // given
+    Work work = workService.addWork(simpleWork, imageFile);
+
+    // when, then
+    workService.deleteWorkById(work.getId() + 1L);
   }
 
   private SimpleWork createSimpleWork(

@@ -120,4 +120,13 @@ public class WorkService {
     }
   }
 
+  @Transactional
+  public void deleteWorkById(Long id) {
+    Work work = getWorkById(id);
+    String classOf = work.getUser().getClassOf();
+    userService.validExistClassOf(classOf);
+    work.setImages(null);
+
+    workRepository.delete(work);
+  }
 }
