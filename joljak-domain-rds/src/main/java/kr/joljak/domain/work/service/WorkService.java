@@ -93,10 +93,10 @@ public class WorkService {
   }
 
   @Transactional
-  private void deleteImageByModifyFileName(Work work, List<String> deleteFileName) {
+  private void deleteImageByModifyFileName(Work work, List<String> deleteFileNames) {
     List<Media> mediaList = work.getImages();
 
-    if (mediaList != null && deleteFileName != null) {
+    if (mediaList != null && deleteFileNames != null) {
 
       Map<String, Media> imageHash = new HashMap<>();
 
@@ -104,18 +104,18 @@ public class WorkService {
         imageHash.put(image.getModifyName(), image);
       }
 
-      checkDeleteFileNameExist(imageHash, deleteFileName);
+      checkDeleteFileNameExist(imageHash, deleteFileNames);
 
-      for (String deleteImage : deleteFileName) {
+      for (String deleteImage : deleteFileNames) {
         work.getImages().remove(imageHash.get(deleteImage));
         uploadService.deleteFile(deleteImage, "/" + work.getUser().getClassOf());
       }
     }
   }
 
-  private void checkDeleteFileNameExist(Map<String, Media> imageHash, List<String> deleteFileName) {
+  private void checkDeleteFileNameExist(Map<String, Media> imageHash, List<String> deleteFileNames) {
 
-    for (String deleteImage : deleteFileName) {
+    for (String deleteImage : deleteFileNames) {
       if (!imageHash.containsKey(deleteImage)) {
         throw new NotMatchingFileNameException("image name does not match when you delete.");
       }
