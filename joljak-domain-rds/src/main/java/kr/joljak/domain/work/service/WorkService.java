@@ -3,6 +3,7 @@ package kr.joljak.domain.work.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.upload.exception.NotMatchingFileNameException;
 import kr.joljak.domain.upload.service.UploadService;
@@ -59,7 +60,7 @@ public class WorkService {
     work.setContent(updateWork.getContent());
     work.setTeamVideoUrl(updateWork.getTeamVideoUrl());
 
-    deleteImageByModifyFileName(work, updateWork);
+    deleteImageByModifyFileName(work, updateWork.getDeleteFileName());
     addImages(images, work);
 
     return work;
@@ -77,10 +78,25 @@ public class WorkService {
   }
 
   @Transactional
-  private void deleteImageByModifyFileName(Work work, UpdateWork updateWork) {
+  public void deleteWorkById(Long id) {
+    Work work = getWorkById(id);
+    String classOf = work.getUser().getClassOf();
+    userService.validExistClassOf(classOf);
+
+    List<String> deleteFileName = work.getImages().stream()
+      .map(Media::getModifyName)
+      .collect(Collectors.toList());
+
+    deleteImageByModifyFileName(work, deleteFileName);
+
+    workRepository.delete(work);
+  }
+
+  @Transactional
+  private void deleteImageByModifyFileName(Work work, List<String> deleteFileNames) {
     List<Media> mediaList = work.getImages();
 
-    if (mediaList != null && updateWork.getDeleteFileName() != null) {
+    if (mediaList != null && deleteFileNames != null) {
 
       Map<String, Media> imageHash = new HashMap<>();
 
@@ -88,18 +104,18 @@ public class WorkService {
         imageHash.put(image.getModifyName(), image);
       }
 
-      checkDeleteFileNameExist(imageHash, updateWork.getDeleteFileName());
+      checkDeleteFileNameExist(imageHash, deleteFileNames);
 
-      for (String deleteImage : updateWork.getDeleteFileName()) {
+      for (String deleteImage : deleteFileNames) {
         work.getImages().remove(imageHash.get(deleteImage));
         uploadService.deleteFile(deleteImage, "/" + work.getUser().getClassOf());
       }
     }
   }
 
-  private void checkDeleteFileNameExist(Map<String, Media> imageHash, List<String> deleteFileName) {
+  private void checkDeleteFileNameExist(Map<String, Media> imageHash, List<String> deleteFileNames) {
 
-    for (String deleteImage : deleteFileName) {
+    for (String deleteImage : deleteFileNames) {
       if (!imageHash.containsKey(deleteImage)) {
         throw new NotMatchingFileNameException("image name does not match when you delete.");
       }

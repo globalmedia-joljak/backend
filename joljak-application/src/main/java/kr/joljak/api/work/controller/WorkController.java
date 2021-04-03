@@ -15,6 +15,7 @@ import kr.joljak.domain.work.service.WorkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -84,6 +85,15 @@ public class WorkController {
     UpdateWork updateWork = UpdateWorkRequest.toUpdateWork(updateWorkRequest);
     Work work = workService.updateWorkById(id, updateWork, images);
     return WorkResponse.of(work);
+  }
+
+  @ApiOperation("작품 게시판 삭제 API")
+  @DeleteMapping("/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  public void deleteWork(
+    @PathVariable Long id
+  ){
+    workService.deleteWorkById(id);
   }
 
   private List<WorkResponse> getWorkResponseListFrom(List<Work> workList) {

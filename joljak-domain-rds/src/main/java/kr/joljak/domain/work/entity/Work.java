@@ -58,7 +58,7 @@ public class Work extends ExtendEntity {
   @Size(max = 5)
   private List<Media> images;
 
-  @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
+  @OneToOne
   @JoinColumn(name = "user_id")
   private User user;
 
