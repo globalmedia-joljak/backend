@@ -45,9 +45,16 @@ public class AuthService {
     return getSignInResponse(SimpleUser.of(user));
   }
 
-  public AccessToken reissueAccessToken(String refreshToken) {
+  public AccessToken reissueAccessTokenByRefreshToken(String refreshToken) {
     String classOf = jwtTokenProvider.getClassOfByToken(refreshToken, JwtToken.REFRESH_TOKEN);
     List<String> roles = jwtTokenProvider.getRolesByToken(refreshToken, JwtToken.REFRESH_TOKEN);
+
+    return jwtTokenProvider.generateAccessToken(classOf, roles);
+  }
+
+  public AccessToken reissueAccessTokenByAccessToken(String accessToken) {
+    String classOf = jwtTokenProvider.getClassOfByToken(accessToken, JwtToken.ACCESS_TOKEN);
+    List<String> roles = jwtTokenProvider.getRolesByToken(accessToken, JwtToken.ACCESS_TOKEN);
 
     return jwtTokenProvider.generateAccessToken(classOf, roles);
   }
