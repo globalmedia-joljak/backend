@@ -69,7 +69,7 @@ public class JwtTokenProvider {
     Claims claims = decodingToken(token);
 
     if(!(claims.getSubject().equals(jwtToken.getName())))
-      throw new InvalidTokenException("token subject do not match.");
+      throw new InvalidTokenException("token subject do not match." + claims.getSubject() + "!=" + jwtToken.getName());
 
     return claims.get(CLASS_OF).toString();
   }
