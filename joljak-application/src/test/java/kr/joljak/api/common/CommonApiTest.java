@@ -104,7 +104,6 @@ public abstract class CommonApiTest {
   }
 
   public void setToken(User user, UserRole userRole) {
-    final String BEARER = "Bearer";
     List<String> userRoles = user.getUserRoles().stream()
       .map(UserRole::getRoleName)
       .collect(Collectors.toList());
@@ -112,14 +111,14 @@ public abstract class CommonApiTest {
     switch (userRole) {
       case ADMIN:
         this.adminAccessToken =
-          BEARER + jwtTokenProvider.generateAccessToken(user.getClassOf(), userRoles)
+          jwtTokenProvider.generateAccessToken(user.getClassOf(), userRoles)
             .getToken();
         this.adminRefreshToken = jwtTokenProvider
           .generateRefreshToken(user.getClassOf(), userRoles);
         break;
       case USER:
         this.userAccessToken =
-          BEARER + jwtTokenProvider.generateAccessToken(user.getClassOf(), userRoles)
+          jwtTokenProvider.generateAccessToken(user.getClassOf(), userRoles)
             .getToken();
         this.userRefreshToken = jwtTokenProvider.generateRefreshToken(user.getClassOf(), userRoles);
         break;
