@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RegisterTeamResponse {
+public class GetTeamResponse {
 
   private Long id;
   private String teamName;
@@ -25,13 +25,15 @@ public class RegisterTeamResponse {
   private String author;
   private List<MediaInfo> imageInfoList;
   private LocalDateTime createdDate;
+  private LocalDateTime modifiedDate;
 
   @Builder
-  public RegisterTeamResponse(
+  public GetTeamResponse(
     Long id, String teamName, String content,
     String category, String mediaArtMember, String designerMember,
     String developerMember, String plannerMember,
-    String author, LocalDateTime createdDate, List<MediaInfo> imageInfoList
+    String author, List<MediaInfo> imageInfoList, LocalDateTime createdDate,
+    LocalDateTime modifiedDate
   ) {
     this.id = id;
     this.teamName = teamName;
@@ -44,9 +46,10 @@ public class RegisterTeamResponse {
     this.author = author;
     this.imageInfoList = imageInfoList;
     this.createdDate = createdDate;
+    this.modifiedDate = modifiedDate;
   }
 
-  public static RegisterTeamResponse of(Team team) {
+  public static GetTeamResponse of(Team team) {
     List<MediaInfo> imageList = null;
 
     if (team.getImages() != null) {
@@ -55,7 +58,7 @@ public class RegisterTeamResponse {
         .collect(Collectors.toList());
     }
 
-    return RegisterTeamResponse.builder()
+    return GetTeamResponse.builder()
       .id(team.getId())
       .teamName(team.getTeamName())
       .content(team.getContent())
@@ -67,6 +70,7 @@ public class RegisterTeamResponse {
       .author(team.getUser().getName())
       .imageInfoList(imageList)
       .createdDate(team.getCreatedDate())
+      .modifiedDate(team.getModifiedDate())
       .build();
   }
 

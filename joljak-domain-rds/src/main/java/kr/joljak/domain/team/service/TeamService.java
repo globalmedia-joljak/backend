@@ -3,12 +3,15 @@ package kr.joljak.domain.team.service;
 import java.util.List;
 import kr.joljak.domain.team.dto.SimpleTeam;
 import kr.joljak.domain.team.entity.Team;
+import kr.joljak.domain.team.exception.TeamNotFoundException;
 import kr.joljak.domain.team.repository.TeamRepository;
 import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.upload.service.UploadService;
 import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,5 +37,16 @@ public class TeamService {
     Team team = Team.of(simpleTeam, imageList);
 
     return teamRepository.save(team);
+  }
+  
+  @Transactional(readOnly = true)
+  public Page<Team> getTeams(PageRequest pageRequest) {
+    return teamRepository.findAll(pageRequest);
+  }
+  
+  @Transactional(readOnly = true)
+  public Team getTeam(Long id) {
+    return teamRepository.findById(id)
+      .orElseThrow(TeamNotFoundException::new);
   }
 }
