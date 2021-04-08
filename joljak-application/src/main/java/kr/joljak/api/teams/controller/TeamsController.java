@@ -3,9 +3,11 @@ package kr.joljak.api.teams.controller;
 import io.swagger.annotations.ApiOperation;
 import javax.validation.Valid;
 import kr.joljak.api.teams.request.RegisterTeamRequest;
+import kr.joljak.api.teams.request.UpdateTeamRequest;
 import kr.joljak.api.teams.response.GetTeamResponse;
 import kr.joljak.api.teams.response.GetTeamsResponse;
 import kr.joljak.domain.team.dto.SimpleTeam;
+import kr.joljak.domain.team.dto.UpdateTeam;
 import kr.joljak.domain.team.entity.Team;
 import kr.joljak.domain.team.service.TeamService;
 import kr.joljak.domain.util.FetchPages;
@@ -13,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,6 +61,19 @@ public class TeamsController {
   @ResponseStatus(HttpStatus.OK)
   public GetTeamResponse getTeam(@PathVariable Long id){
     Team team = teamService.getTeam(id);
+    return GetTeamResponse.of(team);
+  }
+  
+  @ApiOperation("팀 게시판 업데이트 API")
+  @PatchMapping("/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  public GetTeamResponse updateTeam(
+    @PathVariable Long id,
+    UpdateTeamRequest updateTeamRequest
+  ){
+    UpdateTeam updateTeam = UpdateTeamRequest.toUpdateTeam(updateTeamRequest);
+    Team team = teamService.updateTeam(id, updateTeam);
+    
     return GetTeamResponse.of(team);
   }
   
