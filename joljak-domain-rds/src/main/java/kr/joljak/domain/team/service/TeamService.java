@@ -3,6 +3,7 @@ package kr.joljak.domain.team.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import kr.joljak.domain.team.dto.SimpleTeam;
 import kr.joljak.domain.team.dto.UpdateTeam;
 import kr.joljak.domain.team.entity.Team;
@@ -122,5 +123,20 @@ public class TeamService {
   public Team getTeamById(Long id) {
     return teamRepository.findById(id)
       .orElseThrow(() -> new TeamNotFoundException());
+  }
+  
+  @Transactional
+  public void deleteTeamById(Long id) {
+    Team team = getTeamById(id);
+    String classOf = team.getUser().getClassOf();
+    userService.validExistClassOf(classOf);
+    
+    List<String> deleteFileName = team.getImages().stream()
+      .map(Media::getModifyName)
+      .collect(Collectors.toList());
+    
+    deleteImageByModifyFileName(team, deleteFileName);
+    
+    teamRepository.delete(team);
   }
 }

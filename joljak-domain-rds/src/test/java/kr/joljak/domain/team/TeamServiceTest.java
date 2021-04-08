@@ -6,10 +6,13 @@ import static org.junit.Assert.assertNotEquals;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import kr.joljak.core.jwt.PermissionException;
+import kr.joljak.core.security.UserRole;
 import kr.joljak.domain.common.CommonDomainTest;
 import kr.joljak.domain.team.dto.SimpleTeam;
 import kr.joljak.domain.team.dto.UpdateTeam;
 import kr.joljak.domain.team.entity.Team;
+import kr.joljak.domain.team.exception.TeamNotFoundException;
 import kr.joljak.domain.team.service.TeamService;
 import kr.joljak.domain.upload.exception.FileIsNotImageException;
 import kr.joljak.domain.upload.exception.NotMatchingFileNameException;
@@ -162,6 +165,43 @@ public class TeamServiceTest extends CommonDomainTest {
     
     // when
     Team newTeam = teamService.updateTeam(team.getId(), updateTeam);
+  }
+  
+  @Test(expected = TeamNotFoundException.class)
+  @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
+  public void deleteTeam_Success() {
+    // given
+    Team team = teamService.addTeam(simpleTeam);
+    
+    // when
+    teamService.deleteTeamById(team.getId());
+    
+    // then
+    teamService.getTeamById(team.getId());
+  }
+  
+  @Test(expected = PermissionException.class)
+  @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
+  public void deleteTeam_Fail_PermissionException() {
+    
+    // given
+    setAuthentication(UserRole.USER);
+    Team team = teamService.addTeam(simpleTeam);
+    
+    // when, then
+    setAuthentication(UserRole.ADMIN);
+    teamService.deleteTeamById(team.getId());
+  }
+  
+  @Test(expected = TeamNotFoundException.class)
+  @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
+  public void deleteTeam_Fail_TeamNotFoundException() {
+    
+    // given
+    Team team = teamService.addTeam(simpleTeam);
+    
+    // when, then
+    teamService.deleteTeamById(team.getId() + 1);
   }
   
   public SimpleTeam createSimpleTeam(
