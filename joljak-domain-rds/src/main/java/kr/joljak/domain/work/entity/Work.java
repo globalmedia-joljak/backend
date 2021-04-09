@@ -5,6 +5,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,80 +32,93 @@ import org.hibernate.annotations.LazyCollectionOption;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "Works")
 public class Work extends ExtendEntity {
-
+  
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
+  
   @Column(nullable = false)
   private String workName;
-
+  
   @Column(nullable = false)
   private String teamName;
-
+  
+  @Column(nullable = false)
+  @Enumerated(EnumType.STRING)
+  private ProjectCategory projectCategory;
+  
   @Column(nullable = false)
   @ElementCollection
   @LazyCollection(LazyCollectionOption.FALSE)
   private List<String> teamMember;
-
+  
   @Column(nullable = false)
   private String content;
-
+  
+  @Column(nullable = false)
+  private String year;
+  
   @Column
   private String teamVideoUrl;
-
+  
   @OneToMany(fetch = FetchType.EAGER,
     cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "work_id")
   @Size(max = 5)
   private List<Media> images;
-
+  
   @OneToOne
   @JoinColumn(name = "user_id")
   private User user;
-
+  
   @Builder
   public Work(String workName, String teamName,
     List<String> teamMember, String content, String teamVideoUrl,
-    List<Media> images, User user
+    List<Media> images, User user, ProjectCategory projectCategory, String year
   ) {
     this.workName = workName;
     this.teamName = teamName;
     this.teamMember = teamMember;
+    this.projectCategory = projectCategory;
+    this.year = year;
     this.content = content;
     this.teamVideoUrl = teamVideoUrl;
     this.images = images;
     this.user = user;
   }
-
+  
   public void setWorkName(String workName) {
     this.workName = workName;
   }
-
+  
   public void setTeamName(String teamName) {
     this.teamName = teamName;
   }
-
+  
   public void setTeamMember(List<String> teamMember) {
     this.teamMember = teamMember;
   }
-
+  
   public void setContent(String content) {
     this.content = content;
   }
-
+  
   public void setTeamVideoUrl(String teamVideoUrl) {
     this.teamVideoUrl = teamVideoUrl;
   }
-
+  
   public void setImages(List<Media> images) {
     this.images = images;
   }
-
+  
+  public void setProjectCategory(ProjectCategory projectCategory) { this.projectCategory = projectCategory; }
+  
+  public void setYear(String year) { this.year = year;  }
+  
   public void setUser(User user) {
     this.user = user;
   }
-
+  
   public static Work of(SimpleWork simpleWork, List<Media> imageList) {
     return Work.builder()
       .workName(simpleWork.getWorkName())
@@ -111,6 +126,8 @@ public class Work extends ExtendEntity {
       .teamMember(simpleWork.getTeamMember())
       .content(simpleWork.getContent())
       .teamVideoUrl(simpleWork.getTeamVideoUrl())
+      .projectCategory(simpleWork.getProjectCategory())
+      .year(simpleWork.getYear())
       .images(imageList)
       .user(simpleWork.getUser())
       .build();
