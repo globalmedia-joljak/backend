@@ -1,6 +1,5 @@
 package kr.joljak.api.work.controller;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import java.util.stream.Collectors;

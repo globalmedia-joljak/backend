@@ -8,6 +8,7 @@ import java.util.List;
 import kr.joljak.api.common.CommonApiTest;
 import kr.joljak.api.work.request.RegisterWorkRequest;
 import kr.joljak.domain.work.dto.SimpleWork;
+import kr.joljak.domain.work.entity.ProjectCategory;
 import kr.joljak.domain.work.entity.Work;
 import kr.joljak.domain.work.service.WorkService;
 import org.junit.Before;
@@ -32,7 +33,7 @@ public class GetWork extends CommonApiTest {
 
     teamMember.add("test");
     registerWorkRequest = createWorkRequest(
-      "test workName", "test teamName",
+      "test workName", "test teamName", "2020", ProjectCategory.WEB,
       teamMember, "test content");
 
     simpleWork = RegisterWorkRequest.toDomainWorkRequest(registerWorkRequest);
