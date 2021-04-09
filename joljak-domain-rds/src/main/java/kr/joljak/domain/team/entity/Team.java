@@ -78,6 +78,25 @@ public class Team extends ExtendEntity {
     this.images = images;
   }
 
+  public void setTeamName(String teamName){
+    this.teamName = teamName;
+  }
+  public void setCategory(String category){
+    this.category = category;
+  }
+  public void setMediaArtMember(String mediaArtMember){
+    this.mediaArtMember = mediaArtMember;
+  }
+  public void setDesignerMember(String designerMember){
+    this.designerMember = designerMember;
+  }
+  public void setDeveloperMember(String developerMember){
+    this.developerMember = developerMember;
+  }
+  public void setPlannerMember(String plannerMember){
+    this.plannerMember = plannerMember;
+  }
+  
   public static Team of(SimpleTeam simpleTeam, List<Media> imageList) {
     return Team.builder()
       .teamName(simpleTeam.getTeamName())
