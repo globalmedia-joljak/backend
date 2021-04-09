@@ -38,10 +38,17 @@ public class AuthController {
     return authService.signIn(signInRequest);
   }
 
-  @ApiOperation("AccessToken 재발급")
+  @ApiOperation("RefreshToken으로 AccessToken 재발급")
+  @PostMapping("/refreshtoken/reissue/accesstoken")
+  @ResponseStatus(HttpStatus.OK)
+  public AccessToken reissueAccessTokenByRefreshToken(@RequestHeader String refreshToken) {
+    return authService.reissueAccessTokenByRefreshToken(refreshToken);
+  }
+
+  @ApiOperation("AccessToken으로 AccessToken 재발급")
   @PostMapping("/reissue/accesstoken")
   @ResponseStatus(HttpStatus.OK)
-  public AccessToken reissueAccessToken(@RequestHeader String refreshToken) {
-    return authService.reissueAccessToken(refreshToken);
+  public AccessToken reissueAccessTokenByAccessToken(@RequestHeader String accessToken) {
+    return authService.reissueAccessTokenByAccessToken(accessToken);
   }
 }

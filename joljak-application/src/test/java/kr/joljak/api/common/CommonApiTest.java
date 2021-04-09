@@ -5,10 +5,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import kr.joljak.api.ideaboard.request.IdeaBoardRequest;
-import kr.joljak.api.ideaboard.response.IdeaBoardResponse;
 import kr.joljak.api.notice.request.NoticeRequest;
+import kr.joljak.api.work.request.RegisterWorkRequest;
 import kr.joljak.core.jwt.JwtTokenProvider;
-import kr.joljak.core.security.AuthenticationUtils;
 import kr.joljak.core.security.UserRole;
 import kr.joljak.domain.Ideaboard.entity.ProjectStatus;
 import kr.joljak.domain.invite.entity.Invite;
@@ -65,6 +64,8 @@ public abstract class CommonApiTest {
   protected final String URL = "http://localhost:";
   protected final String NOTICE_URL = URL + port + "/api/v1/notices";
   protected final String IDEABOARD_URL = URL + port + "/api/v1/ideaboards";
+  protected final String WORK_URL = URL +port + "/api/v1/works";
+  protected final String TEAM_URL = URL +port + "/api/v1/teams";
   protected final String AUTH_URL = URL + port + "/api/v1/auth";
   protected final String INVITE_URL = URL + port + "/api/v1/invites";
   protected final String USER_URL = URL + port + "/api/v1/users";
@@ -103,7 +104,6 @@ public abstract class CommonApiTest {
   }
 
   public void setToken(User user, UserRole userRole) {
-    final String BEARER = "Bearer";
     List<String> userRoles = user.getUserRoles().stream()
       .map(UserRole::getRoleName)
       .collect(Collectors.toList());
@@ -111,14 +111,14 @@ public abstract class CommonApiTest {
     switch (userRole) {
       case ADMIN:
         this.adminAccessToken =
-          BEARER + jwtTokenProvider.generateAccessToken(user.getClassOf(), userRoles)
+          jwtTokenProvider.generateAccessToken(user.getClassOf(), userRoles)
             .getToken();
         this.adminRefreshToken = jwtTokenProvider
           .generateRefreshToken(user.getClassOf(), userRoles);
         break;
       case USER:
         this.userAccessToken =
-          BEARER + jwtTokenProvider.generateAccessToken(user.getClassOf(), userRoles)
+          jwtTokenProvider.generateAccessToken(user.getClassOf(), userRoles)
             .getToken();
         this.userRefreshToken = jwtTokenProvider.generateRefreshToken(user.getClassOf(), userRoles);
         break;
@@ -200,6 +200,16 @@ public abstract class CommonApiTest {
       .title(title)
       .content(content)
       .status(status)
+      .build();
+  }
+
+  public RegisterWorkRequest createWorkRequest(String workName, String teamName, List<String> teamMember,
+    String content) {
+    return RegisterWorkRequest.builder()
+      .workName(workName)
+      .teamName(teamName)
+      .teamMember(teamMember)
+      .content(content)
       .build();
   }
 }
