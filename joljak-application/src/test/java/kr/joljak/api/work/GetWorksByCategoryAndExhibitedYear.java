@@ -10,15 +10,15 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MvcResult;
 
-public class GetWorksByCategoryAndYear extends CommonApiTest {
+public class GetWorksByCategoryAndExhibitedYear extends CommonApiTest {
   
   
   @Test
   @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
-  public void getWorksByCategoryAndYear_Success() throws Exception {
+  public void getWorksByCategoryAndExhibitedYear_Success() throws Exception {
     // when, given
     MvcResult mvcResult = mockMvc.perform(
-      get(WORK_URL + "/search" + "?category=WEB&page=0&size=10&year=2019")
+      get(WORK_URL + "/search" + "?category=WEB_APP&page=0&size=10&exhibitedYear=2019")
         .contentType(MediaType.APPLICATION_JSON_VALUE)
     ).andReturn();
     
@@ -28,10 +28,10 @@ public class GetWorksByCategoryAndYear extends CommonApiTest {
   
   @Test
   @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
-  public void getWorksByCategoryAndYear_Success_OnlyByCategory() throws Exception {
+  public void getWorksByCategoryAndExhibitedYear_Success_OnlyByCategory() throws Exception {
     // when, given
     MvcResult mvcResult = mockMvc.perform(
-      get(WORK_URL + "/search" + "?category=WEB&page=0&size=10")
+      get(WORK_URL + "/search" + "?category=WEB_APP&page=0&size=10")
         .contentType(MediaType.APPLICATION_JSON_VALUE)
     ).andReturn();
     
@@ -41,7 +41,7 @@ public class GetWorksByCategoryAndYear extends CommonApiTest {
   
   @Test
   @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
-  public void getWorksByCategoryAndYear_Success_OnlyPageAndSize() throws Exception {
+  public void getWorksByCategoryAndExhibitedYear_Success_OnlyPageAndSize() throws Exception {
     // when, given
     MvcResult mvcResult = mockMvc.perform(
       get(WORK_URL + "/search" + "?page=0&size=10")
