@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import kr.joljak.api.common.CommonApiTest;
 import kr.joljak.domain.user.dto.RegisterProfile;
+import kr.joljak.domain.user.entity.Portfolio;
 import kr.joljak.domain.user.entity.Profile;
 import kr.joljak.domain.user.entity.UserProjectRole;
 import kr.joljak.domain.user.repository.ProfileRepository;
@@ -31,9 +32,14 @@ public class GetProfileTest extends CommonApiTest {
   @Before
   @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
   public void init() {
+    Portfolio portfolio = Portfolio
+        .builder()
+        .title("test_portfolio")
+        .link("test_link")
+        .build();
     Profile mockProfile = Profile.builder()
       .content("mock profile")
-      .portfolioLinks(new ArrayList<>(Collections.singleton("http://localhost:8080")))
+      .portfolioLinks(new ArrayList<>(Collections.singleton(portfolio)))
       .build();
 
     RegisterProfile registerProfile = RegisterProfile.builder()

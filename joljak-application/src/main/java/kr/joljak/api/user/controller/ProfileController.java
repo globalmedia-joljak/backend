@@ -19,10 +19,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,12 +33,10 @@ public class ProfileController {
   @PostMapping("/{classOf}")
   @ResponseStatus(HttpStatus.CREATED)
   public GetProfileResponse registerProfile(
-    @RequestPart(required = false) MultipartFile image,
-    @RequestPart RegisterProfileRequest registerProfileRequest,
+    RegisterProfileRequest registerProfileRequest,
     @PathVariable String classOf
   ) {
-
-    Profile profile = profileService.registerProfile(registerProfileRequest.of(classOf, image));
+    Profile profile = profileService.registerProfile(registerProfileRequest.of(classOf, registerProfileRequest.getImage()));
 
     return GetProfileResponse.builder()
       .simpleProfile(SimpleProfile.of(profile))
@@ -78,10 +74,9 @@ public class ProfileController {
   @ResponseStatus(HttpStatus.OK)
   public GetProfileResponse updateProfile(
     @PathVariable String classOf,
-    @RequestPart UpdateProfileRequest updateProfileRequest,
-    @RequestPart(required = false) MultipartFile image
+    UpdateProfileRequest updateProfileRequest
   ) {
-    Profile profile = profileService.updateProfile(updateProfileRequest.of(classOf, image));
+    Profile profile = profileService.updateProfile(updateProfileRequest.of(classOf, updateProfileRequest.getImage()));
 
     return GetProfileResponse.builder()
       .simpleProfile(SimpleProfile.of(profile))
