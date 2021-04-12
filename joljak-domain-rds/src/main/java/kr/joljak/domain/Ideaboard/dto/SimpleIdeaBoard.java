@@ -10,6 +10,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -17,18 +18,18 @@ public class SimpleIdeaBoard {
 
   private String title;
   private String content;
-
   private ProjectStatus status;
   private String contact;
   private List<UserProjectRole> requiredPositions;
   private User user;
   private UserProjectRole mainRole;
+  private MultipartFile file;
   private String deleteFileName;
 
   @Builder
   public SimpleIdeaBoard(String title, String content, String contact,
       ProjectStatus status, User user,
-    List<UserProjectRole> requiredPositions,
+    List<UserProjectRole> requiredPositions, MultipartFile file,
     UserProjectRole mainRole, String deleteFileName) {
     this.title = title;
     this.content = content;
@@ -37,19 +38,8 @@ public class SimpleIdeaBoard {
     this.contact = contact;
     this.requiredPositions = requiredPositions;
     this.mainRole = mainRole;
+    this.file = file;
     this.deleteFileName = deleteFileName;
-  }
-
-  public static SimpleIdeaBoard of(IdeaBoard ideaBoard){
-    return SimpleIdeaBoard.builder()
-      .title(ideaBoard.getTitle())
-      .content(ideaBoard.getContent())
-      .status(ideaBoard.getStatus())
-      .contact(ideaBoard.getContact())
-      .user(ideaBoard.getUser())
-      .requiredPositions(ideaBoard.getRequiredPosiotions())
-      .mainRole(ideaBoard.getUser().getMainProjectRole())
-      .build();
   }
 
 }

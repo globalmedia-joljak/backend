@@ -3,6 +3,7 @@ package kr.joljak.domain.work;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+import com.sun.org.apache.xpath.internal.operations.Mult;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +16,7 @@ import kr.joljak.domain.upload.exception.NotMatchingFileNameException;
 import kr.joljak.domain.user.exception.UserNotFoundException;
 import kr.joljak.domain.work.dto.SimpleWork;
 import kr.joljak.domain.work.dto.UpdateWork;
+import kr.joljak.domain.work.entity.ProjectCategory;
 import kr.joljak.domain.work.entity.Work;
 import kr.joljak.domain.work.exception.WorkNotFoundException;
 import kr.joljak.domain.work.service.WorkService;
@@ -24,6 +26,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.web.multipart.MultipartFile;
+import sun.java2d.pipe.SpanShapeRenderer.Simple;
 
 public class WorkServiceTest extends CommonDomainTest {
 
@@ -35,7 +38,6 @@ public class WorkServiceTest extends CommonDomainTest {
   private List<MultipartFile> updateImageFile;
   private SimpleWork simpleWork;
   private UpdateWork updateWork;
-  private Work deleteWork;
 
   @Before
   public void initWork() throws Exception {
@@ -53,7 +55,8 @@ public class WorkServiceTest extends CommonDomainTest {
     );
 
     simpleWork = createSimpleWork(
-      "test", "test", teamMember, "test", "test"
+      "test", "test", teamMember, ProjectCategory.ANIMATION,
+      "2018", "test", "test", imageFile
     );
   }
 
@@ -62,7 +65,7 @@ public class WorkServiceTest extends CommonDomainTest {
   @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
   public void createWork_Success() {
     // when
-    Work work = workService.addWork(simpleWork, imageFile);
+    Work work = workService.addWork(simpleWork);
 
     // then
     Assertions.assertThat(work).isNotNull();
@@ -79,9 +82,14 @@ public class WorkServiceTest extends CommonDomainTest {
         createMockTextFile("test" + nextId++)
       )
     );
+  
+    SimpleWork simpleWork1 = createSimpleWork(
+      "test", "test", teamMember, ProjectCategory.ANIMATION,
+      "2018", "test", "test", imageFiles
+    );
 
     // when, then
-    workService.addWork(simpleWork, imageFiles);
+    workService.addWork(simpleWork1);
   }
 
   @Test(expected = ConstraintViolationException.class)
@@ -98,8 +106,13 @@ public class WorkServiceTest extends CommonDomainTest {
         createMockImageFile("test6" + nextId++)
       )
     );
-
-    workService.addWork(simpleWork, manyImageFiles);
+  
+    SimpleWork simpleWork1 = createSimpleWork(
+      "test", "test", teamMember, ProjectCategory.ANIMATION,
+      "2018", "test", "test", manyImageFiles
+    );
+    
+    workService.addWork(simpleWork1);
   }
 
   @Test(expected = UserNotFoundException.class)
@@ -107,7 +120,7 @@ public class WorkServiceTest extends CommonDomainTest {
   public void createWork_Fail_UserNotFoundException() {
 
     // when
-    Work work = workService.addWork(simpleWork, imageFile);
+    Work work = workService.addWork(simpleWork);
 
   }
 
@@ -121,7 +134,7 @@ public class WorkServiceTest extends CommonDomainTest {
       )
     );
 
-    Work work = workService.addWork(simpleWork, imageFile);
+    Work work = workService.addWork(simpleWork);
 
     List<String> deleteFileName = new ArrayList<>(
       Arrays.asList(
@@ -130,10 +143,10 @@ public class WorkServiceTest extends CommonDomainTest {
     );
 
     updateWork = createUpdateWork(
-      "update test", "update test", teamMember,
-      "update test", "update test", deleteFileName);
+      "update test",  "update test", teamMember, ProjectCategory.ANIMATION,
+       "test content", updateImageFile, deleteFileName, "2018");
 
-    Work newWork = workService.updateWorkById(work.getId(), updateWork, updateImageFile);
+    Work newWork = workService.updateWorkById(work.getId(), updateWork);
 
     Assertions.assertThat(newWork.getImages()).isNotNull();
     assertEquals(newWork.getImages().size(), 2);
@@ -150,8 +163,13 @@ public class WorkServiceTest extends CommonDomainTest {
         createMockImageFile("update test" + nextId++)
       )
     );
-
-    Work work = workService.addWork(simpleWork, imageFile);
+  
+    SimpleWork simpleWork1 = createSimpleWork(
+      "test", "test", teamMember, ProjectCategory.ANIMATION,
+      "2018", "test", "test", updateImageFile
+    );
+    
+    Work work = workService.addWork(simpleWork1);
 
     List<String> deleteFileName = new ArrayList<>(
       Arrays.asList(
@@ -160,10 +178,10 @@ public class WorkServiceTest extends CommonDomainTest {
     );
 
     updateWork = createUpdateWork(
-      "update test", "update test", teamMember,
-      "update test", "update test", deleteFileName);
+      "update test",  "update test", teamMember, ProjectCategory.ANIMATION,
+      "update test", null, deleteFileName, "2018");
 
-    Work newWork = workService.updateWorkById(work.getId(), updateWork, updateImageFile);
+    Work newWork = workService.updateWorkById(work.getId(), updateWork);
   }
 
   @Test(expected = UserNotFoundException.class)
@@ -176,7 +194,7 @@ public class WorkServiceTest extends CommonDomainTest {
       )
     );
 
-    Work work = workService.addWork(simpleWork, imageFile);
+    Work work = workService.addWork(simpleWork);
 
     List<String> deleteFileName = new ArrayList<>(
       Arrays.asList(
@@ -185,17 +203,17 @@ public class WorkServiceTest extends CommonDomainTest {
     );
 
     updateWork = createUpdateWork(
-      "update test", "update test", teamMember,
-      "update test", "update test", deleteFileName);
+      "update test",  "update test", teamMember, ProjectCategory.ANIMATION,
+      "test content", updateImageFile, deleteFileName, "2018");
 
-    Work newWork = workService.updateWorkById(work.getId(), updateWork, updateImageFile);
+    Work newWork = workService.updateWorkById(work.getId(), updateWork);
   }
 
   @Test(expected = WorkNotFoundException.class)
   @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
   public void deleteWork_Success() throws Exception {
 
-    Work work = workService.addWork(simpleWork, imageFile);
+    Work work = workService.addWork(simpleWork);
     // when
     workService.deleteWorkById(work.getId());
 
@@ -209,7 +227,7 @@ public class WorkServiceTest extends CommonDomainTest {
 
     // given
     setAuthentication(UserRole.USER);
-    Work work = workService.addWork(simpleWork, imageFile);
+    Work work = workService.addWork(simpleWork);
 
     // when, then
     setAuthentication(UserRole.ADMIN);
@@ -221,35 +239,40 @@ public class WorkServiceTest extends CommonDomainTest {
   public void deleteWork_Fail_WorkNotFoundException() {
 
     // given
-    Work work = workService.addWork(simpleWork, imageFile);
+    Work work = workService.addWork(simpleWork);
 
     // when, then
     workService.deleteWorkById(work.getId() + 1L);
   }
 
   private SimpleWork createSimpleWork(
-    String workName, String teamName, List<String> teamMember,
-    String content, String teamVideoUrl
+    String workName, String teamName, List<String> teamMember, ProjectCategory projectCategory, String exhibitedYear,
+    String content, String teamVideoUrl, List<MultipartFile> images
   ) {
     return SimpleWork.builder()
       .workName(workName)
       .teamMember(teamMember)
       .teamName(teamName)
+      .projectCategory(projectCategory)
+      .exhibitedYear(exhibitedYear)
       .content(content)
       .teamVideoUrl(teamVideoUrl)
+      .images(images)
       .build();
   }
 
   private UpdateWork createUpdateWork(
-    String workName, String teamName, List<String> teamMember,
-    String content, String teamVideoUrl, List<String> deleteFileName
+    String workName, String teamName, List<String> teamMember, ProjectCategory projectCategory,
+    String content, List<MultipartFile> images, List<String> deleteFileName, String exhibitedyear
   ) {
     return UpdateWork.builder()
       .workName(workName)
       .teamMember(teamMember)
       .teamName(teamName)
       .content(content)
-      .teamVideoUrl(teamVideoUrl)
+      .projectCategory(projectCategory)
+      .exhibitedYear(exhibitedyear)
+      .images(images)
       .deleteFileName(deleteFileName)
       .build();
   }

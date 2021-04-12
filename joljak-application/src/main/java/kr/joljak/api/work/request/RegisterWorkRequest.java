@@ -9,6 +9,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -27,10 +29,13 @@ public class RegisterWorkRequest {
   @NotNull
   private String content;
   private String teamVideoUrl;
+  @Setter
+  private List<MultipartFile> images;
   
   @Builder
   public RegisterWorkRequest(String workName, String teamName, ProjectCategory projectCategory,
-    List<String> teamMember, String content, String teamVideoUrl, String exhibitedYear
+    List<String> teamMember, String content, String teamVideoUrl, String exhibitedYear,
+    List<MultipartFile> images
   ) {
     this.workName = workName;
     this.teamName = teamName;
@@ -39,6 +44,7 @@ public class RegisterWorkRequest {
     this.content = content;
     this.exhibitedYear = exhibitedYear;
     this.teamVideoUrl = teamVideoUrl;
+    this.images = images;
   }
   
   public static SimpleWork toDomainWorkRequest(RegisterWorkRequest registerWorkRequest) {
@@ -50,6 +56,7 @@ public class RegisterWorkRequest {
       .exhibitedYear(registerWorkRequest.getExhibitedYear())
       .content(registerWorkRequest.getContent())
       .teamVideoUrl(registerWorkRequest.getTeamVideoUrl())
+      .images(registerWorkRequest.getImages())
       .build();
   }
   

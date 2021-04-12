@@ -37,7 +37,7 @@ public class GetWork extends CommonApiTest {
       teamMember, "test content");
 
     simpleWork = RegisterWorkRequest.toDomainWorkRequest(registerWorkRequest);
-    Work work = workService.addWork(simpleWork, null);
+    Work work = workService.addWork(simpleWork);
     id = work.getId();
   }
 

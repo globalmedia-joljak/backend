@@ -26,10 +26,9 @@ public class IdeaBoardService {
   private final IdeaBoardRepository ideaBoardRepository;
 
   @Transactional
-  public IdeaBoard addIdeaBoard(
+  public IdeaBoard addIdeaBoard(SimpleIdeaBoard simpleIdeaBoard) {
 
-    SimpleIdeaBoard simpleIdeaBoard, MultipartFile file) {
-
+    MultipartFile file = simpleIdeaBoard.getFile();
     User user = userService.getUserByAuthentication();
 
     Media mediaFile = null;
@@ -58,8 +57,10 @@ public class IdeaBoardService {
 
   @Transactional
   public IdeaBoard updateIdeaBoardById(Long id,
-    SimpleIdeaBoard simpleIdeaBoard, MultipartFile file) {
+    SimpleIdeaBoard simpleIdeaBoard) {
 
+    MultipartFile file = simpleIdeaBoard.getFile();
+    
     IdeaBoard ideaBoard = getIdeaBoardsById(id);
     String classOf = ideaBoard.getUser().getClassOf();
     userService.validAuthenticationClassOf(classOf);
