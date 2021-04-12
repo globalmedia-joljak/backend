@@ -16,7 +16,7 @@ public class UpdateWorkRequest {
   private String teamName;
   private List<String> teamMember;
   private String content;
-  private int exhibitedYear;
+  private String exhibitedYear;
   private ProjectCategory projectCategory;
   private String teamVideoUrl;
   private List<String> deleteFileName;
@@ -24,7 +24,7 @@ public class UpdateWorkRequest {
   @Builder
   public UpdateWorkRequest(String workName, String teamName,
     List<String> teamMember, String content, String teamVideoUrl,
-    List<String> deleteFileName, ProjectCategory projectCategory, int exhibitedYear
+    List<String> deleteFileName, ProjectCategory projectCategory, String exhibitedYear
   ) {
     this.workName = workName;
     this.teamName = teamName;

@@ -16,14 +16,14 @@ public class SimpleWork {
   private String teamName;
   private List<String> teamMember;
   private ProjectCategory projectCategory;
-  private int exhibitedYear;
+  private String exhibitedYear;
   private String content;
   private String teamVideoUrl;
   private User user;
 
   @Builder
   public SimpleWork(
-    String workName, String teamName, List<String> teamMember, int exhibitedYear,
+    String workName, String teamName, List<String> teamMember, String exhibitedYear,
     String content, String teamVideoUrl, User user, ProjectCategory projectCategory
   ) {
     this.workName = workName;

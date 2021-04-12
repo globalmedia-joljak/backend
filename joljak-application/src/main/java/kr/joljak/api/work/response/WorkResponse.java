@@ -27,7 +27,7 @@ public class WorkResponse {
   @NotNull
   private List<String> teamMember;
   @NotNull
-  private int exhibitedYear;
+  private String exhibitedYear;
   @NotNull
   private String content;
   private String teamVideoUrl;
@@ -40,7 +40,7 @@ public class WorkResponse {
     Long id, String workName, String teamName, List<String> teamMember,
     String content, String teamVideoUrl, List<MediaInfo> imageInfoList,
     LocalDateTime createDate, LocalDateTime modifiedDate, ProjectCategory projectCategory,
-    int exhibitedYear
+    String exhibitedYear
   ) {
     this.id = id;
     this.workName = workName;

@@ -54,7 +54,7 @@ public class WorkServiceTest extends CommonDomainTest {
     );
 
     simpleWork = createSimpleWork(
-      "test", "test", teamMember, 2018, "test", "test", ProjectCategory.ANIMATION
+      "test", "test", teamMember, "2018", "test", "test", ProjectCategory.ANIMATION
     );
   }
 
@@ -132,7 +132,7 @@ public class WorkServiceTest extends CommonDomainTest {
 
     updateWork = createUpdateWork(
       "update test", "update test", teamMember, ProjectCategory.ANIMATION,
-      "update test", "update test", deleteFileName);
+      "update test", "update test", deleteFileName, "2018");
 
     Work newWork = workService.updateWorkById(work.getId(), updateWork, updateImageFile);
 
@@ -162,7 +162,7 @@ public class WorkServiceTest extends CommonDomainTest {
 
     updateWork = createUpdateWork(
       "update test", "update test", teamMember, ProjectCategory.ANIMATION,
-      "update test", "update test", deleteFileName);
+      "update test", "update test", deleteFileName, "2018");
 
     Work newWork = workService.updateWorkById(work.getId(), updateWork, updateImageFile);
   }
@@ -187,7 +187,7 @@ public class WorkServiceTest extends CommonDomainTest {
 
     updateWork = createUpdateWork(
       "update test", "update test", teamMember, ProjectCategory.ANIMATION,
-      "update test", "update test", deleteFileName);
+      "update test", "update test", deleteFileName, "2018");
 
     Work newWork = workService.updateWorkById(work.getId(), updateWork, updateImageFile);
   }
@@ -230,7 +230,7 @@ public class WorkServiceTest extends CommonDomainTest {
 
   private SimpleWork createSimpleWork(
     String workName, String teamName, List<String> teamMember,
-    int exhibitedYear, String content, String teamVideoUrl, ProjectCategory projectCategory
+    String exhibitedYear, String content, String teamVideoUrl, ProjectCategory projectCategory
   ) {
     return SimpleWork.builder()
       .workName(workName)
@@ -245,7 +245,7 @@ public class WorkServiceTest extends CommonDomainTest {
 
   private UpdateWork createUpdateWork(
     String workName, String teamName, List<String> teamMember, ProjectCategory projectCategory,
-    String content, String teamVideoUrl, List<String> deleteFileName
+    String content, String teamVideoUrl, List<String> deleteFileName, String exhibitedYear
   ) {
     return UpdateWork.builder()
       .workName(workName)
@@ -255,6 +255,7 @@ public class WorkServiceTest extends CommonDomainTest {
       .content(content)
       .teamVideoUrl(teamVideoUrl)
       .deleteFileName(deleteFileName)
+      .exhibitedYear(exhibitedYear)
       .build();
   }
 
