@@ -96,7 +96,7 @@ public class WorkService {
   }
   
   @Transactional(readOnly = true)
-  public Page<Work> getWorkByExhibitedYearAndCategory(ProjectCategory projectCategory, String exhibitedYear,
+  public Page<Work> getWorkByExhibitedYearAndCategory(ProjectCategory projectCategory, Integer exhibitedYear,
     PageRequest pageRequest) {
     if (projectCategory != null && exhibitedYear != null) {
       return workRepository

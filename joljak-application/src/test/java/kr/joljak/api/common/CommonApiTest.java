@@ -204,7 +204,7 @@ public abstract class CommonApiTest {
       .build();
   }
 
-  public RegisterWorkRequest createWorkRequest(String workName, String teamName, String exhibitedYear, ProjectCategory projectCategory, List<String> teamMember,
+  public RegisterWorkRequest createWorkRequest(String workName, String teamName, int exhibitedYear, ProjectCategory projectCategory, List<String> teamMember,
     String content) {
     return RegisterWorkRequest.builder()
       .workName(workName)

@@ -103,7 +103,7 @@ public class WorkController {
   @ResponseStatus(HttpStatus.OK)
   public WorksResponse searchWorks(
     @RequestParam(required = false) ProjectCategory category,
-    @RequestParam(required = false) String exhibitedYear,
+    @RequestParam(required = false) Integer exhibitedYear,
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "10") int size
   ) {

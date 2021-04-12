@@ -33,7 +33,7 @@ public class GetWork extends CommonApiTest {
 
     teamMember.add("test");
     registerWorkRequest = createWorkRequest(
-      "test workName", "test teamName", "2020", ProjectCategory.WEB_APP,
+      "test workName", "test teamName", 2020, ProjectCategory.WEB_APP,
       teamMember, "test content");
 
     simpleWork = RegisterWorkRequest.toDomainWorkRequest(registerWorkRequest);

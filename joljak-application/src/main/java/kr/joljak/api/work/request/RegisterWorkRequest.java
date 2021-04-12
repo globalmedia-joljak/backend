@@ -21,7 +21,7 @@ public class RegisterWorkRequest {
   @NotNull
   private ProjectCategory projectCategory;
   @NotNull
-  private String exhibitedYear;
+  private int exhibitedYear;
   @NotNull
   private List<String> teamMember;
   @NotNull
@@ -30,7 +30,7 @@ public class RegisterWorkRequest {
   
   @Builder
   public RegisterWorkRequest(String workName, String teamName, ProjectCategory projectCategory,
-    List<String> teamMember, String content, String teamVideoUrl, String exhibitedYear
+    List<String> teamMember, String content, String teamVideoUrl, int exhibitedYear
   ) {
     this.workName = workName;
     this.teamName = teamName;

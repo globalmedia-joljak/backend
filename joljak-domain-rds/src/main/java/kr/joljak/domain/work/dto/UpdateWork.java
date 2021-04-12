@@ -17,7 +17,7 @@ public class UpdateWork {
   private List<String> teamMember;
   private String content;
   private ProjectCategory projectCategory;
-  private String exhibitedYear;
+  private int exhibitedYear;
   private String teamVideoUrl;
   private User user;
   private List<String> deleteFileName;
@@ -26,7 +26,7 @@ public class UpdateWork {
   public UpdateWork(
     String workName, String teamName, List<String> teamMember, ProjectCategory projectCategory,
     String content, String teamVideoUrl, User user, List<String> deleteFileName,
-    String exhibitedYear
+    int exhibitedYear
   ) {
     this.workName = workName;
     this.teamName = teamName;

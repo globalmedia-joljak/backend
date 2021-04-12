@@ -56,7 +56,7 @@ public class Work extends ExtendEntity {
   private String content;
   
   @Column(nullable = false)
-  private String exhibitedYear;
+  private int exhibitedYear;
   
   @Column
   private String teamVideoUrl;
@@ -74,7 +74,7 @@ public class Work extends ExtendEntity {
   @Builder
   public Work(String workName, String teamName,
     List<String> teamMember, String content, String teamVideoUrl,
-    List<Media> images, User user, ProjectCategory projectCategory, String exhibitedYear
+    List<Media> images, User user, ProjectCategory projectCategory, int exhibitedYear
   ) {
     this.workName = workName;
     this.teamName = teamName;
@@ -113,7 +113,7 @@ public class Work extends ExtendEntity {
   
   public void setProjectCategory(ProjectCategory projectCategory) { this.projectCategory = projectCategory; }
   
-  public void setExhibitedYear(String exhibitedYear) { this.exhibitedYear = exhibitedYear;  }
+  public void setExhibitedYear(int exhibitedYear) { this.exhibitedYear = exhibitedYear;  }
   
   public void setUser(User user) {
     this.user = user;
