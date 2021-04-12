@@ -1,9 +1,10 @@
 package kr.joljak.domain.work.entity;
 
 public enum ProjectCategory {
-  WEB("WEB"),
+  WEB_APP("WEB"),
   FILM("FILM"),
   ANIMATION("ANIMATION"),
+  GAME("GAME"),
   MEDIA_ART("MEDIA_ART");
   
   private String name;

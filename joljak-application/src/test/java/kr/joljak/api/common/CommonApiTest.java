@@ -204,13 +204,13 @@ public abstract class CommonApiTest {
       .build();
   }
 
-  public RegisterWorkRequest createWorkRequest(String workName, String teamName, String year, ProjectCategory projectCategory, List<String> teamMember,
+  public RegisterWorkRequest createWorkRequest(String workName, String teamName, String exhibitedYear, ProjectCategory projectCategory, List<String> teamMember,
     String content) {
     return RegisterWorkRequest.builder()
       .workName(workName)
       .teamName(teamName)
       .projectCategory(projectCategory)
-      .year(year)
+      .exhibitedYear(exhibitedYear)
       .teamMember(teamMember)
       .content(content)
       .build();

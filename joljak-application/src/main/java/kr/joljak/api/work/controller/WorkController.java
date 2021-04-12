@@ -103,11 +103,11 @@ public class WorkController {
   @ResponseStatus(HttpStatus.OK)
   public WorksResponse searchWorks(
     @RequestParam(required = false) ProjectCategory category,
-    @RequestParam(required = false) String year,
+    @RequestParam(required = false) String exhibitedYear,
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "10") int size
   ) {
-    Page<Work> workPage = workService.getWorkByYearAndCategory(category, year, FetchPages.of(page, size));
+    Page<Work> workPage = workService.getWorkByExhibitedYearAndCategory(category, exhibitedYear, FetchPages.of(page, size));
     List<WorkResponse> workResponseList = getWorkResponseListFrom(workPage.getContent());
 
     return WorksResponse.builder()

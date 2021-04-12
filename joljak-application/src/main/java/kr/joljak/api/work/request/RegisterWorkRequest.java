@@ -21,7 +21,7 @@ public class RegisterWorkRequest {
   @NotNull
   private ProjectCategory projectCategory;
   @NotNull
-  private String year;
+  private String exhibitedYear;
   @NotNull
   private List<String> teamMember;
   @NotNull
@@ -30,14 +30,14 @@ public class RegisterWorkRequest {
   
   @Builder
   public RegisterWorkRequest(String workName, String teamName, ProjectCategory projectCategory,
-    List<String> teamMember, String content, String teamVideoUrl, String year
+    List<String> teamMember, String content, String teamVideoUrl, String exhibitedYear
   ) {
     this.workName = workName;
     this.teamName = teamName;
     this.projectCategory = projectCategory;
     this.teamMember = teamMember;
     this.content = content;
-    this.year = year;
+    this.exhibitedYear = exhibitedYear;
     this.teamVideoUrl = teamVideoUrl;
   }
   
@@ -47,7 +47,7 @@ public class RegisterWorkRequest {
       .teamName(registerWorkRequest.getTeamName())
       .teamMember(registerWorkRequest.getTeamMember())
       .projectCategory(registerWorkRequest.getProjectCategory())
-      .year(registerWorkRequest.getYear())
+      .exhibitedYear(registerWorkRequest.getExhibitedYear())
       .content(registerWorkRequest.getContent())
       .teamVideoUrl(registerWorkRequest.getTeamVideoUrl())
       .build();

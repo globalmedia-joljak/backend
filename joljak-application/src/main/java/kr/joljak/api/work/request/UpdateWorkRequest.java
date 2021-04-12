@@ -16,7 +16,7 @@ public class UpdateWorkRequest {
   private String teamName;
   private List<String> teamMember;
   private String content;
-  private String year;
+  private String exhibitedYear;
   private ProjectCategory projectCategory;
   private String teamVideoUrl;
   private List<String> deleteFileName;
@@ -24,13 +24,13 @@ public class UpdateWorkRequest {
   @Builder
   public UpdateWorkRequest(String workName, String teamName,
     List<String> teamMember, String content, String teamVideoUrl,
-    List<String> deleteFileName, ProjectCategory projectCategory, String year
+    List<String> deleteFileName, ProjectCategory projectCategory, String exhibitedYear
   ) {
     this.workName = workName;
     this.teamName = teamName;
     this.teamMember = teamMember;
     this.projectCategory = projectCategory;
-    this.year = year;
+    this.exhibitedYear = exhibitedYear;
     this.content = content;
     this.teamVideoUrl = teamVideoUrl;
     this.deleteFileName = deleteFileName;
@@ -42,7 +42,7 @@ public class UpdateWorkRequest {
       .teamName(updateWorkRequest.getTeamName())
       .teamMember(updateWorkRequest.getTeamMember())
       .content(updateWorkRequest.getContent())
-      .year(updateWorkRequest.getYear())
+      .exhibitedYear(updateWorkRequest.getExhibitedYear())
       .projectCategory(updateWorkRequest.getProjectCategory())
       .deleteFileName(updateWorkRequest.getDeleteFileName())
       .teamVideoUrl(updateWorkRequest.getTeamVideoUrl())

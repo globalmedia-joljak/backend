@@ -59,7 +59,7 @@ public class WorkService {
     work.setTeamName(updateWork.getTeamName());
     work.setTeamMember(updateWork.getTeamMember());
     work.setContent(updateWork.getContent());
-    work.setYear(updateWork.getYear());
+    work.setExhibitedYear(updateWork.getExhibitedYear());
     work.setProjectCategory(updateWork.getProjectCategory());
     work.setTeamVideoUrl(updateWork.getTeamVideoUrl());
     
@@ -96,15 +96,15 @@ public class WorkService {
   }
   
   @Transactional(readOnly = true)
-  public Page<Work> getWorkByYearAndCategory(ProjectCategory projectCategory, String year,
+  public Page<Work> getWorkByExhibitedYearAndCategory(ProjectCategory projectCategory, String exhibitedYear,
     PageRequest pageRequest) {
-    if (projectCategory != null && year != null) {
+    if (projectCategory != null && exhibitedYear != null) {
       return workRepository
-        .findAllByProjectCategoryAndYearContaining(projectCategory, year, pageRequest);
-    } else if (projectCategory != null && year == null) {
+        .findAllByProjectCategoryAndExhibitedYearContaining(projectCategory, exhibitedYear, pageRequest);
+    } else if (projectCategory != null && exhibitedYear == null) {
       return workRepository.findAllByProjectCategory(projectCategory, pageRequest);
-    } else if (projectCategory == null && year != null) {
-      return workRepository.findAllByYear(year, pageRequest);
+    } else if (projectCategory == null && exhibitedYear != null) {
+      return workRepository.findAllByExhibitedYear(exhibitedYear, pageRequest);
     } else {
       return getWorksByPage(pageRequest);
     }
