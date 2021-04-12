@@ -5,6 +5,7 @@ import kr.joljak.api.teams.request.RegisterTeamRequest;
 import kr.joljak.domain.team.dto.SimpleTeam;
 import kr.joljak.domain.team.entity.Team;
 import kr.joljak.domain.team.service.TeamService;
+import kr.joljak.domain.work.entity.ProjectCategory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,7 +29,7 @@ public class GetTeam extends CommonApiTest {
   @Before
   public void initTeam() {
     registerTeamRequest = createTeamReqeust(
-      "test teamName", "test content", "test category"
+      "test teamName", "test content", ProjectCategory.WEB_APP
     );
     
     simpleTeam = RegisterTeamRequest.toRegisterTeam(registerTeamRequest);
@@ -60,7 +61,7 @@ public class GetTeam extends CommonApiTest {
     assertEquals(404, mvcResult.getResponse().getStatus());
   }
   
-  private RegisterTeamRequest createTeamReqeust(String teamName, String content, String category) {
+  private RegisterTeamRequest createTeamReqeust(String teamName, String content, ProjectCategory category) {
     return RegisterTeamRequest.builder()
       .teamName(teamName)
       .content(content)

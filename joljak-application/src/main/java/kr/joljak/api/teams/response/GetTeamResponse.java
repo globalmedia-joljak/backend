@@ -1,10 +1,9 @@
 package kr.joljak.api.teams.response;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 import kr.joljak.domain.team.entity.Team;
 import kr.joljak.domain.upload.entity.MediaInfo;
+import kr.joljak.domain.work.entity.ProjectCategory;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,22 +16,22 @@ public class GetTeamResponse {
   private Long id;
   private String teamName;
   private String content;
-  private String category;
+  private ProjectCategory category;
   private String mediaArtMember;
   private String developerMember;
   private String designerMember;
   private String plannerMember;
   private String author;
-  private List<MediaInfo> imageInfoList;
+  private MediaInfo fileInfo;
   private LocalDateTime createdDate;
   private LocalDateTime modifiedDate;
 
   @Builder
   public GetTeamResponse(
     Long id, String teamName, String content,
-    String category, String mediaArtMember, String designerMember,
+    ProjectCategory category, String mediaArtMember, String designerMember,
     String developerMember, String plannerMember,
-    String author, List<MediaInfo> imageInfoList, LocalDateTime createdDate,
+    String author, MediaInfo fileInfo, LocalDateTime createdDate,
     LocalDateTime modifiedDate
   ) {
     this.id = id;
@@ -44,18 +43,16 @@ public class GetTeamResponse {
     this.developerMember = developerMember;
     this.plannerMember = plannerMember;
     this.author = author;
-    this.imageInfoList = imageInfoList;
+    this.fileInfo = fileInfo;
     this.createdDate = createdDate;
     this.modifiedDate = modifiedDate;
   }
 
   public static GetTeamResponse of(Team team) {
-    List<MediaInfo> imageList = null;
+    MediaInfo fileInfo = null;
 
-    if (team.getImages() != null) {
-      imageList = team.getImages().stream()
-        .map(image -> MediaInfo.of(image))
-        .collect(Collectors.toList());
+    if (team.getMedia() != null) {
+      fileInfo = MediaInfo.of(team.getMedia());
     }
 
     return GetTeamResponse.builder()
@@ -68,7 +65,7 @@ public class GetTeamResponse {
       .developerMember(team.getDeveloperMember())
       .plannerMember(team.getPlannerMember())
       .author(team.getUser().getName())
-      .imageInfoList(imageList)
+      .fileInfo(fileInfo)
       .createdDate(team.getCreatedDate())
       .modifiedDate(team.getModifiedDate())
       .build();

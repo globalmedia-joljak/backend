@@ -2,6 +2,7 @@ package kr.joljak.domain.team.dto;
 
 import java.util.List;
 import kr.joljak.domain.user.entity.User;
+import kr.joljak.domain.work.entity.ProjectCategory;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ public class SimpleTeam {
 
   private String teamName;
   private String content;
-  private String category;
+  private ProjectCategory category;
 
   @Setter
   private User author;
@@ -22,14 +23,14 @@ public class SimpleTeam {
   private String developerMember;
   private String designerMember;
   private String plannerMember;
-  private List<MultipartFile> images;
+  private MultipartFile file;
 
   @Builder
   public SimpleTeam(
-    String teamName, String content, String category,
+    String teamName, String content, ProjectCategory category,
     String mediaArtMember, String designerMember,
     String developerMember, String plannerMember,
-    List<MultipartFile> images
+    MultipartFile file
   ) {
     this.teamName = teamName;
     this.content = content;
@@ -38,7 +39,7 @@ public class SimpleTeam {
     this.designerMember = designerMember;
     this.developerMember = developerMember;
     this.plannerMember = plannerMember;
-    this.images = images;
+    this.file = file;
   }
 
 }
