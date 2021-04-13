@@ -28,7 +28,7 @@ public class GetWork extends CommonApiTest {
   private Long id;
 
   @Before
-  public void initGetIdeaBoard() {
+  public void initWork() {
     List<String> teamMember = new ArrayList<>();
 
     teamMember.add("test");
