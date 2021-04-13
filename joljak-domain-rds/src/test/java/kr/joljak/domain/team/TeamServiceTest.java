@@ -162,7 +162,7 @@ public class TeamServiceTest extends CommonDomainTest {
   ) {
     return SimpleTeam.builder()
       .teamName(teamName)
-      .category(category)
+      .projectCategory(category)
       .content(content)
       .file(file)
       .build();
@@ -174,7 +174,7 @@ public class TeamServiceTest extends CommonDomainTest {
   ) {
     return UpdateTeam.builder()
       .teamName(teamName)
-      .category(category)
+      .projectCategory(category)
       .content(content)
       .deleteFileName(deleteFileName)
       .file(file)

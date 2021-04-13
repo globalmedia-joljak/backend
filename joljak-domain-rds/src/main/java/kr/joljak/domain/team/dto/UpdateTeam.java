@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UpdateTeam {
   
   private String teamName;
-  private ProjectCategory category;
+  private ProjectCategory projectCategory;
   private String content;
   private String mediaArtMember;
   private String developerMember;
@@ -23,13 +23,13 @@ public class UpdateTeam {
   
   @Builder
   public UpdateTeam(
-    String teamName, ProjectCategory category, String content,
+    String teamName, ProjectCategory projectCategory, String content,
     String mediaArtMember, String developerMember,
     String designerMember, String plannerMember,
     MultipartFile file, String deleteFileName
   ){
     this.teamName = teamName;
-    this.category = category;
+    this.projectCategory = projectCategory;
     this.content = content;
     this.mediaArtMember = mediaArtMember;
     this.developerMember = developerMember;

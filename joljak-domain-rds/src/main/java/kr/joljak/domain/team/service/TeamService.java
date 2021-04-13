@@ -1,7 +1,5 @@
 package kr.joljak.domain.team.service;
 
-import java.util.List;
-import java.util.Map;
 import kr.joljak.domain.team.dto.SimpleTeam;
 import kr.joljak.domain.team.dto.UpdateTeam;
 import kr.joljak.domain.team.entity.Team;
@@ -13,6 +11,7 @@ import kr.joljak.domain.upload.exception.NotMatchingFileNameException;
 import kr.joljak.domain.upload.service.UploadService;
 import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.service.UserService;
+import kr.joljak.domain.work.entity.ProjectCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,7 +32,7 @@ public class TeamService {
     simpleTeam.setAuthor(user);
     
     Media file = null;
-    if(simpleTeam.getFile() != null) {
+    if (simpleTeam.getFile() != null) {
       file = uploadService
         .uploadFile(simpleTeam.getFile(), "/" + user.getClassOf(), MediaType.FILE);
     }
@@ -62,16 +61,16 @@ public class TeamService {
     userService.validAuthenticationClassOf(classOf);
     
     team.setTeamName(updateTeam.getTeamName());
-    team.setCategory(updateTeam.getCategory());
+    team.setProjectCategory(updateTeam.getProjectCategory());
     team.setMediaArtMember(updateTeam.getMediaArtMember());
     team.setDesignerMember(updateTeam.getDesignerMember());
     team.setDeveloperMember(updateTeam.getDeveloperMember());
     team.setPlannerMember(updateTeam.getPlannerMember());
     
-    if(updateTeam.getDeleteFileName() != null){
+    if (updateTeam.getDeleteFileName() != null) {
       Media media = team.getMedia();
       
-      if(media != null && !media.getModifyName()
+      if (media != null && !media.getModifyName()
         .equals(updateTeam.getDeleteFileName())) {
         throw new NotMatchingFileNameException("file name does not match when you delete.");
       }
@@ -79,7 +78,7 @@ public class TeamService {
       uploadService.deleteFile(media.getModifyName(), "/" + team.getUser().getClassOf());
     }
     
-    if(updateTeam.getFile() != null){
+    if (updateTeam.getFile() != null) {
       Media mediaFile = uploadService
         .uploadFile(updateTeam.getFile(), "/" + team.getUser().getClassOf(), MediaType.FILE);
       team.setMedia(mediaFile);
@@ -103,5 +102,15 @@ public class TeamService {
     team.setMedia(null);
     
     teamRepository.delete(team);
+  }
+  
+  @Transactional(readOnly = true)
+  public Page<Team> getTeamByCategory(ProjectCategory projectCategory, PageRequest pageRequest) {
+    if (projectCategory != null) {
+      return teamRepository
+        .findAllByProjectCategory(projectCategory, pageRequest);
+    } else {
+      return getTeams(pageRequest);
+    }
   }
 }

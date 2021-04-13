@@ -1,6 +1,5 @@
 package kr.joljak.domain.team.dto;
 
-import java.util.List;
 import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.work.entity.ProjectCategory;
 import lombok.Builder;
@@ -12,10 +11,10 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @NoArgsConstructor
 public class SimpleTeam {
-
+ 
   private String teamName;
   private String content;
-  private ProjectCategory category;
+  private ProjectCategory projectCategory;
 
   @Setter
   private User author;
@@ -27,14 +26,14 @@ public class SimpleTeam {
 
   @Builder
   public SimpleTeam(
-    String teamName, String content, ProjectCategory category,
+    String teamName, String content, ProjectCategory projectCategory,
     String mediaArtMember, String designerMember,
     String developerMember, String plannerMember,
     MultipartFile file
   ) {
     this.teamName = teamName;
     this.content = content;
-    this.category = category;
+    this.projectCategory = projectCategory;
     this.mediaArtMember = mediaArtMember;
     this.designerMember = designerMember;
     this.developerMember = developerMember;
