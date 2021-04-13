@@ -31,8 +31,9 @@ public class WorkService {
   private final UserService userService;
   
   @Transactional
-  public Work addWork(SimpleWork simpleWork, List<MultipartFile> images) {
+  public Work addWork(SimpleWork simpleWork) {
     
+    List<MultipartFile> images = simpleWork.getImages();
     User user = userService.getUserByAuthentication();
     simpleWork.setUser(user);
     
@@ -48,8 +49,9 @@ public class WorkService {
   }
   
   @Transactional
-  public Work updateWorkById(Long id, UpdateWork updateWork, List<MultipartFile> images) {
-    
+  public Work updateWorkById(Long id, UpdateWork updateWork) {
+  
+    List<MultipartFile> images = updateWork.getImages();
     Work work = getWorkById(id);
     
     String classOf = work.getUser().getClassOf();
@@ -98,7 +100,6 @@ public class WorkService {
   @Transactional(readOnly = true)
   public Page<Work> getWorkByExhibitedYearAndCategory(ProjectCategory projectCategory, String exhibitedYear,
     PageRequest pageRequest) {
-    
     if (projectCategory != null && exhibitedYear != null) {
       return workRepository
         .findAllByProjectCategoryAndExhibitedYearContaining(projectCategory, exhibitedYear, pageRequest);

@@ -18,7 +18,7 @@ public class GetWorksByCategoryAndExhibitedYear extends CommonApiTest {
   public void getWorksByCategoryAndExhibitedYear_Success() throws Exception {
     // when, given
     MvcResult mvcResult = mockMvc.perform(
-      get(WORK_URL + "/search" + "?category=WEB_APP&page=0&size=10&exhibitedYear=2020")
+      get(WORK_URL + "/search" + "?category=WEB_APP&page=0&size=10&exhibitedYear=2019")
         .contentType(MediaType.APPLICATION_JSON_VALUE)
     ).andReturn();
     

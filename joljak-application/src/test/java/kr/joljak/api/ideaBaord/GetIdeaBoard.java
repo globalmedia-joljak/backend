@@ -32,7 +32,7 @@ public class GetIdeaBoard extends CommonApiTest {
 
     simpleIdeaBoard = ideaBoardRequest
       .toDomainIdeaBoardRequest(ideaBoardRequest);
-    IdeaBoard ideaBoard = ideaBoardService.addIdeaBoard(simpleIdeaBoard, null);
+    IdeaBoard ideaBoard = ideaBoardService.addIdeaBoard(simpleIdeaBoard);
 
     id = ideaBoard.getId();
   }

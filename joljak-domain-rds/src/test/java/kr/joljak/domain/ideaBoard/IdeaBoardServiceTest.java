@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.web.multipart.MultipartFile;
 
 public class IdeaBoardServiceTest extends CommonDomainTest {
 
@@ -45,16 +46,16 @@ public class IdeaBoardServiceTest extends CommonDomainTest {
     textFile = createMockTextFile("test" + nextId++);
     simpleIdeaBoard = createSimpleIdeaBoard(
       "test", "test", "010123415678", ProjectStatus.ONGOING,
-      requiredPosition, UserProjectRole.DEVELOPER, null);
+      requiredPosition, UserProjectRole.DEVELOPER, null, textFile);
 
-    ideaBoard = ideaBoardService.addIdeaBoard(simpleIdeaBoard, textFile);
+    ideaBoard = ideaBoardService.addIdeaBoard(simpleIdeaBoard);
   }
 
   @Test
   @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
   public void createIdeaBoard_Success() {
     // when
-    IdeaBoard ideaBoard = ideaBoardService.addIdeaBoard(simpleIdeaBoard, textFile);
+    IdeaBoard ideaBoard = ideaBoardService.addIdeaBoard(simpleIdeaBoard);
 
     // then
     Assertions.assertThat(ideaBoard).isNotNull();
@@ -69,13 +70,13 @@ public class IdeaBoardServiceTest extends CommonDomainTest {
 
     SimpleIdeaBoard newSimpleIdeaBoard = createSimpleIdeaBoard(
       "test2", "test2", "01079846512", ProjectStatus.COMPLETE,
-      requiredPosition, UserProjectRole.DEVELOPER, null);
+      requiredPosition, UserProjectRole.DEVELOPER, null, newTextFile);
 
-    IdeaBoard ideaBoard = ideaBoardService.addIdeaBoard(simpleIdeaBoard, textFile);
+    IdeaBoard ideaBoard = ideaBoardService.addIdeaBoard(simpleIdeaBoard);
 
     // when
     IdeaBoard newIdeaBoard = ideaBoardService
-      .updateIdeaBoardById(ideaBoard.getId(), newSimpleIdeaBoard, newTextFile);
+      .updateIdeaBoardById(ideaBoard.getId(), newSimpleIdeaBoard);
 
     // then
     Assertions.assertThat(newIdeaBoard.getMedia()).isNotNull();
@@ -92,13 +93,13 @@ public class IdeaBoardServiceTest extends CommonDomainTest {
 
     SimpleIdeaBoard newSimpleIdeaBoard = createSimpleIdeaBoard(
       "test2", "test2", "01079846512", ProjectStatus.COMPLETE,
-      requiredPosition, UserProjectRole.DEVELOPER, "any");
+      requiredPosition, UserProjectRole.DEVELOPER, "any", newTextFile);
 
-    IdeaBoard ideaBoard = ideaBoardService.addIdeaBoard(simpleIdeaBoard, textFile);
+    IdeaBoard ideaBoard = ideaBoardService.addIdeaBoard(simpleIdeaBoard);
 
     // when
     IdeaBoard newIdeaBoard = ideaBoardService
-      .updateIdeaBoardById(ideaBoard.getId(), newSimpleIdeaBoard, newTextFile);
+      .updateIdeaBoardById(ideaBoard.getId(), newSimpleIdeaBoard);
 
     // then
     Assertions.assertThat(newIdeaBoard.getMedia()).isNotNull();
@@ -116,11 +117,11 @@ public class IdeaBoardServiceTest extends CommonDomainTest {
 
     SimpleIdeaBoard newSimpleIdeaBoard = createSimpleIdeaBoard(
       "test2", "test2", "01079846512", ProjectStatus.COMPLETE,
-      requiredPosition, UserProjectRole.DEVELOPER, null);
+      requiredPosition, UserProjectRole.DEVELOPER, null, newTextFile);
 
     // when
     IdeaBoard newIdeaBoard = ideaBoardService
-      .updateIdeaBoardById(ideaBoard.getId(), newSimpleIdeaBoard, newTextFile);
+      .updateIdeaBoardById(ideaBoard.getId(), newSimpleIdeaBoard);
 
   }
 
@@ -154,7 +155,7 @@ public class IdeaBoardServiceTest extends CommonDomainTest {
   private SimpleIdeaBoard createSimpleIdeaBoard(
     String title, String content, String contact,
     ProjectStatus status, List<UserProjectRole> requiredPositions,
-    UserProjectRole mainRole, String deleteFileName
+    UserProjectRole mainRole, String deleteFileName, MultipartFile file
   ) {
     return SimpleIdeaBoard.builder()
       .title(title)
@@ -164,6 +165,7 @@ public class IdeaBoardServiceTest extends CommonDomainTest {
       .requiredPositions(requiredPositions)
       .mainRole(mainRole)
       .deleteFileName(deleteFileName)
+      .file(file)
       .build();
   }
 

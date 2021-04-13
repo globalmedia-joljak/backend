@@ -24,10 +24,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @RequiredArgsConstructor
@@ -41,11 +39,10 @@ public class WorkController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public WorkResponse create(
-    @RequestPart RegisterWorkRequest registerWorkRequest,
-    @RequestPart(required = false) List<MultipartFile> images
+    @Valid RegisterWorkRequest registerWorkRequest
   ) {
     SimpleWork simpleWork = RegisterWorkRequest.toDomainWorkRequest(registerWorkRequest);
-    Work work = workService.addWork(simpleWork, images);
+    Work work = workService.addWork(simpleWork);
     return WorkResponse.of(work);
   }
   
@@ -81,11 +78,10 @@ public class WorkController {
   @ResponseStatus(HttpStatus.OK)
   public WorkResponse updateWork(
     @PathVariable Long id,
-    @RequestPart(required = false) List<MultipartFile> images,
-    @Valid @RequestPart UpdateWorkRequest updateWorkRequest
+    UpdateWorkRequest updateWorkRequest
   ) {
     UpdateWork updateWork = UpdateWorkRequest.toUpdateWork(updateWorkRequest);
-    Work work = workService.updateWorkById(id, updateWork, images);
+    Work work = workService.updateWorkById(id, updateWork);
     return WorkResponse.of(work);
   }
   
