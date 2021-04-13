@@ -16,6 +16,7 @@ import kr.joljak.domain.common.entity.ExtendEntity;
 import kr.joljak.domain.team.dto.SimpleTeam;
 import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.user.entity.User;
+import kr.joljak.domain.work.entity.ProjectCategory;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,7 +36,7 @@ public class Team extends ExtendEntity {
   private String teamName;
 
   @Column(nullable = false)
-  private String category;
+  private ProjectCategory category;
 
   @Column(nullable = false)
   private String content;
@@ -63,7 +64,7 @@ public class Team extends ExtendEntity {
 
   @Builder
   public Team(
-    String teamName, String category, String content, User user,
+    String teamName, ProjectCategory category, String content, User user,
     String mediaArtMember, String designerMember,
     String developerMember, String plannerMember, List<Media> images
   ) {
@@ -81,7 +82,7 @@ public class Team extends ExtendEntity {
   public void setTeamName(String teamName){
     this.teamName = teamName;
   }
-  public void setCategory(String category){
+  public void setCategory(ProjectCategory category){
     this.category = category;
   }
   public void setMediaArtMember(String mediaArtMember){

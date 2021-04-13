@@ -70,7 +70,7 @@ public class TeamsController {
   @ResponseStatus(HttpStatus.OK)
   public GetTeamResponse updateTeam(
     @PathVariable Long id,
-    UpdateTeamRequest updateTeamRequest
+    @Valid UpdateTeamRequest updateTeamRequest
   ) {
     UpdateTeam updateTeam = UpdateTeamRequest.toUpdateTeam(updateTeamRequest);
     Team team = teamService.updateTeam(id, updateTeam);

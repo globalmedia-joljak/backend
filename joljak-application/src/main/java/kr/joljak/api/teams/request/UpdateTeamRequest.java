@@ -3,6 +3,7 @@ package kr.joljak.api.teams.request;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import kr.joljak.domain.team.dto.UpdateTeam;
+import kr.joljak.domain.work.entity.ProjectCategory;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +18,7 @@ public class UpdateTeamRequest {
   @NotNull
   private String teamName;
   @NotNull
-  private String category;
+  private ProjectCategory category;
   @NotNull
   private String content;
   private String mediaArtMember;
@@ -30,7 +31,7 @@ public class UpdateTeamRequest {
   
   @Builder
   public UpdateTeamRequest(
-    String teamName, String category, String content,
+    String teamName, ProjectCategory category, String content,
     String mediaArtMember, String developerMember,
     String designerMember, String plannerMember,
     List<MultipartFile> images, List<String> deleteFileName

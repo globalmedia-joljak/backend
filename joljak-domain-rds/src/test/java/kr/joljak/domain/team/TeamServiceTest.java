@@ -17,6 +17,7 @@ import kr.joljak.domain.team.service.TeamService;
 import kr.joljak.domain.upload.exception.FileIsNotImageException;
 import kr.joljak.domain.upload.exception.NotMatchingFileNameException;
 import kr.joljak.domain.user.exception.UserNotFoundException;
+import kr.joljak.domain.work.entity.ProjectCategory;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,7 +44,7 @@ public class TeamServiceTest extends CommonDomainTest {
     );
     
     simpleTeam = createSimpleTeam(
-      "test", "test", "test", mockIamges
+      "test", ProjectCategory.WEB_APP, "test", mockIamges
     );
     
   }
@@ -69,7 +70,7 @@ public class TeamServiceTest extends CommonDomainTest {
       )
     );
     
-    SimpleTeam FileSimpleTeam = createSimpleTeam("test", "test", "test", mockFiles);
+    SimpleTeam FileSimpleTeam = createSimpleTeam("test", ProjectCategory.WEB_APP, "test", mockFiles);
     
     // when, then
     teamService.addTeam(FileSimpleTeam);
@@ -104,7 +105,7 @@ public class TeamServiceTest extends CommonDomainTest {
     );
     
     UpdateTeam updateTeam = createUpdateTeam(
-      "ManU", "media", "Test", deleteFileName, updateImages);
+      "ManU", ProjectCategory.WEB_APP, "Test", deleteFileName, updateImages);
     
     // when
     Team newTeam = teamService.updateTeam(team.getId(), updateTeam);
@@ -136,7 +137,7 @@ public class TeamServiceTest extends CommonDomainTest {
     );
     
     UpdateTeam updateTeam = createUpdateTeam(
-      "ManU", "media", "Test", deleteFileName, updateImages);
+      "ManU", ProjectCategory.WEB_APP, "Test", deleteFileName, updateImages);
     
     // when
     teamService.updateTeam(team.getId(), updateTeam);
@@ -161,7 +162,7 @@ public class TeamServiceTest extends CommonDomainTest {
     );
     
     UpdateTeam updateTeam = createUpdateTeam(
-      "ManU", "media", "Test", deleteFileName, updateImages);
+      "ManU", ProjectCategory.WEB_APP, "Test", deleteFileName, updateImages);
     
     // when
     Team newTeam = teamService.updateTeam(team.getId(), updateTeam);
@@ -205,7 +206,7 @@ public class TeamServiceTest extends CommonDomainTest {
   }
   
   public SimpleTeam createSimpleTeam(
-    String teamName, String category, String content,
+    String teamName, ProjectCategory category, String content,
     List<MultipartFile> images
   ) {
     return SimpleTeam.builder()
@@ -217,7 +218,7 @@ public class TeamServiceTest extends CommonDomainTest {
   }
   
   private UpdateTeam createUpdateTeam(
-    String teamName, String category, String content,
+    String teamName, ProjectCategory category, String content,
     List<String> deleteFileName, List<MultipartFile> images
   ) {
     return UpdateTeam.builder()

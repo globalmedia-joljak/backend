@@ -3,6 +3,7 @@ package kr.joljak.api.teams.request;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import kr.joljak.domain.team.dto.SimpleTeam;
+import kr.joljak.domain.work.entity.ProjectCategory;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,7 +23,7 @@ public class RegisterTeamRequest {
   @NotNull
   private String content;
   @NotNull
-  private String category;
+  private ProjectCategory category;
   private String mediaArtMember;
   private String developerMember;
   private String designerMember;
