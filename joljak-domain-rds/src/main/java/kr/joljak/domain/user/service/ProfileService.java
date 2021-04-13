@@ -6,6 +6,7 @@ import kr.joljak.domain.upload.exception.NotMatchingFileNameException;
 import kr.joljak.domain.upload.service.UploadService;
 import kr.joljak.domain.user.dto.RegisterProfile;
 import kr.joljak.domain.user.dto.UpdateProfile;
+import kr.joljak.domain.user.entity.Portfolio;
 import kr.joljak.domain.user.entity.Profile;
 import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.exception.AlreadyProfileExistException;
@@ -36,6 +37,9 @@ public class ProfileService {
     }
 
     Profile profile = registerProfile.getProfile();
+    for (Portfolio portfolio : profile.getPortfolioLinks()) {
+      portfolio.setProfile(profile);
+    }
     profile.setMedia(media);
 
     User user = userService.getUserByClassOf(classOf);
@@ -65,7 +69,9 @@ public class ProfileService {
 
     profile.setContent(updateProfile.getProfile().getContent());
     profile.setPortfolioLinks(updateProfile.getProfile().getPortfolioLinks());
-
+    for (Portfolio portfolio : profile.getPortfolioLinks()) {
+      portfolio.setProfile(profile);
+    }
     // 삭제할 프로필 이미지가 있거나 새로운 등록할 이미지가 있다면 기존 이미지 삭제 처리
     if (updateProfile.getDeleteFileName() != null) {
       Media media = profile.getMedia();

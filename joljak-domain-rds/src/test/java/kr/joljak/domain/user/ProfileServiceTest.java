@@ -11,6 +11,7 @@ import kr.joljak.domain.common.CommonDomainTest;
 import kr.joljak.domain.upload.service.UploadService;
 import kr.joljak.domain.user.dto.RegisterProfile;
 import kr.joljak.domain.user.dto.UpdateProfile;
+import kr.joljak.domain.user.entity.Portfolio;
 import kr.joljak.domain.user.entity.Profile;
 import kr.joljak.domain.user.entity.UserProjectRole;
 import kr.joljak.domain.user.exception.AlreadyProfileExistException;
@@ -42,7 +43,7 @@ public class ProfileServiceTest extends CommonDomainTest {
     String classOf = TEST_USER_CLASS_OF;
     Profile buildProfile = Profile.builder()
       .content("test profile")
-      .portfolioLinks(new ArrayList<>(Collections.singleton("http://localhost:8080")))
+      .portfolioLinks(new ArrayList<>(Collections.singleton(new Portfolio(null, "test", "link"))))
       .build();
 
     // when
@@ -91,7 +92,7 @@ public class ProfileServiceTest extends CommonDomainTest {
     // given
     Profile beforeProfile = commonProfile;
     Profile afterProfile = Profile.builder()
-        .portfolioLinks(Collections.EMPTY_LIST)
+        .portfolioLinks(Collections.emptyList())
         .content("update profile")
         .build();
 
@@ -121,7 +122,7 @@ public class ProfileServiceTest extends CommonDomainTest {
     // given
     Profile beforeProfile = commonProfile;
     Profile afterProfile = Profile.builder()
-        .portfolioLinks(Collections.EMPTY_LIST)
+        .portfolioLinks(Collections.emptyList())
         .content("update profile")
         .build();
 
@@ -148,7 +149,7 @@ public class ProfileServiceTest extends CommonDomainTest {
     String classOf = TEST_ADMIN_CLASS_OF;
     Profile buildProfile = Profile.builder()
         .content("test profile")
-        .portfolioLinks(new ArrayList<>(Collections.singleton("http://localhost:8080")))
+        .portfolioLinks(new ArrayList<>(Collections.singleton(new Portfolio(null, "test", "link"))))
         .build();
 
     RegisterProfile registerProfile = RegisterProfile.builder()
