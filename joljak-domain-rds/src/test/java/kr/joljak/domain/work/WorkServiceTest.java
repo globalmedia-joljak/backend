@@ -15,6 +15,7 @@ import kr.joljak.domain.upload.exception.NotMatchingFileNameException;
 import kr.joljak.domain.user.exception.UserNotFoundException;
 import kr.joljak.domain.work.dto.SimpleWork;
 import kr.joljak.domain.work.dto.UpdateWork;
+import kr.joljak.domain.work.entity.ProjectCategory;
 import kr.joljak.domain.work.entity.Work;
 import kr.joljak.domain.work.exception.WorkNotFoundException;
 import kr.joljak.domain.work.service.WorkService;
@@ -53,7 +54,7 @@ public class WorkServiceTest extends CommonDomainTest {
     );
 
     simpleWork = createSimpleWork(
-      "test", "test", teamMember, "test", "test"
+      "test", "test", teamMember, "2018", "test", "test", ProjectCategory.ANIMATION
     );
   }
 
@@ -130,8 +131,8 @@ public class WorkServiceTest extends CommonDomainTest {
     );
 
     updateWork = createUpdateWork(
-      "update test", "update test", teamMember,
-      "update test", "update test", deleteFileName);
+      "update test", "update test", teamMember, ProjectCategory.ANIMATION,
+      "update test", "update test", deleteFileName, "2018");
 
     Work newWork = workService.updateWorkById(work.getId(), updateWork, updateImageFile);
 
@@ -160,8 +161,8 @@ public class WorkServiceTest extends CommonDomainTest {
     );
 
     updateWork = createUpdateWork(
-      "update test", "update test", teamMember,
-      "update test", "update test", deleteFileName);
+      "update test", "update test", teamMember, ProjectCategory.ANIMATION,
+      "update test", "update test", deleteFileName, "2018");
 
     Work newWork = workService.updateWorkById(work.getId(), updateWork, updateImageFile);
   }
@@ -185,8 +186,8 @@ public class WorkServiceTest extends CommonDomainTest {
     );
 
     updateWork = createUpdateWork(
-      "update test", "update test", teamMember,
-      "update test", "update test", deleteFileName);
+      "update test", "update test", teamMember, ProjectCategory.ANIMATION,
+      "update test", "update test", deleteFileName, "2018");
 
     Work newWork = workService.updateWorkById(work.getId(), updateWork, updateImageFile);
   }
@@ -229,28 +230,32 @@ public class WorkServiceTest extends CommonDomainTest {
 
   private SimpleWork createSimpleWork(
     String workName, String teamName, List<String> teamMember,
-    String content, String teamVideoUrl
+    String exhibitedYear, String content, String teamVideoUrl, ProjectCategory projectCategory
   ) {
     return SimpleWork.builder()
       .workName(workName)
       .teamMember(teamMember)
+      .exhibitedYear(exhibitedYear)
       .teamName(teamName)
       .content(content)
       .teamVideoUrl(teamVideoUrl)
+      .projectCategory(projectCategory)
       .build();
   }
 
   private UpdateWork createUpdateWork(
-    String workName, String teamName, List<String> teamMember,
-    String content, String teamVideoUrl, List<String> deleteFileName
+    String workName, String teamName, List<String> teamMember, ProjectCategory projectCategory,
+    String content, String teamVideoUrl, List<String> deleteFileName, String exhibitedYear
   ) {
     return UpdateWork.builder()
       .workName(workName)
       .teamMember(teamMember)
+      .projectCategory(projectCategory)
       .teamName(teamName)
       .content(content)
       .teamVideoUrl(teamVideoUrl)
       .deleteFileName(deleteFileName)
+      .exhibitedYear(exhibitedYear)
       .build();
   }
 
