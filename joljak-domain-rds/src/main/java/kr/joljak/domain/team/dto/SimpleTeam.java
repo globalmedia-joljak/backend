@@ -23,14 +23,14 @@ public class SimpleTeam {
   private String developerMember;
   private String designerMember;
   private String plannerMember;
-  private List<MultipartFile> images;
+  private MultipartFile file;
 
   @Builder
   public SimpleTeam(
     String teamName, String content, ProjectCategory category,
     String mediaArtMember, String designerMember,
     String developerMember, String plannerMember,
-    List<MultipartFile> images
+    MultipartFile file
   ) {
     this.teamName = teamName;
     this.content = content;
@@ -39,7 +39,7 @@ public class SimpleTeam {
     this.designerMember = designerMember;
     this.developerMember = developerMember;
     this.plannerMember = plannerMember;
-    this.images = images;
+    this.file = file;
   }
 
 }

@@ -1,15 +1,12 @@
 package kr.joljak.domain.team.entity;
 
-import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import kr.joljak.domain.common.entity.ExtendEntity;
@@ -57,16 +54,15 @@ public class Team extends ExtendEntity {
   @Column
   private String plannerMember;
 
-  @OneToMany(fetch = FetchType.EAGER,
-    cascade = CascadeType.ALL, orphanRemoval = true)
-  @JoinColumn(name = "team_id")
-  private List<Media> images;
+  @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
+  @JoinColumn(name = "media_id")
+  private Media media;
 
   @Builder
   public Team(
     String teamName, ProjectCategory category, String content, User user,
     String mediaArtMember, String designerMember,
-    String developerMember, String plannerMember, List<Media> images
+    String developerMember, String plannerMember, Media media
   ) {
     this.teamName = teamName;
     this.category = category;
@@ -76,7 +72,7 @@ public class Team extends ExtendEntity {
     this.designerMember = designerMember;
     this.developerMember = developerMember;
     this.plannerMember = plannerMember;
-    this.images = images;
+    this.media = media;
   }
 
   public void setTeamName(String teamName){
@@ -97,8 +93,11 @@ public class Team extends ExtendEntity {
   public void setPlannerMember(String plannerMember){
     this.plannerMember = plannerMember;
   }
+  public void setMedia(Media media){
+    this.media = media;
+  }
   
-  public static Team of(SimpleTeam simpleTeam, List<Media> imageList) {
+  public static Team of(SimpleTeam simpleTeam, Media media) {
     return Team.builder()
       .teamName(simpleTeam.getTeamName())
       .category(simpleTeam.getCategory())
@@ -108,7 +107,7 @@ public class Team extends ExtendEntity {
       .designerMember(simpleTeam.getDesignerMember())
       .developerMember(simpleTeam.getDeveloperMember())
       .plannerMember(simpleTeam.getPlannerMember())
-      .images(imageList)
+      .media(media)
       .build();
   }
 

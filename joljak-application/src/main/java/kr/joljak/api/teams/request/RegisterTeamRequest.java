@@ -29,7 +29,7 @@ public class RegisterTeamRequest {
   private String designerMember;
   private String plannerMember;
   @Setter
-  private List<MultipartFile> images;
+  private MultipartFile file;
 
   public static SimpleTeam toRegisterTeam(
     RegisterTeamRequest registerTeamRequest
@@ -42,7 +42,7 @@ public class RegisterTeamRequest {
       .designerMember(registerTeamRequest.getDesignerMember())
       .developerMember(registerTeamRequest.getDeveloperMember())
       .plannerMember(registerTeamRequest.getPlannerMember())
-      .images(registerTeamRequest.getImages())
+      .file(registerTeamRequest.getFile())
       .build();
   }
 

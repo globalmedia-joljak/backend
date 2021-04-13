@@ -1,6 +1,5 @@
 package kr.joljak.domain.team.dto;
 
-import java.util.List;
 import kr.joljak.domain.work.entity.ProjectCategory;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -19,15 +18,15 @@ public class UpdateTeam {
   private String developerMember;
   private String designerMember;
   private String plannerMember;
-  private List<MultipartFile> images;
-  private List<String> deleteFileName;
+  private MultipartFile file;
+  private String deleteFileName;
   
   @Builder
   public UpdateTeam(
     String teamName, ProjectCategory category, String content,
     String mediaArtMember, String developerMember,
     String designerMember, String plannerMember,
-    List<MultipartFile> images, List<String> deleteFileName
+    MultipartFile file, String deleteFileName
   ){
     this.teamName = teamName;
     this.category = category;
@@ -36,7 +35,7 @@ public class UpdateTeam {
     this.developerMember = developerMember;
     this.designerMember = designerMember;
     this.plannerMember = plannerMember;
-    this.images = images;
+    this.file = file;
     this.deleteFileName = deleteFileName;
   }
   

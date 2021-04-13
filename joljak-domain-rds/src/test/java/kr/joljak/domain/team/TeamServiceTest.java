@@ -1,11 +1,7 @@
 package kr.joljak.domain.team;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import kr.joljak.core.jwt.PermissionException;
 import kr.joljak.core.security.UserRole;
 import kr.joljak.domain.common.CommonDomainTest;
@@ -14,7 +10,6 @@ import kr.joljak.domain.team.dto.UpdateTeam;
 import kr.joljak.domain.team.entity.Team;
 import kr.joljak.domain.team.exception.TeamNotFoundException;
 import kr.joljak.domain.team.service.TeamService;
-import kr.joljak.domain.upload.exception.FileIsNotImageException;
 import kr.joljak.domain.upload.exception.NotMatchingFileNameException;
 import kr.joljak.domain.user.exception.UserNotFoundException;
 import kr.joljak.domain.work.entity.ProjectCategory;
@@ -31,20 +26,15 @@ public class TeamServiceTest extends CommonDomainTest {
   private TeamService teamService;
   
   private SimpleTeam simpleTeam;
-  private List<MultipartFile> mockIamges;
+  private MultipartFile mockFile;
   
   @Before
   public void initTeam() throws Exception {
     
-    mockIamges = new ArrayList<>(
-      Arrays.asList(
-        createMockImageFile("test1" + nextId++),
-        createMockImageFile("test2" + nextId++)
-      )
-    );
+    mockFile = createMockImageFile("test1" + nextId++);
     
     simpleTeam = createSimpleTeam(
-      "test", ProjectCategory.WEB_APP, "test", mockIamges
+      "test", ProjectCategory.WEB_APP, "test", mockFile
     );
     
   }
@@ -58,31 +48,12 @@ public class TeamServiceTest extends CommonDomainTest {
     Assertions.assertThat(team).isNotNull();
   }
   
-  @Test(expected = FileIsNotImageException.class)
-  @WithMockUser(username = TEST_USER_CLASS_OF, roles = "USER")
-  public void createWork_Fail_FileIsNotImageException() throws Exception {
-    // given
-    String path = "/" + TEST_USER_CLASS_OF;
-    List<MultipartFile> mockFiles = new ArrayList<>(
-      Arrays.asList(
-        createMockImageFile("test" + nextId++),
-        createMockTextFile("test" + nextId++)
-      )
-    );
-    
-    SimpleTeam FileSimpleTeam = createSimpleTeam("test", ProjectCategory.WEB_APP, "test", mockFiles);
-    
-    // when, then
-    teamService.addTeam(FileSimpleTeam);
-  }
-  
   @Test(expected = UserNotFoundException.class)
   @WithMockUser(username = "Wrong User", roles = "USER")
   public void createWork_Fail_UserNotFoundException() {
     
     // when
     teamService.addTeam(simpleTeam);
-    
   }
   
   @Test
@@ -92,30 +63,22 @@ public class TeamServiceTest extends CommonDomainTest {
     // given
     Team team = teamService.addTeam(simpleTeam);
     
-    List<MultipartFile> updateImages = new ArrayList<>(
-      Arrays.asList(
-        createMockImageFile("update test" + nextId++)
-      )
-    );
+    MultipartFile updateFile = createMockTextFile("update test" + nextId++);
     
-    List<String> deleteFileName = new ArrayList<>(
-      Arrays.asList(
-        team.getImages().get(0).getModifyName()
-      )
-    );
+    String deleteFileName =
+        team.getMedia().getModifyName();
     
     UpdateTeam updateTeam = createUpdateTeam(
-      "ManU", ProjectCategory.WEB_APP, "Test", deleteFileName, updateImages);
+      "ManU", ProjectCategory.WEB_APP, "Test", deleteFileName, updateFile);
     
     // when
     Team newTeam = teamService.updateTeam(team.getId(), updateTeam);
     
     // then
-    Assertions.assertThat(newTeam.getImages()).isNotNull();
-    assertEquals(newTeam.getImages().size(), 2);
+    Assertions.assertThat(newTeam.getMedia()).isNotNull();
     assertNotEquals(newTeam.getTeamName(), team.getTeamName());
-    assertNotEquals(newTeam.getImages().get(0).getOriginalName(),
-      team.getImages().get(0).getOriginalName());
+    assertNotEquals(newTeam.getMedia().getOriginalName(),
+      team.getMedia().getOriginalName());
   }
   
   @Test(expected = NotMatchingFileNameException.class)
@@ -124,17 +87,11 @@ public class TeamServiceTest extends CommonDomainTest {
     // given
     Team team = teamService.addTeam(simpleTeam);
     
-    List<MultipartFile> updateImages = new ArrayList<>(
-      Arrays.asList(
-        createMockImageFile("update test" + nextId++)
-      )
-    );
+    MultipartFile updateImages = createMockTextFile("update test" + nextId++);
     
-    List<String> deleteFileName = new ArrayList<>(
-      Arrays.asList(
-        "no image.jpg"
-      )
-    );
+    
+    String deleteFileName = "no image.jpg";
+ 
     
     UpdateTeam updateTeam = createUpdateTeam(
       "ManU", ProjectCategory.WEB_APP, "Test", deleteFileName, updateImages);
@@ -149,17 +106,11 @@ public class TeamServiceTest extends CommonDomainTest {
     // given
     Team team = teamService.addTeam(simpleTeam);
     
-    List<MultipartFile> updateImages = new ArrayList<>(
-      Arrays.asList(
-        createMockImageFile("update test" + nextId++)
-      )
-    );
+    MultipartFile updateImages = createMockImageFile("update test" + nextId++);
     
-    List<String> deleteFileName = new ArrayList<>(
-      Arrays.asList(
-        team.getImages().get(0).getModifyName()
-      )
-    );
+    
+    String deleteFileName = team.getMedia().getModifyName();
+   
     
     UpdateTeam updateTeam = createUpdateTeam(
       "ManU", ProjectCategory.WEB_APP, "Test", deleteFileName, updateImages);
@@ -207,26 +158,26 @@ public class TeamServiceTest extends CommonDomainTest {
   
   public SimpleTeam createSimpleTeam(
     String teamName, ProjectCategory category, String content,
-    List<MultipartFile> images
+    MultipartFile file
   ) {
     return SimpleTeam.builder()
       .teamName(teamName)
       .category(category)
       .content(content)
-      .images(images)
+      .file(file)
       .build();
   }
   
   private UpdateTeam createUpdateTeam(
     String teamName, ProjectCategory category, String content,
-    List<String> deleteFileName, List<MultipartFile> images
+    String deleteFileName, MultipartFile file
   ) {
     return UpdateTeam.builder()
       .teamName(teamName)
       .category(category)
       .content(content)
       .deleteFileName(deleteFileName)
-      .images(images)
+      .file(file)
       .build();
   }
 }

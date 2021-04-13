@@ -47,28 +47,4 @@ public class RegisterTeamResponse {
     this.createdDate = createdDate;
   }
 
-  public static RegisterTeamResponse of(Team team) {
-    List<MediaInfo> imageList = null;
-
-    if (team.getImages() != null) {
-      imageList = team.getImages().stream()
-        .map(image -> MediaInfo.of(image))
-        .collect(Collectors.toList());
-    }
-
-    return RegisterTeamResponse.builder()
-      .id(team.getId())
-      .teamName(team.getTeamName())
-      .content(team.getContent())
-      .category(team.getCategory())
-      .mediaArtMember(team.getMediaArtMember())
-      .designerMember(team.getDesignerMember())
-      .developerMember(team.getDeveloperMember())
-      .plannerMember(team.getPlannerMember())
-      .author(team.getUser().getName())
-      .imageInfoList(imageList)
-      .createdDate(team.getCreatedDate())
-      .build();
-  }
-
 }
