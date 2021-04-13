@@ -1,7 +1,5 @@
 package kr.joljak.domain.team.service;
 
-import java.util.List;
-import java.util.Map;
 import kr.joljak.domain.team.dto.SimpleTeam;
 import kr.joljak.domain.team.dto.UpdateTeam;
 import kr.joljak.domain.team.entity.Team;
@@ -62,7 +60,7 @@ public class TeamService {
     userService.validAuthenticationClassOf(classOf);
     
     team.setTeamName(updateTeam.getTeamName());
-    team.setCategory(updateTeam.getCategory());
+    team.setProjectCategory(updateTeam.getProjectCategory());
     team.setMediaArtMember(updateTeam.getMediaArtMember());
     team.setDesignerMember(updateTeam.getDesignerMember());
     team.setDeveloperMember(updateTeam.getDeveloperMember());

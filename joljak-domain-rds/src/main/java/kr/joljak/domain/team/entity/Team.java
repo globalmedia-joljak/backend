@@ -33,7 +33,7 @@ public class Team extends ExtendEntity {
   private String teamName;
 
   @Column(nullable = false)
-  private ProjectCategory category;
+  private ProjectCategory projectCategory;
 
   @Column(nullable = false)
   private String content;
@@ -60,12 +60,12 @@ public class Team extends ExtendEntity {
 
   @Builder
   public Team(
-    String teamName, ProjectCategory category, String content, User user,
+    String teamName, ProjectCategory projectCategory, String content, User user,
     String mediaArtMember, String designerMember,
     String developerMember, String plannerMember, Media media
   ) {
     this.teamName = teamName;
-    this.category = category;
+    this.projectCategory = projectCategory;
     this.content = content;
     this.user = user;
     this.mediaArtMember = mediaArtMember;
@@ -78,8 +78,8 @@ public class Team extends ExtendEntity {
   public void setTeamName(String teamName){
     this.teamName = teamName;
   }
-  public void setCategory(ProjectCategory category){
-    this.category = category;
+  public void setProjectCategory(ProjectCategory projectCategory){
+    this.projectCategory = projectCategory;
   }
   public void setMediaArtMember(String mediaArtMember){
     this.mediaArtMember = mediaArtMember;
@@ -100,7 +100,7 @@ public class Team extends ExtendEntity {
   public static Team of(SimpleTeam simpleTeam, Media media) {
     return Team.builder()
       .teamName(simpleTeam.getTeamName())
-      .category(simpleTeam.getCategory())
+      .projectCategory(simpleTeam.getProjectCategory())
       .content(simpleTeam.getContent())
       .user(simpleTeam.getAuthor())
       .mediaArtMember(simpleTeam.getMediaArtMember())

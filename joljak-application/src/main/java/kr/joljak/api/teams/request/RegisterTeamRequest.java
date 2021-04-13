@@ -1,6 +1,5 @@
 package kr.joljak.api.teams.request;
 
-import java.util.List;
 import javax.validation.constraints.NotNull;
 import kr.joljak.domain.team.dto.SimpleTeam;
 import kr.joljak.domain.work.entity.ProjectCategory;
@@ -12,7 +11,6 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,7 +21,7 @@ public class RegisterTeamRequest {
   @NotNull
   private String content;
   @NotNull
-  private ProjectCategory category;
+  private ProjectCategory projectCategory;
   private String mediaArtMember;
   private String developerMember;
   private String designerMember;
@@ -37,7 +35,7 @@ public class RegisterTeamRequest {
     return SimpleTeam.builder()
       .teamName(registerTeamRequest.getTeamName())
       .content(registerTeamRequest.getContent())
-      .category(registerTeamRequest.getCategory())
+      .projectCategory(registerTeamRequest.getProjectCategory())
       .mediaArtMember(registerTeamRequest.getMediaArtMember())
       .designerMember(registerTeamRequest.getDesignerMember())
       .developerMember(registerTeamRequest.getDeveloperMember())

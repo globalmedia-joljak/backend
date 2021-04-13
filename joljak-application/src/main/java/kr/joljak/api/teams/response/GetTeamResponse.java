@@ -16,7 +16,7 @@ public class GetTeamResponse {
   private Long id;
   private String teamName;
   private String content;
-  private ProjectCategory category;
+  private ProjectCategory projectCategory;
   private String mediaArtMember;
   private String developerMember;
   private String designerMember;
@@ -29,7 +29,7 @@ public class GetTeamResponse {
   @Builder
   public GetTeamResponse(
     Long id, String teamName, String content,
-    ProjectCategory category, String mediaArtMember, String designerMember,
+    ProjectCategory projectCategory, String mediaArtMember, String designerMember,
     String developerMember, String plannerMember,
     String author, MediaInfo fileInfo, LocalDateTime createdDate,
     LocalDateTime modifiedDate
@@ -37,7 +37,7 @@ public class GetTeamResponse {
     this.id = id;
     this.teamName = teamName;
     this.content = content;
-    this.category = category;
+    this.projectCategory = projectCategory;
     this.mediaArtMember = mediaArtMember;
     this.designerMember = designerMember;
     this.developerMember = developerMember;
@@ -59,7 +59,7 @@ public class GetTeamResponse {
       .id(team.getId())
       .teamName(team.getTeamName())
       .content(team.getContent())
-      .category(team.getCategory())
+      .projectCategory(team.getProjectCategory())
       .mediaArtMember(team.getMediaArtMember())
       .designerMember(team.getDesignerMember())
       .developerMember(team.getDeveloperMember())

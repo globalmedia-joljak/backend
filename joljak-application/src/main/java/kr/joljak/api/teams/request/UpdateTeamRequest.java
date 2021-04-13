@@ -17,7 +17,7 @@ public class UpdateTeamRequest {
   @NotNull
   private String teamName;
   @NotNull
-  private ProjectCategory category;
+  private ProjectCategory projectCategory;
   @NotNull
   private String content;
   private String mediaArtMember;
@@ -30,13 +30,13 @@ public class UpdateTeamRequest {
   
   @Builder
   public UpdateTeamRequest(
-    String teamName, ProjectCategory category, String content,
+    String teamName, ProjectCategory projectCategory, String content,
     String mediaArtMember, String developerMember,
     String designerMember, String plannerMember,
     MultipartFile file, String deleteFileName
   ){
     this.teamName = teamName;
-    this.category = category;
+    this.projectCategory = projectCategory;
     this.content = content;
     this.mediaArtMember = mediaArtMember;
     this.developerMember = developerMember;
@@ -49,7 +49,7 @@ public class UpdateTeamRequest {
   public static UpdateTeam toUpdateTeam(UpdateTeamRequest updateTeamRequest){
     return UpdateTeam.builder()
       .teamName(updateTeamRequest.getTeamName())
-      .category(updateTeamRequest.getCategory())
+      .projectCategory(updateTeamRequest.getProjectCategory())
       .content(updateTeamRequest.getContent())
       .mediaArtMember(updateTeamRequest.getMediaArtMember())
       .developerMember(updateTeamRequest.getDeveloperMember())

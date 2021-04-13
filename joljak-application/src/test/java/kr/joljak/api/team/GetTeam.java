@@ -65,7 +65,7 @@ public class GetTeam extends CommonApiTest {
     return RegisterTeamRequest.builder()
       .teamName(teamName)
       .content(content)
-      .category(category)
+      .projectCategory(category)
       .build();
   }
   
