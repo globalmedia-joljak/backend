@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TeamRepository extends ExtendRepository<Team> {
   
-  Page<Team> findAllByProjectCategory(ProjectCategory projectCategory, Pageable pageable);
+  Page<Team> findByProjectCategory(ProjectCategory projectCategory, Pageable pageable);
 }
