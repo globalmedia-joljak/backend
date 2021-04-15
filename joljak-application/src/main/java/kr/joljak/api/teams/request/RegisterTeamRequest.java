@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 public class RegisterTeamRequest {
 
   @NotNull
