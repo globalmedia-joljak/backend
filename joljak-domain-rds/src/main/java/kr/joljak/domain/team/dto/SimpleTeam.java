@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @NoArgsConstructor
 public class SimpleTeam {
-
+ 
   private String teamName;
   private String content;
   private ProjectCategory projectCategory;
