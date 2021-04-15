@@ -106,11 +106,6 @@ public class TeamService {
   
   @Transactional(readOnly = true)
   public Page<Team> getTeamByCategory(ProjectCategory projectCategory, PageRequest pageRequest) {
-    if (projectCategory != null) {
-      return teamRepository
-        .findAllByProjectCategory(projectCategory, pageRequest);
-    } else {
-      return getTeams(pageRequest);
-    }
+    return teamRepository.findByProjectCategory(projectCategory, pageRequest);
   }
 }
