@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 import kr.joljak.domain.upload.entity.MediaInfo;
+import kr.joljak.domain.work.entity.ProjectCategory;
 import kr.joljak.domain.work.entity.Work;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -20,9 +21,13 @@ public class WorkResponse {
   @NotNull
   private String workName;
   @NotNull
+  private ProjectCategory projectCategory;
+  @NotNull
   private String teamName;
   @NotNull
   private List<String> teamMember;
+  @NotNull
+  private String exhibitedYear;
   @NotNull
   private String content;
   private String teamVideoUrl;
@@ -34,13 +39,16 @@ public class WorkResponse {
   public WorkResponse(
     Long id, String workName, String teamName, List<String> teamMember,
     String content, String teamVideoUrl, List<MediaInfo> imageInfoList,
-    LocalDateTime createDate, LocalDateTime modifiedDate
+    LocalDateTime createDate, LocalDateTime modifiedDate, ProjectCategory projectCategory,
+    String exhibitedYear
   ) {
     this.id = id;
     this.workName = workName;
     this.teamName = teamName;
     this.teamMember = teamMember;
+    this.exhibitedYear = exhibitedYear;
     this.content = content;
+    this.projectCategory = projectCategory;
     this.teamVideoUrl = teamVideoUrl;
     this.imageInfoList = imageInfoList;
     this.createDate = createDate;
@@ -62,6 +70,8 @@ public class WorkResponse {
       .teamName(work.getTeamName())
       .teamMember(work.getTeamMember())
       .content(work.getContent())
+      .exhibitedYear(work.getExhibitedYear())
+      .projectCategory(work.getProjectCategory())
       .teamVideoUrl(work.getTeamVideoUrl())
       .imageInfoList(imageList)
       .createDate(work.getCreatedDate())

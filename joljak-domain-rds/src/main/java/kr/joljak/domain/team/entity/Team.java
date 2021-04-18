@@ -1,21 +1,19 @@
 package kr.joljak.domain.team.entity;
 
-import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import kr.joljak.domain.common.entity.ExtendEntity;
 import kr.joljak.domain.team.dto.SimpleTeam;
 import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.user.entity.User;
+import kr.joljak.domain.work.entity.ProjectCategory;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,7 +33,7 @@ public class Team extends ExtendEntity {
   private String teamName;
 
   @Column(nullable = false)
-  private String category;
+  private ProjectCategory projectCategory;
 
   @Column(nullable = false)
   private String content;
@@ -56,33 +54,32 @@ public class Team extends ExtendEntity {
   @Column
   private String plannerMember;
 
-  @OneToMany(fetch = FetchType.EAGER,
-    cascade = CascadeType.ALL, orphanRemoval = true)
-  @JoinColumn(name = "team_id")
-  private List<Media> images;
+  @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
+  @JoinColumn(name = "media_id")
+  private Media media;
 
   @Builder
   public Team(
-    String teamName, String category, String content, User user,
+    String teamName, ProjectCategory projectCategory, String content, User user,
     String mediaArtMember, String designerMember,
-    String developerMember, String plannerMember, List<Media> images
+    String developerMember, String plannerMember, Media media
   ) {
     this.teamName = teamName;
-    this.category = category;
+    this.projectCategory = projectCategory;
     this.content = content;
     this.user = user;
     this.mediaArtMember = mediaArtMember;
     this.designerMember = designerMember;
     this.developerMember = developerMember;
     this.plannerMember = plannerMember;
-    this.images = images;
+    this.media = media;
   }
 
   public void setTeamName(String teamName){
     this.teamName = teamName;
   }
-  public void setCategory(String category){
-    this.category = category;
+  public void setProjectCategory(ProjectCategory projectCategory){
+    this.projectCategory = projectCategory;
   }
   public void setMediaArtMember(String mediaArtMember){
     this.mediaArtMember = mediaArtMember;
@@ -96,18 +93,21 @@ public class Team extends ExtendEntity {
   public void setPlannerMember(String plannerMember){
     this.plannerMember = plannerMember;
   }
+  public void setMedia(Media media){
+    this.media = media;
+  }
   
-  public static Team of(SimpleTeam simpleTeam, List<Media> imageList) {
+  public static Team of(SimpleTeam simpleTeam, Media media) {
     return Team.builder()
       .teamName(simpleTeam.getTeamName())
-      .category(simpleTeam.getCategory())
+      .projectCategory(simpleTeam.getProjectCategory())
       .content(simpleTeam.getContent())
       .user(simpleTeam.getAuthor())
       .mediaArtMember(simpleTeam.getMediaArtMember())
       .designerMember(simpleTeam.getDesignerMember())
       .developerMember(simpleTeam.getDeveloperMember())
       .plannerMember(simpleTeam.getPlannerMember())
-      .images(imageList)
+      .media(media)
       .build();
   }
 

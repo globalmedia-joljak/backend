@@ -16,6 +16,7 @@ import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.entity.UserProjectRole;
 import kr.joljak.domain.user.exception.UserNotFoundException;
 import kr.joljak.domain.user.repository.UserRepository;
+import kr.joljak.domain.work.entity.ProjectCategory;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -203,11 +204,13 @@ public abstract class CommonApiTest {
       .build();
   }
 
-  public RegisterWorkRequest createWorkRequest(String workName, String teamName, List<String> teamMember,
+  public RegisterWorkRequest createWorkRequest(String workName, String teamName, String exhibitedYear, ProjectCategory projectCategory, List<String> teamMember,
     String content) {
     return RegisterWorkRequest.builder()
       .workName(workName)
       .teamName(teamName)
+      .projectCategory(projectCategory)
+      .exhibitedYear(exhibitedYear)
       .teamMember(teamMember)
       .content(content)
       .build();

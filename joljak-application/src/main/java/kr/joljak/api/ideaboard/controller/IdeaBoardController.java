@@ -36,12 +36,11 @@ public class IdeaBoardController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public IdeaBoardResponse create(
-    @RequestPart(required = false) MultipartFile file,
-    @Valid @RequestPart("ideaBoardRequest") IdeaBoardRequest ideaBoardRequest
+    @Valid IdeaBoardRequest ideaBoardRequest
   ) {
     SimpleIdeaBoard simpleIdeaBoard = ideaBoardRequest
       .toDomainIdeaBoardRequest(ideaBoardRequest);
-    IdeaBoard ideaBoard = ideaBoardService.addIdeaBoard(simpleIdeaBoard, file);
+    IdeaBoard ideaBoard = ideaBoardService.addIdeaBoard(simpleIdeaBoard);
 
     return IdeaBoardResponse.of(ideaBoard);
   }
@@ -79,12 +78,11 @@ public class IdeaBoardController {
   @ResponseStatus(HttpStatus.OK)
   public IdeaBoardResponse updateIdeaBoard(
     @PathVariable Long id,
-    @RequestPart(required = false) MultipartFile file,
-    @Valid @RequestPart("ideaBoardRequest") IdeaBoardRequest ideaBoardRequest
+    @Valid IdeaBoardRequest ideaBoardRequest
   ) {
     SimpleIdeaBoard simpleIdeaBoard = ideaBoardRequest
       .toDomainIdeaBoardRequest(ideaBoardRequest);
-    IdeaBoard ideaBoard = ideaBoardService.updateIdeaBoardById(id, simpleIdeaBoard, file);
+    IdeaBoard ideaBoard = ideaBoardService.updateIdeaBoardById(id, simpleIdeaBoard);
     return IdeaBoardResponse.of(ideaBoard);
   }
 

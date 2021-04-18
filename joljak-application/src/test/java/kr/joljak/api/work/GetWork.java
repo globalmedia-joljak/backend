@@ -8,6 +8,7 @@ import java.util.List;
 import kr.joljak.api.common.CommonApiTest;
 import kr.joljak.api.work.request.RegisterWorkRequest;
 import kr.joljak.domain.work.dto.SimpleWork;
+import kr.joljak.domain.work.entity.ProjectCategory;
 import kr.joljak.domain.work.entity.Work;
 import kr.joljak.domain.work.service.WorkService;
 import org.junit.Before;
@@ -27,16 +28,16 @@ public class GetWork extends CommonApiTest {
   private Long id;
 
   @Before
-  public void initGetIdeaBoard() {
+  public void initWork() {
     List<String> teamMember = new ArrayList<>();
 
     teamMember.add("test");
     registerWorkRequest = createWorkRequest(
-      "test workName", "test teamName",
+      "test workName", "test teamName", "2020", ProjectCategory.WEB_APP,
       teamMember, "test content");
 
     simpleWork = RegisterWorkRequest.toDomainWorkRequest(registerWorkRequest);
-    Work work = workService.addWork(simpleWork, null);
+    Work work = workService.addWork(simpleWork);
     id = work.getId();
   }
 

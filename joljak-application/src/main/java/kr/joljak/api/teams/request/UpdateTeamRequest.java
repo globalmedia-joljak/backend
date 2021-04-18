@@ -1,8 +1,8 @@
 package kr.joljak.api.teams.request;
 
-import java.util.List;
 import javax.validation.constraints.NotNull;
 import kr.joljak.domain.team.dto.UpdateTeam;
+import kr.joljak.domain.work.entity.ProjectCategory;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,45 +17,45 @@ public class UpdateTeamRequest {
   @NotNull
   private String teamName;
   @NotNull
-  private String category;
+  private ProjectCategory projectCategory;
   @NotNull
   private String content;
   private String mediaArtMember;
   private String developerMember;
   private String designerMember;
   private String plannerMember;
-  private List<String> deleteFileName;
+  private String deleteFileName;
   @Setter
-  private List<MultipartFile> images;
+  private MultipartFile file;
   
   @Builder
   public UpdateTeamRequest(
-    String teamName, String category, String content,
+    String teamName, ProjectCategory projectCategory, String content,
     String mediaArtMember, String developerMember,
     String designerMember, String plannerMember,
-    List<MultipartFile> images, List<String> deleteFileName
+    MultipartFile file, String deleteFileName
   ){
     this.teamName = teamName;
-    this.category = category;
+    this.projectCategory = projectCategory;
     this.content = content;
     this.mediaArtMember = mediaArtMember;
     this.developerMember = developerMember;
     this.designerMember = designerMember;
     this.plannerMember = plannerMember;
-    this.images = images;
+    this.file = file;
     this.deleteFileName = deleteFileName;
   }
   
   public static UpdateTeam toUpdateTeam(UpdateTeamRequest updateTeamRequest){
     return UpdateTeam.builder()
       .teamName(updateTeamRequest.getTeamName())
-      .category(updateTeamRequest.getCategory())
+      .projectCategory(updateTeamRequest.getProjectCategory())
       .content(updateTeamRequest.getContent())
       .mediaArtMember(updateTeamRequest.getMediaArtMember())
       .developerMember(updateTeamRequest.getDeveloperMember())
       .designerMember(updateTeamRequest.getDesignerMember())
       .plannerMember(updateTeamRequest.getPlannerMember())
-      .images(updateTeamRequest.getImages())
+      .file(updateTeamRequest.getFile())
       .deleteFileName(updateTeamRequest.getDeleteFileName())
       .build();
   }

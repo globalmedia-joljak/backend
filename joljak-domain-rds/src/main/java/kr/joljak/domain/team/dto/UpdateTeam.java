@@ -1,6 +1,6 @@
 package kr.joljak.domain.team.dto;
 
-import java.util.List;
+import kr.joljak.domain.work.entity.ProjectCategory;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,30 +12,30 @@ import org.springframework.web.multipart.MultipartFile;
 public class UpdateTeam {
   
   private String teamName;
-  private String category;
+  private ProjectCategory projectCategory;
   private String content;
   private String mediaArtMember;
   private String developerMember;
   private String designerMember;
   private String plannerMember;
-  private List<MultipartFile> images;
-  private List<String> deleteFileName;
+  private MultipartFile file;
+  private String deleteFileName;
   
   @Builder
   public UpdateTeam(
-    String teamName, String category, String content,
+    String teamName, ProjectCategory projectCategory, String content,
     String mediaArtMember, String developerMember,
     String designerMember, String plannerMember,
-    List<MultipartFile> images, List<String> deleteFileName
+    MultipartFile file, String deleteFileName
   ){
     this.teamName = teamName;
-    this.category = category;
+    this.projectCategory = projectCategory;
     this.content = content;
     this.mediaArtMember = mediaArtMember;
     this.developerMember = developerMember;
     this.designerMember = designerMember;
     this.plannerMember = plannerMember;
-    this.images = images;
+    this.file = file;
     this.deleteFileName = deleteFileName;
   }
   

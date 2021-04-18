@@ -11,6 +11,7 @@ import kr.joljak.domain.team.dto.UpdateTeam;
 import kr.joljak.domain.team.entity.Team;
 import kr.joljak.domain.team.service.TeamService;
 import kr.joljak.domain.util.FetchPages;
+import kr.joljak.domain.work.entity.ProjectCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -70,7 +71,7 @@ public class TeamsController {
   @ResponseStatus(HttpStatus.OK)
   public GetTeamResponse updateTeam(
     @PathVariable Long id,
-    UpdateTeamRequest updateTeamRequest
+    @Valid UpdateTeamRequest updateTeamRequest
   ) {
     UpdateTeam updateTeam = UpdateTeamRequest.toUpdateTeam(updateTeamRequest);
     Team team = teamService.updateTeam(id, updateTeam);
@@ -85,6 +86,22 @@ public class TeamsController {
     @PathVariable Long id
   ) {
     teamService.deleteTeamById(id);
+  }
+  
+  @ApiOperation("팀 목록 검색")
+  @GetMapping("/search")
+  @ResponseStatus(HttpStatus.OK)
+  public GetTeamsResponse searchTeams(
+    @RequestParam(required = false)ProjectCategory category,
+    @RequestParam(defaultValue = "0") int page,
+    @RequestParam(defaultValue = "10") int size
+  ){
+    Page<GetTeamResponse> teamResponsePage = teamService.getTeamByCategory(category, FetchPages.of(page, size))
+      .map(GetTeamResponse::of);
+    
+    return GetTeamsResponse.builder()
+      .getTeamResponsePage(teamResponsePage)
+      .build();
   }
   
 }
