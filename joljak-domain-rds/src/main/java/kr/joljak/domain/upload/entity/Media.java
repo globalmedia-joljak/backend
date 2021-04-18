@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import kr.joljak.domain.common.entity.ExtendEntity;
@@ -36,6 +37,7 @@ public class Media extends ExtendEntity {
 
   private String fullPath;
 
+  @Lob
   @Column(nullable = false)
   private String url;
 
