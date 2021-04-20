@@ -18,6 +18,11 @@ public interface ExtendRepository<T> extends JpaRepository<T, Long> {
     @Query("delete from #{#entityName} entity where entity.id in :id")
     void deleteById(@Param("id") Long id);
 
+    @Transactional
+    @Modifying
+    @Query("delete from #{#entityName} entity where entity.id in :ids")
+    void deleteByIds(@Param("ids") Collection<Long> ids);
+
     Optional<T> findById(Long id, Class<T> type);
 
     List<T> findAllBy(Class<T> type);
