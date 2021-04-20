@@ -5,6 +5,7 @@ import java.util.List;
 import kr.joljak.api.upload.request.DeleteFileRequest;
 import kr.joljak.api.upload.request.UploadRequest;
 import kr.joljak.domain.upload.entity.Media;
+import kr.joljak.domain.upload.entity.MediaInfo;
 import kr.joljak.domain.upload.entity.MediaType;
 import kr.joljak.domain.upload.service.UploadService;
 import kr.joljak.domain.user.service.UserService;
@@ -67,13 +68,14 @@ public class UploadController {
   @ApiOperation("사진 업로드")
   @PostMapping("/{classOf}/image")
   @ResponseStatus(HttpStatus.CREATED)
-  public Media uploadImage(
+  public MediaInfo uploadImage(
     @PathVariable String classOf,
     @RequestPart MultipartFile image
   ) {
     userService.validExistClassOf(classOf);
+    Media media = uploadService.uploadImage(image, "/" + classOf);
 
-    return uploadService.uploadImage(image, "/" + classOf);
+    return MediaInfo.of(media);
   }
 
   @ApiOperation("파일 삭제")
