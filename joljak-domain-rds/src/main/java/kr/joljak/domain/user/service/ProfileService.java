@@ -1,5 +1,7 @@
 package kr.joljak.domain.user.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import kr.joljak.core.jwt.PermissionException;
 import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.upload.exception.NotMatchingFileNameException;
@@ -12,6 +14,7 @@ import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.entity.UserProjectRole;
 import kr.joljak.domain.user.exception.AlreadyProfileExistException;
 import kr.joljak.domain.user.exception.ProfileNotFoundException;
+import kr.joljak.domain.user.repository.PortfolioRepository;
 import kr.joljak.domain.user.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProfileService {
   
   private final ProfileRepository profileRepository;
+  private final PortfolioRepository portfolioRepository;
   private final UserService userService;
   private final UploadService uploadService;
   
@@ -68,12 +72,20 @@ public class ProfileService {
     validateUserProfilePermissions(classOf, user.getClassOf());
     user.setMainProjectRole(updateProfile.getMainRole());
     user.setSubProjectRole(updateProfile.getSubRole());
-    
-    profile.setContent(updateProfile.getProfile().getContent());
+
+    List<Long> deleteIds = profile.getPortfolioLinks()
+      .stream()
+      .map(Portfolio::getId)
+      .collect(Collectors.toList());
+    profile.setPortfolioLinks(null);
+    portfolioRepository.deleteByIds(deleteIds);
     profile.setPortfolioLinks(updateProfile.getProfile().getPortfolioLinks());
     for (Portfolio portfolio : profile.getPortfolioLinks()) {
       portfolio.setProfile(profile);
     }
+
+    profile.setContent(updateProfile.getProfile().getContent());
+
     // 삭제할 프로필 이미지가 있거나 새로운 등록할 이미지가 있다면 기존 이미지 삭제 처리
     if (updateProfile.getDeleteFileName() != null) {
       Media media = profile.getMedia();
