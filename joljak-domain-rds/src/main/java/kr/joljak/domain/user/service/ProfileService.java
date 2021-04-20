@@ -73,12 +73,16 @@ public class ProfileService {
     user.setMainProjectRole(updateProfile.getMainRole());
     user.setSubProjectRole(updateProfile.getSubRole());
 
-    List<Long> deleteIds = profile.getPortfolioLinks()
-      .stream()
-      .map(Portfolio::getId)
-      .collect(Collectors.toList());
-    profile.setPortfolioLinks(null);
-    portfolioRepository.deleteByIds(deleteIds);
+    if (profile.getPortfolioLinks() != null) {
+      if (!profile.getPortfolioLinks().isEmpty()) {
+        List<Long> deleteIds = profile.getPortfolioLinks()
+          .stream()
+          .map(Portfolio::getId)
+          .collect(Collectors.toList());
+        profile.setPortfolioLinks(null);
+        portfolioRepository.deleteByIds(deleteIds);
+      }
+    }
     profile.setPortfolioLinks(updateProfile.getProfile().getPortfolioLinks());
     for (Portfolio portfolio : profile.getPortfolioLinks()) {
       portfolio.setProfile(profile);
