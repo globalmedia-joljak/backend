@@ -92,6 +92,14 @@ public class WorkController {
     workService.deleteWorkById(id);
   }
   
+  @ApiOperation("연도 리스트 조회")
+  @GetMapping("/years")
+  @ResponseStatus(HttpStatus.OK)
+  public List<String> getYears() {
+    
+    return workService.getExhibitedYear();
+  }
+  
   @ApiOperation("작품 검색 API")
   @GetMapping("/search")
   @ResponseStatus(HttpStatus.OK)
