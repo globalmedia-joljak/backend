@@ -5,12 +5,14 @@ import java.util.List;
 import kr.joljak.api.upload.request.DeleteFileRequest;
 import kr.joljak.api.upload.request.UploadRequest;
 import kr.joljak.domain.upload.entity.Media;
+import kr.joljak.domain.upload.entity.MediaInfo;
 import kr.joljak.domain.upload.entity.MediaType;
 import kr.joljak.domain.upload.service.UploadService;
 import kr.joljak.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -64,15 +66,16 @@ public class UploadController {
   }
 
   @ApiOperation("사진 업로드")
-  @PostMapping("/image")
+  @PostMapping("/{classOf}/image")
   @ResponseStatus(HttpStatus.CREATED)
-  public Media uploadImage(
-    @RequestPart MultipartFile image,
-    @RequestPart UploadRequest uploadRequest
+  public MediaInfo uploadImage(
+    @PathVariable String classOf,
+    @RequestPart MultipartFile image
   ) {
-    userService.validExistClassOf(uploadRequest.getClassOf());
+    userService.validExistClassOf(classOf);
+    Media media = uploadService.uploadImage(image, "/" + classOf);
 
-    return uploadService.uploadImage(image, "/" + uploadRequest.getClassOf());
+    return MediaInfo.of(media);
   }
 
   @ApiOperation("파일 삭제")
