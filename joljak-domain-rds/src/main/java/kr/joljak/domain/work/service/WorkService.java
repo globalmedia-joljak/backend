@@ -1,5 +1,7 @@
 package kr.joljak.domain.work.service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +52,7 @@ public class WorkService {
   
   @Transactional
   public Work updateWorkById(Long id, UpdateWork updateWork) {
-  
+    
     List<MultipartFile> images = updateWork.getImages();
     Work work = getWorkById(id);
     
@@ -98,18 +100,12 @@ public class WorkService {
   }
   
   @Transactional(readOnly = true)
-  public Page<Work> getWorkByExhibitedYearAndCategory(ProjectCategory projectCategory, String exhibitedYear,
+  public Page<Work> getWorkByExhibitedYearAndCategory(ProjectCategory projectCategory,
+    String exhibitedYear,
     PageRequest pageRequest) {
-    if (projectCategory != null && exhibitedYear != null) {
-      return workRepository
-        .findAllByProjectCategoryAndExhibitedYearContaining(projectCategory, exhibitedYear, pageRequest);
-    } else if (projectCategory != null && exhibitedYear == null) {
-      return workRepository.findAllByProjectCategory(projectCategory, pageRequest);
-    } else if (projectCategory == null && exhibitedYear != null) {
-      return workRepository.findAllByExhibitedYear(exhibitedYear, pageRequest);
-    } else {
-      return getWorksByPage(pageRequest);
-    }
+    
+    return workRepository
+      .findByProjectCategoryOrExhibitedYear(projectCategory, exhibitedYear, pageRequest);
   }
   
   @Transactional
@@ -155,5 +151,14 @@ public class WorkService {
         work.getImages().add(image);
       }
     }
+  }
+  
+  public List<String> getExhibitedYear() {
+    List<String> exhibitedYear = new ArrayList<>();
+    int thisYear = LocalDateTime.now().getYear();
+    for (int i = 2019; i <= thisYear; ++i) {
+      exhibitedYear.add(Integer.toString(i));
+    }
+    return exhibitedYear;
   }
 }

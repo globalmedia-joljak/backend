@@ -10,10 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WorkRepository extends ExtendRepository<Work> {
   
-  Page<Work> findAllByProjectCategoryAndExhibitedYearContaining(ProjectCategory category, String exhibitedYear, Pageable pageable);
+  Page<Work> findByProjectCategoryOrExhibitedYear(ProjectCategory projectCategory,
+    String exhibitedYear, Pageable pageable);
   
-  Page<Work> findAllByProjectCategory(ProjectCategory category, Pageable pageable);
-  
-  Page<Work> findAllByExhibitedYear(String exhibitedYear, Pageable pageable);
-
 }
