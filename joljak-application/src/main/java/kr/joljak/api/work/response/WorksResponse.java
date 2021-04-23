@@ -1,23 +1,20 @@
 package kr.joljak.api.work.response;
 
 
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class WorksResponse {
-
-  private List<WorkResponse> workResponseList;
-  private Pageable page;
-
+  
+  private Page<WorkResponse> workResponseList;
+  
   @Builder
-  public WorksResponse(List<WorkResponse> workResponseList, Pageable page){
+  public WorksResponse(Page<WorkResponse> workResponseList) {
     this.workResponseList = workResponseList;
-    this.page = page;
   }
 }
