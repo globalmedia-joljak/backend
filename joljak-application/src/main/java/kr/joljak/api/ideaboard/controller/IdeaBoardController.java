@@ -20,18 +20,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/ideaboards")
 public class IdeaBoardController {
-
+  
   private final IdeaBoardService ideaBoardService;
-
+  
   @ApiOperation("아이디어 게시판 생성 API")
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
@@ -41,10 +39,10 @@ public class IdeaBoardController {
     SimpleIdeaBoard simpleIdeaBoard = ideaBoardRequest
       .toDomainIdeaBoardRequest(ideaBoardRequest);
     IdeaBoard ideaBoard = ideaBoardService.addIdeaBoard(simpleIdeaBoard);
-
+    
     return IdeaBoardResponse.of(ideaBoard);
   }
-
+  
   @ApiOperation("아이디어 게시판 조회 API")
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
@@ -52,17 +50,14 @@ public class IdeaBoardController {
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "10") int size
   ) {
-    Page<IdeaBoard> ideaBoardPage = ideaBoardService.getIdeaBoardsByPage(page, size);
-
-    List<IdeaBoardResponse> ideaBoardResponseList = getIdeaBoardResponseListFrom(
-      ideaBoardPage.getContent());
-
+    Page<IdeaBoardResponse> ideaBoardResponsePage = ideaBoardService.getIdeaBoardsByPage(page, size)
+      .map(IdeaBoardResponse::of);
+    
     return IdeaBoardsResponse.builder()
-      .ideaBoardResponseList(ideaBoardResponseList)
-      .page(ideaBoardPage.getPageable())
+      .ideaBoardResponseList(ideaBoardResponsePage)
       .build();
   }
-
+  
   @ApiOperation("아이디어 게시판 개별 조회 API")
   @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
@@ -72,7 +67,7 @@ public class IdeaBoardController {
     IdeaBoard ideaBoard = ideaBoardService.getIdeaBoardsById(id);
     return IdeaBoardResponse.of(ideaBoard);
   }
-
+  
   @ApiOperation("아이디어 게시판 업데이트 API")
   @PatchMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
@@ -85,7 +80,7 @@ public class IdeaBoardController {
     IdeaBoard ideaBoard = ideaBoardService.updateIdeaBoardById(id, simpleIdeaBoard);
     return IdeaBoardResponse.of(ideaBoard);
   }
-
+  
   @ApiOperation("아이디어 게시판 삭제 API")
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
@@ -94,11 +89,11 @@ public class IdeaBoardController {
   ) {
     ideaBoardService.deleteIdeaBoardById(id);
   }
-
+  
   private List<IdeaBoardResponse> getIdeaBoardResponseListFrom(List<IdeaBoard> ideaBoardList) {
     return ideaBoardList.stream()
       .map(ideaBoard -> IdeaBoardResponse.of(ideaBoard))
       .collect(Collectors.toList());
   }
-
+  
 }

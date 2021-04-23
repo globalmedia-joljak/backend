@@ -12,8 +12,8 @@ import kr.joljak.domain.notice.entity.Notice;
 import kr.joljak.domain.notice.service.NoticeService;
 import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.service.UserService;
-import kr.joljak.domain.util.FetchPages;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,10 +30,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/notices")
 public class NoticeController {
-
+  
   private final NoticeService noticeService;
   private final UserService userService;
-
+  
   @ApiOperation("공지사항 생성 API")
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
@@ -42,7 +42,7 @@ public class NoticeController {
     Notice notice = noticeService.addNotice(noticeRequest.toNotice(user));
     return getNoticeResponse(SimpleNotice.of(notice));
   }
-
+  
   @ApiOperation("공지사항 조회 API")
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
@@ -50,23 +50,23 @@ public class NoticeController {
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "10") int size
   ) {
-    List<Notice> noticeList = noticeService.getNoticesByPage(page, size);
-    List<NoticeResponse> noticeResponseList = getNoticeResponseListFrom(noticeList);
+    Page<NoticeResponse> noticeResponseList = noticeService.getNoticesByPage(page, size)
+      .map(NoticeResponse::of);
+    
     return NoticesResponse.builder()
       .noticeResponseList(noticeResponseList)
-      .page(FetchPages.of(page, size))
       .build();
   }
-
+  
   @ApiOperation("공지사항 개별 조회 API")
   @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
   public NoticeResponse getNotice(@PathVariable("id") Long id) {
-
+    
     Notice notice = noticeService.getNoticeById(id);
     return getNoticeResponse(SimpleNotice.of(notice));
   }
-
+  
   @ApiOperation("공지사항 수정 API")
   @PatchMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
@@ -74,11 +74,12 @@ public class NoticeController {
     @PathVariable("id") Long id,
     @Valid @RequestBody NoticeRequest noticeRequest
   ) {
-    Notice newNotice = noticeService.updateNotice(id, NoticeRequest.toDomainNoticeRequest(noticeRequest));
+    Notice newNotice = noticeService
+      .updateNotice(id, NoticeRequest.toDomainNoticeRequest(noticeRequest));
     return getNoticeResponse(SimpleNotice.of(newNotice));
-
+    
   }
-
+  
   @ApiOperation("공지사항 삭제 API")
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
@@ -87,14 +88,14 @@ public class NoticeController {
   ) {
     noticeService.deleteNotice(id);
   }
-
-
+  
+  
   private List<NoticeResponse> getNoticeResponseListFrom(List<Notice> noticeList) {
     return noticeList.stream()
       .map(notice -> getNoticeResponse(SimpleNotice.of(notice)))
       .collect(Collectors.toList());
   }
-
+  
   private NoticeResponse getNoticeResponse(SimpleNotice simpleNotice) {
     return NoticeResponse.builder()
       .id(simpleNotice.getId())
@@ -106,5 +107,5 @@ public class NoticeController {
       .modifiedDate(simpleNotice.getModifiedDate())
       .build();
   }
-
+  
 }

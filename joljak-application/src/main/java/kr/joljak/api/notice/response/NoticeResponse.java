@@ -1,6 +1,7 @@
 package kr.joljak.api.notice.response;
 
 import java.time.LocalDateTime;
+import kr.joljak.domain.notice.entity.Notice;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,6 +29,18 @@ public class NoticeResponse {
     this.content = content;
     this.createdDate = createdDate;
     this.modifiedDate = modifiedDate;
+  }
+  
+  public static NoticeResponse of(Notice notice){
+    return NoticeResponse.builder()
+      .id(notice.getId())
+      .classOf(notice.getClassOf())
+      .author(notice.getUser().getName())
+      .title(notice.getTitle())
+      .content(notice.getContent())
+      .createdDate(notice.getCreatedDate())
+      .modifiedDate(notice.getModifiedDate())
+      .build();
   }
 
 }

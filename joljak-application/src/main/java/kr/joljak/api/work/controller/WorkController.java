@@ -53,13 +53,11 @@ public class WorkController {
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "10") int size
   ) {
-    Page<Work> workPage = workService.getWorksByPage(FetchPages.of(page, size));
-    
-    List<WorkResponse> workResponseList = getWorkResponseListFrom(workPage.getContent());
+    Page<WorkResponse> workPage = workService.getWorksByPage(FetchPages.of(page, size))
+      .map(WorkResponse::of);
     
     return WorksResponse.builder()
-      .workResponseList(workResponseList)
-      .page(workPage.getPageable())
+      .workResponseList(workPage)
       .build();
   }
   
@@ -103,12 +101,12 @@ public class WorkController {
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "10") int size
   ) {
-    Page<Work> workPage = workService.getWorkByExhibitedYearAndCategory(category, exhibitedYear, FetchPages.of(page, size));
-    List<WorkResponse> workResponseList = getWorkResponseListFrom(workPage.getContent());
-
+    Page<WorkResponse> workPage = workService
+      .getWorkByExhibitedYearAndCategory(category, exhibitedYear, FetchPages.of(page, size))
+      .map(WorkResponse::of);
+    
     return WorksResponse.builder()
-      .workResponseList(workResponseList)
-      .page(workPage.getPageable())
+      .workResponseList(workPage)
       .build();
   }
   
