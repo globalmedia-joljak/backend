@@ -22,12 +22,13 @@ public class SimpleWork {
   private String teamVideoUrl;
   private User user;
   private List<MultipartFile> images;
+  private MultipartFile file;
   
   @Builder
   public SimpleWork(
     String workName, String teamName, List<String> teamMember, String exhibitedYear,
     String content, String teamVideoUrl, User user, ProjectCategory projectCategory,
-    List<MultipartFile> images
+    List<MultipartFile> images, MultipartFile file
   ) {
     this.workName = workName;
     this.teamName = teamName;
@@ -38,6 +39,7 @@ public class SimpleWork {
     this.teamVideoUrl = teamVideoUrl;
     this.user = user;
     this.images = images;
+    this.file = file;
     
   }
   

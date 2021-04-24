@@ -32,6 +32,7 @@ public class WorkResponse {
   private String content;
   private String teamVideoUrl;
   private List<MediaInfo> imageInfoList;
+  private MediaInfo fileInfo;
   private LocalDateTime createDate;
   private LocalDateTime modifiedDate;
 
@@ -40,7 +41,7 @@ public class WorkResponse {
     Long id, String workName, String teamName, List<String> teamMember,
     String content, String teamVideoUrl, List<MediaInfo> imageInfoList,
     LocalDateTime createDate, LocalDateTime modifiedDate, ProjectCategory projectCategory,
-    String exhibitedYear
+    String exhibitedYear, MediaInfo fileInfo
   ) {
     this.id = id;
     this.workName = workName;
@@ -53,15 +54,21 @@ public class WorkResponse {
     this.imageInfoList = imageInfoList;
     this.createDate = createDate;
     this.modifiedDate = modifiedDate;
+    this.fileInfo = fileInfo;
   }
 
   public static WorkResponse of(Work work) {
     List<MediaInfo> imageList = null;
+    MediaInfo file = null;
 
     if (work.getImages() != null) {
       imageList = work.getImages().stream()
         .map(image -> MediaInfo.of(image))
         .collect(Collectors.toList());
+    }
+    
+    if(work.getMedia() != null){
+      file = MediaInfo.of(work.getMedia());
     }
 
     return WorkResponse.builder()
@@ -76,6 +83,7 @@ public class WorkResponse {
       .imageInfoList(imageList)
       .createDate(work.getCreatedDate())
       .modifiedDate(work.getModifiedDate())
+      .fileInfo(file)
       .build();
   }
 }

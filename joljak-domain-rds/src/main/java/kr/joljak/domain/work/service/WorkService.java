@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import kr.joljak.domain.upload.entity.Media;
+import kr.joljak.domain.upload.entity.MediaType;
 import kr.joljak.domain.upload.exception.NotMatchingFileNameException;
 import kr.joljak.domain.upload.service.UploadService;
 import kr.joljak.domain.user.entity.User;
@@ -45,7 +46,13 @@ public class WorkService {
         .uploadImages(images, "/" + user.getClassOf());
     }
     
-    Work work = Work.of(simpleWork, imageList);
+    Media file = null;
+    if(simpleWork.getFile() != null){
+      file = uploadService
+        .uploadFile(simpleWork.getFile(), "/"+user.getClassOf(), MediaType.FILE);
+    }
+    
+    Work work = Work.of(simpleWork, imageList, file);
     
     return workRepository.save(work);
   }
@@ -67,8 +74,10 @@ public class WorkService {
     work.setProjectCategory(updateWork.getProjectCategory());
     work.setTeamVideoUrl(updateWork.getTeamVideoUrl());
     
-    deleteImageByModifyFileName(work, updateWork.getDeleteFileName());
+    deleteImageByModifyFileName(work, updateWork.getDeleteImagesName());
     addImages(images, work);
+    
+    updateFile(updateWork, work);
     
     return work;
   }
@@ -95,6 +104,8 @@ public class WorkService {
       .collect(Collectors.toList());
     
     deleteImageByModifyFileName(work, deleteFileName);
+    
+    work.setMedia(null);
     
     workRepository.delete(work);
   }
@@ -129,16 +140,6 @@ public class WorkService {
     }
   }
   
-  private void checkDeleteFileNameExist(Map<String, Media> imageHash,
-    List<String> deleteFileNames) {
-    
-    for (String deleteImage : deleteFileNames) {
-      if (!imageHash.containsKey(deleteImage)) {
-        throw new NotMatchingFileNameException("image name does not match when you delete.");
-      }
-    }
-  }
-  
   @Transactional
   private void addImages(List<MultipartFile> images, Work work) {
     
@@ -150,6 +151,33 @@ public class WorkService {
       for (Media image : imageList) {
         work.getImages().add(image);
       }
+    }
+  }
+  
+  private void checkDeleteFileNameExist(Map<String, Media> imageHash,
+    List<String> deleteFileNames) {
+    
+    for (String deleteImage : deleteFileNames) {
+      if (!imageHash.containsKey(deleteImage)) {
+        throw new NotMatchingFileNameException("image name does not match when you delete.");
+      }
+    }
+  }
+  
+  private void updateFile(UpdateWork updateWork, Work work) {
+    if (updateWork.getDeleteFileName() != null){
+      Media media = work.getMedia();
+      if (media!=null && !media.getModifyName().equals(updateWork.getDeleteFileName())){
+        throw new NotMatchingFileNameException("file name does not match when you delete.");
+      }
+      work.setMedia(null);
+      uploadService.deleteFile(media.getModifyName(), "/" + work.getUser().getClassOf());
+    }
+    
+    if(updateWork.getFile() != null){
+      Media mediaFile = uploadService
+        .uploadFile(updateWork.getFile(), "/"+work.getUser().getClass(), MediaType.FILE);
+      work.setMedia(mediaFile);
     }
   }
   

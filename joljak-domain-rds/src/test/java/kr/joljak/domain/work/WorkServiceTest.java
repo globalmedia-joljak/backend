@@ -271,7 +271,7 @@ public class WorkServiceTest extends CommonDomainTest {
       .projectCategory(projectCategory)
       .exhibitedYear(exhibitedyear)
       .images(images)
-      .deleteFileName(deleteFileName)
+      .deleteImagesName(deleteFileName)
       .build();
   }
 
