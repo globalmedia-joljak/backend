@@ -7,6 +7,7 @@ import kr.joljak.domain.Ideaboard.entity.IdeaBoard;
 import kr.joljak.domain.Ideaboard.entity.ProjectStatus;
 import kr.joljak.domain.upload.entity.MediaInfo;
 import kr.joljak.domain.user.entity.UserProjectRole;
+import kr.joljak.domain.work.entity.ProjectCategory;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,13 +34,15 @@ public class IdeaBoardResponse {
   private MediaInfo mediaInfo;
   private LocalDateTime createDate;
   private LocalDateTime modifiedDate;
+  private ProjectCategory category;
 
   @Builder
   public IdeaBoardResponse(Long id, String title, String content, String contact, String classOf,
     ProjectStatus status,
     List<UserProjectRole> requiredPositions, String name,
     UserProjectRole mainProjectRole, MediaInfo mediaInfo,
-    LocalDateTime createDate, LocalDateTime modifiedDate) {
+    LocalDateTime createDate, LocalDateTime modifiedDate, ProjectCategory category
+  ) {
     this.id = id;
     this.title = title;
     this.content = content;
@@ -52,6 +55,7 @@ public class IdeaBoardResponse {
     this.mediaInfo = mediaInfo;
     this.createDate = createDate;
     this.modifiedDate = modifiedDate;
+    this.category = category;
   }
 
   public static IdeaBoardResponse of(IdeaBoard ideaBoard) {
@@ -74,6 +78,7 @@ public class IdeaBoardResponse {
       .mediaInfo(mediaInfo)
       .createDate(ideaBoard.getCreatedDate())
       .modifiedDate(ideaBoard.getModifiedDate())
+      .category(ideaBoard.getCategory())
       .build();
   }
 

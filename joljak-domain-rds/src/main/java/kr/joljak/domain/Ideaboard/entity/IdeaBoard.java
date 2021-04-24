@@ -20,6 +20,7 @@ import kr.joljak.domain.common.entity.ExtendEntity;
 import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.entity.UserProjectRole;
+import kr.joljak.domain.work.entity.ProjectCategory;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -50,6 +51,9 @@ public class IdeaBoard extends ExtendEntity {
 
   @Column
   private String contact;
+  
+  @Column
+  private ProjectCategory category;
 
   @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
   @JoinColumn(name = "media_id")
@@ -67,7 +71,8 @@ public class IdeaBoard extends ExtendEntity {
 
   @Builder
   public IdeaBoard(ProjectStatus status, String title, String content, String contact, User user,
-    List<UserProjectRole> requiredPositions, Media media) {
+    List<UserProjectRole> requiredPositions, Media media, ProjectCategory category
+  ) {
     this.status = status;
     this.title = title;
     this.content = content;
@@ -75,6 +80,7 @@ public class IdeaBoard extends ExtendEntity {
     this.user = user;
     this.requiredPosiotions = requiredPositions;
     this.media = media;
+    this.category = category;
   }
 
   public static IdeaBoard of(SimpleIdeaBoard simpleIdeaBoard, User user, Media media) {
@@ -86,6 +92,7 @@ public class IdeaBoard extends ExtendEntity {
       .media(media)
       .user(user)
       .requiredPositions(simpleIdeaBoard.getRequiredPositions())
+      .category(simpleIdeaBoard.getCategory())
       .build();
   }
 
@@ -108,6 +115,8 @@ public class IdeaBoard extends ExtendEntity {
   public void setRequiredPosiotions(List<UserProjectRole> requiredPosiotions){
     this.requiredPosiotions = requiredPosiotions;
   }
+  
+  public void setCategory(ProjectCategory category){this.category = category;}
 
   public void setMedia(Media media){
     this.media = media;
