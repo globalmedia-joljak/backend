@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 import kr.joljak.domain.Ideaboard.dto.SimpleIdeaBoard;
 import kr.joljak.domain.Ideaboard.entity.ProjectStatus;
 import kr.joljak.domain.user.entity.UserProjectRole;
+import kr.joljak.domain.work.entity.ProjectCategory;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,6 +25,7 @@ public class IdeaBoardRequest {
   private String content;
   @NotNull
   private ProjectStatus status;
+  private ProjectCategory category;
   private String contact;
   private List<UserProjectRole> requiredPositions;
   private UserProjectRole mainRole;
@@ -35,7 +37,8 @@ public class IdeaBoardRequest {
   public IdeaBoardRequest(String title, String content, String contact,
     ProjectStatus status, String deleteFileName,
     List<UserProjectRole> requiredPositions,
-    UserProjectRole mainRole, MultipartFile file) {
+    UserProjectRole mainRole, MultipartFile file, ProjectCategory category
+  ) {
     this.title = title;
     this.content = content;
     this.contact = contact;
@@ -44,6 +47,7 @@ public class IdeaBoardRequest {
     this.deleteFileName = deleteFileName;
     this.mainRole = mainRole;
     this.file = file;
+    this.category = category;
   }
 
   public static SimpleIdeaBoard toDomainIdeaBoardRequest(IdeaBoardRequest ideaBoardRequest) {
@@ -56,6 +60,7 @@ public class IdeaBoardRequest {
       .requiredPositions(ideaBoardRequest.getRequiredPositions())
       .mainRole(ideaBoardRequest.getMainRole())
       .deleteFileName(ideaBoardRequest.getDeleteFileName())
+      .category(ideaBoardRequest.getCategory())
       .build();
   }
 
