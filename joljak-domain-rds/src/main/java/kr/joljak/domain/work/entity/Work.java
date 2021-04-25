@@ -67,6 +67,10 @@ public class Work extends ExtendEntity {
   @Size(max = 5)
   private List<Media> images;
   
+  @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
+  @JoinColumn(name = "media_id")
+  private Media media;
+  
   @OneToOne
   @JoinColumn(name = "user_id")
   private User user;
@@ -74,7 +78,8 @@ public class Work extends ExtendEntity {
   @Builder
   public Work(String workName, String teamName,
     List<String> teamMember, String content, String teamVideoUrl,
-    List<Media> images, User user, ProjectCategory projectCategory, String exhibitedYear
+    List<Media> images, User user, ProjectCategory projectCategory, String exhibitedYear,
+    Media media
   ) {
     this.workName = workName;
     this.teamName = teamName;
@@ -85,6 +90,7 @@ public class Work extends ExtendEntity {
     this.teamVideoUrl = teamVideoUrl;
     this.images = images;
     this.user = user;
+    this.media = media;
   }
   
   public void setWorkName(String workName) {
@@ -119,7 +125,11 @@ public class Work extends ExtendEntity {
     this.user = user;
   }
   
-  public static Work of(SimpleWork simpleWork, List<Media> imageList) {
+  public void setMedia(Media media){
+    this.media = media;
+  }
+  
+  public static Work of(SimpleWork simpleWork, List<Media> imageList, Media file) {
     return Work.builder()
       .workName(simpleWork.getWorkName())
       .teamName(simpleWork.getTeamName())
@@ -130,6 +140,7 @@ public class Work extends ExtendEntity {
       .exhibitedYear(simpleWork.getExhibitedYear())
       .images(imageList)
       .user(simpleWork.getUser())
+      .media(file)
       .build();
   }
 }

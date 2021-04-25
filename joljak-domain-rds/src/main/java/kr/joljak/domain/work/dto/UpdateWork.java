@@ -22,13 +22,15 @@ public class UpdateWork {
   private String teamVideoUrl;
   private User user;
   private List<MultipartFile> images;
-  private List<String> deleteFileName;
+  private MultipartFile file;
+  private List<String> deleteImagesName;
+  private String deleteFileName;
 
   @Builder
   public UpdateWork(
     String workName, String teamName, List<String> teamMember, ProjectCategory projectCategory,
-    String content, String teamVideoUrl, User user, List<String> deleteFileName,
-    String exhibitedYear, List<MultipartFile> images
+    String content, String teamVideoUrl, User user, List<String> deleteImagesName,
+    String exhibitedYear, List<MultipartFile> images, String deleteFileName, MultipartFile file
   ) {
     this.workName = workName;
     this.teamName = teamName;
@@ -39,6 +41,8 @@ public class UpdateWork {
     this.projectCategory = projectCategory;
     this.teamVideoUrl = teamVideoUrl;
     this.user = user;
+    this.deleteImagesName = deleteImagesName;
     this.deleteFileName = deleteFileName;
+    this.file = file;
   }
 }

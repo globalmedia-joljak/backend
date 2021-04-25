@@ -1,6 +1,5 @@
 package kr.joljak.domain.notice;
 
-import java.util.List;
 import kr.joljak.core.jwt.PermissionException;
 import kr.joljak.domain.common.CommonDomainTest;
 import kr.joljak.domain.notice.dto.SimpleNoticeRequest;
@@ -10,9 +9,9 @@ import kr.joljak.domain.notice.service.NoticeService;
 import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.exception.UserNotFoundException;
 import kr.joljak.domain.user.service.UserService;
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.test.context.support.WithMockUser;
 
 public class NoticeServiceTest extends CommonDomainTest {
@@ -50,20 +49,20 @@ public class NoticeServiceTest extends CommonDomainTest {
   public void getNoticesByPage_Success() {
 
     // when
-    List<Notice> noticeList = noticeService.getNoticesByPage(0, 10);
+    Page<Notice> noticeList = noticeService.getNoticesByPage(0, 10);
   }
 
   @Test
   public void getNoticesByPage_Success_SizeUnderOne() {
 
     // when
-    List<Notice> noticeList = noticeService.getNoticesByPage(0, 0);
+    Page<Notice> noticeList = noticeService.getNoticesByPage(0, 0);
   }
 
   @Test
   public void getNoticesByPage_Success_PageUnderZero() {
     // when
-    List<Notice> noticeList = noticeService.getNoticesByPage(-1, 10);
+    Page<Notice> noticeList = noticeService.getNoticesByPage(-1, 10);
   }
 
   @Test

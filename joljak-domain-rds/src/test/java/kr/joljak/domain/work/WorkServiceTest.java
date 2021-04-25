@@ -3,7 +3,6 @@ package kr.joljak.domain.work;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-import com.sun.org.apache.xpath.internal.operations.Mult;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +25,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.web.multipart.MultipartFile;
-import sun.java2d.pipe.SpanShapeRenderer.Simple;
 
 public class WorkServiceTest extends CommonDomainTest {
 
@@ -55,7 +53,7 @@ public class WorkServiceTest extends CommonDomainTest {
     );
 
     simpleWork = createSimpleWork(
-      "test", "test", teamMember, ProjectCategory.ANIMATION,
+      "test", "test", teamMember, ProjectCategory.ANIMATION_FILM,
       "2018", "test", "test", imageFile
     );
   }
@@ -84,7 +82,7 @@ public class WorkServiceTest extends CommonDomainTest {
     );
   
     SimpleWork simpleWork1 = createSimpleWork(
-      "test", "test", teamMember, ProjectCategory.ANIMATION,
+      "test", "test", teamMember, ProjectCategory.ANIMATION_FILM,
       "2018", "test", "test", imageFiles
     );
 
@@ -108,7 +106,7 @@ public class WorkServiceTest extends CommonDomainTest {
     );
   
     SimpleWork simpleWork1 = createSimpleWork(
-      "test", "test", teamMember, ProjectCategory.ANIMATION,
+      "test", "test", teamMember, ProjectCategory.ANIMATION_FILM,
       "2018", "test", "test", manyImageFiles
     );
     
@@ -143,7 +141,7 @@ public class WorkServiceTest extends CommonDomainTest {
     );
 
     updateWork = createUpdateWork(
-      "update test",  "update test", teamMember, ProjectCategory.ANIMATION,
+      "update test",  "update test", teamMember, ProjectCategory.ANIMATION_FILM,
        "test content", updateImageFile, deleteFileName, "2018");
 
     Work newWork = workService.updateWorkById(work.getId(), updateWork);
@@ -165,7 +163,7 @@ public class WorkServiceTest extends CommonDomainTest {
     );
   
     SimpleWork simpleWork1 = createSimpleWork(
-      "test", "test", teamMember, ProjectCategory.ANIMATION,
+      "test", "test", teamMember, ProjectCategory.ANIMATION_FILM,
       "2018", "test", "test", updateImageFile
     );
     
@@ -178,7 +176,7 @@ public class WorkServiceTest extends CommonDomainTest {
     );
 
     updateWork = createUpdateWork(
-      "update test",  "update test", teamMember, ProjectCategory.ANIMATION,
+      "update test",  "update test", teamMember, ProjectCategory.ANIMATION_FILM,
       "update test", null, deleteFileName, "2018");
 
     Work newWork = workService.updateWorkById(work.getId(), updateWork);
@@ -203,7 +201,7 @@ public class WorkServiceTest extends CommonDomainTest {
     );
 
     updateWork = createUpdateWork(
-      "update test",  "update test", teamMember, ProjectCategory.ANIMATION,
+      "update test",  "update test", teamMember, ProjectCategory.ANIMATION_FILM,
       "test content", updateImageFile, deleteFileName, "2018");
 
     Work newWork = workService.updateWorkById(work.getId(), updateWork);
@@ -273,7 +271,7 @@ public class WorkServiceTest extends CommonDomainTest {
       .projectCategory(projectCategory)
       .exhibitedYear(exhibitedyear)
       .images(images)
-      .deleteFileName(deleteFileName)
+      .deleteImagesName(deleteFileName)
       .build();
   }
 
