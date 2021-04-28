@@ -35,13 +35,14 @@ public class WorkResponse {
   private MediaInfo fileInfo;
   private LocalDateTime createDate;
   private LocalDateTime modifiedDate;
+  private String author;
 
   @Builder
   public WorkResponse(
     Long id, String workName, String teamName, List<String> teamMember,
     String content, String teamVideoUrl, List<MediaInfo> imageInfoList,
     LocalDateTime createDate, LocalDateTime modifiedDate, ProjectCategory projectCategory,
-    String exhibitedYear, MediaInfo fileInfo
+    String exhibitedYear, MediaInfo fileInfo, String author
   ) {
     this.id = id;
     this.workName = workName;
@@ -55,6 +56,7 @@ public class WorkResponse {
     this.createDate = createDate;
     this.modifiedDate = modifiedDate;
     this.fileInfo = fileInfo;
+    this.author = author;
   }
 
   public static WorkResponse of(Work work) {
@@ -84,6 +86,7 @@ public class WorkResponse {
       .createDate(work.getCreatedDate())
       .modifiedDate(work.getModifiedDate())
       .fileInfo(file)
+      .author(work.getUser().getName())
       .build();
   }
 }
