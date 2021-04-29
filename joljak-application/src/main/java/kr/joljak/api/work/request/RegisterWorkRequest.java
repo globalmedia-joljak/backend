@@ -13,6 +13,7 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RegisterWorkRequest {
   
@@ -29,7 +30,6 @@ public class RegisterWorkRequest {
   @NotNull
   private String content;
   private String teamVideoUrl;
-  @Setter
   private List<MultipartFile> images;
   @Setter
   private MultipartFile file;
