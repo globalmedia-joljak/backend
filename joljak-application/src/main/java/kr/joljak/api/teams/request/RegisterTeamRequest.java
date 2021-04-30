@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Builder
+@Setter
 @AllArgsConstructor
 public class RegisterTeamRequest {
 
@@ -25,7 +26,6 @@ public class RegisterTeamRequest {
   private String developerMember;
   private String designerMember;
   private String plannerMember;
-  @Setter
   private MultipartFile file;
 
   public static SimpleTeam toRegisterTeam(

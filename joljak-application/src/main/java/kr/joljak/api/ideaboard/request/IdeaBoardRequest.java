@@ -16,6 +16,7 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class IdeaBoardRequest {
 
@@ -29,7 +30,6 @@ public class IdeaBoardRequest {
   private String contact;
   private List<UserProjectRole> requiredPositions;
   private UserProjectRole mainRole;
-  @Setter
   private MultipartFile file;
   private String deleteFileName;
 
