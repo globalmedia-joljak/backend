@@ -11,6 +11,7 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UpdateTeamRequest {
   
@@ -25,7 +26,6 @@ public class UpdateTeamRequest {
   private String designerMember;
   private String plannerMember;
   private String deleteFileName;
-  @Setter
   private MultipartFile file;
   
   @Builder
