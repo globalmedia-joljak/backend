@@ -2,7 +2,6 @@ package kr.joljak.api.work.controller;
 
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.validation.Valid;
 import kr.joljak.api.work.request.RegisterWorkRequest;
 import kr.joljak.api.work.request.UpdateWorkRequest;
@@ -116,12 +115,6 @@ public class WorkController {
     return WorksResponse.builder()
       .workResponseList(workPage)
       .build();
-  }
-  
-  private List<WorkResponse> getWorkResponseListFrom(List<Work> workList) {
-    return workList.stream()
-      .map(work -> WorkResponse.of(work))
-      .collect(Collectors.toList());
   }
   
 }

@@ -11,6 +11,7 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UpdateWorkRequest {
 
@@ -21,14 +22,16 @@ public class UpdateWorkRequest {
   private String exhibitedYear;
   private ProjectCategory projectCategory;
   private String teamVideoUrl;
-  @Setter
   private List<MultipartFile> images;
-  private List<String> deleteFileName;
+  private MultipartFile file;
+  private String deleteFileName;
+  private List<String> deleteImagesName;
 
   @Builder
   public UpdateWorkRequest(String workName, String teamName,
     List<String> teamMember, String content, String teamVideoUrl, List<MultipartFile> images,
-    List<String> deleteFileName, ProjectCategory projectCategory, String exhibitedYear
+    List<String> deleteImagesName, ProjectCategory projectCategory, String exhibitedYear,
+    MultipartFile file, String deleteFileName
   ) {
     this.workName = workName;
     this.teamName = teamName;
@@ -38,6 +41,8 @@ public class UpdateWorkRequest {
     this.images = images;
     this.content = content;
     this.teamVideoUrl = teamVideoUrl;
+    this.deleteImagesName = deleteImagesName;
+    this.file = file;
     this.deleteFileName = deleteFileName;
   }
 
@@ -50,7 +55,9 @@ public class UpdateWorkRequest {
       .exhibitedYear(updateWorkRequest.getExhibitedYear())
       .projectCategory(updateWorkRequest.getProjectCategory())
       .images(updateWorkRequest.getImages())
+      .deleteImagesName(updateWorkRequest.getDeleteImagesName())
       .deleteFileName(updateWorkRequest.getDeleteFileName())
+      .file(updateWorkRequest.getFile())
       .teamVideoUrl(updateWorkRequest.getTeamVideoUrl())
       .build();
   }
