@@ -66,7 +66,8 @@ public class TeamService {
     team.setDesignerMember(updateTeam.getDesignerMember());
     team.setDeveloperMember(updateTeam.getDeveloperMember());
     team.setPlannerMember(updateTeam.getPlannerMember());
-    
+    team.setContent(updateTeam.getContent());
+
     if (updateTeam.getDeleteFileName() != null) {
       Media media = team.getMedia();
       

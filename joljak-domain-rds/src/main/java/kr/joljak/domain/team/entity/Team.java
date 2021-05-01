@@ -98,7 +98,10 @@ public class Team extends ExtendEntity {
   public void setMedia(Media media){
     this.media = media;
   }
-  
+  public void setContent(String content) {
+    this.content = content;
+  }
+
   public static Team of(SimpleTeam simpleTeam, Media media) {
     return Team.builder()
       .teamName(simpleTeam.getTeamName())
