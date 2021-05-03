@@ -1,7 +1,7 @@
-package kr.joljak.domain.Ideaboard.dto;
+package kr.joljak.domain.ideaboard.dto;
 
 import java.util.List;
-import kr.joljak.domain.Ideaboard.entity.ProjectStatus;
+import kr.joljak.domain.ideaboard.entity.ProjectStatus;
 import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.entity.UserProjectRole;
 import kr.joljak.domain.work.entity.ProjectCategory;

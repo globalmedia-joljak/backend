@@ -1,9 +1,9 @@
-package kr.joljak.domain.Ideaboard.service;
+package kr.joljak.domain.ideaboard.service;
 
-import kr.joljak.domain.Ideaboard.dto.SimpleIdeaBoard;
-import kr.joljak.domain.Ideaboard.entity.IdeaBoard;
-import kr.joljak.domain.Ideaboard.exception.IdeaBoardNotFoundException;
-import kr.joljak.domain.Ideaboard.repository.IdeaBoardRepository;
+import kr.joljak.domain.ideaboard.dto.SimpleIdeaBoard;
+import kr.joljak.domain.ideaboard.entity.IdeaBoard;
+import kr.joljak.domain.ideaboard.exception.IdeaBoardNotFoundException;
+import kr.joljak.domain.ideaboard.repository.IdeaBoardRepository;
 import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.upload.entity.MediaType;
 import kr.joljak.domain.upload.exception.NotMatchingFileNameException;
