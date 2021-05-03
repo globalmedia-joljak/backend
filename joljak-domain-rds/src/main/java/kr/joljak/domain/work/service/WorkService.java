@@ -53,7 +53,7 @@ public class WorkService {
     }
     
     Work work = Work.of(simpleWork, imageList, file);
-    if (!(simpleWork.getTeamVideoUrl().equals("") || simpleWork.getTeamVideoUrl() == null)) {
+    if (!(simpleWork.getTeamVideoUrl() == null)) {
       work.setTeamVideoUrl(convertYoutubeUrl(simpleWork.getTeamVideoUrl()));
     }
 
