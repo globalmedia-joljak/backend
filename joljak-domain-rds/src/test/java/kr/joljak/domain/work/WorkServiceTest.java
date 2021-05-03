@@ -54,7 +54,7 @@ public class WorkServiceTest extends CommonDomainTest {
 
     simpleWork = createSimpleWork(
       "test", "test", teamMember, ProjectCategory.ANIMATION_FILM,
-      "2018", "test", "test", imageFile
+      "2018", "test", "https://www.youtube.com/watch?v=q1HT3piV9eo&t=1269s", imageFile
     );
   }
 

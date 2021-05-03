@@ -53,8 +53,30 @@ public class WorkService {
     }
     
     Work work = Work.of(simpleWork, imageList, file);
-    
+    if (!(simpleWork.getTeamVideoUrl() == null)) {
+      work.setTeamVideoUrl(convertYoutubeUrl(simpleWork.getTeamVideoUrl()));
+    }
+
     return workRepository.save(work);
+  }
+
+  private String convertYoutubeUrl(String url) {
+    if (url.contains("https://www.youtube.com/watch?")) {
+      return url.split("https://www.youtube.com/watch?")[1]
+        .split("v=")[1]
+        .split("&t")[0];
+    }
+    else if (url.contains("https://youtu.be/")) {
+      return url.split("https://youtu.be/")[1];
+    }
+    else if(url.contains("<iframe")) {
+      return url.split("src=")[1]
+        .split(" ")[0]
+        .replaceAll("\"", "")
+        .split("https://www.youtube.com/embed/")[1];
+    }
+
+    return url;
   }
   
   @Transactional
@@ -119,7 +141,6 @@ public class WorkService {
       .findByProjectCategoryOrExhibitedYear(projectCategory, exhibitedYear, pageRequest);
   }
   
-  @Transactional
   private void deleteImageByModifyFileName(Work work, List<String> deleteFileNames) {
     List<Media> mediaList = work.getImages();
     
@@ -140,7 +161,6 @@ public class WorkService {
     }
   }
   
-  @Transactional
   private void addImages(List<MultipartFile> images, Work work) {
     
     List<Media> imageList = null;
