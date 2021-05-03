@@ -4,8 +4,8 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 
-import kr.joljak.domain.Ideaboard.dto.SimpleIdeaBoard;
-import kr.joljak.domain.Ideaboard.entity.ProjectStatus;
+import kr.joljak.domain.ideaboard.dto.SimpleIdeaBoard;
+import kr.joljak.domain.ideaboard.entity.ProjectStatus;
 import kr.joljak.domain.user.entity.UserProjectRole;
 import kr.joljak.domain.work.entity.ProjectCategory;
 import lombok.AccessLevel;

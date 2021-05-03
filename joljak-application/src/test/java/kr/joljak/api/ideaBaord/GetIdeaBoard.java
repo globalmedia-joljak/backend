@@ -5,10 +5,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import kr.joljak.api.common.CommonApiTest;
 import kr.joljak.api.ideaboard.request.IdeaBoardRequest;
-import kr.joljak.domain.Ideaboard.dto.SimpleIdeaBoard;
-import kr.joljak.domain.Ideaboard.entity.IdeaBoard;
-import kr.joljak.domain.Ideaboard.entity.ProjectStatus;
-import kr.joljak.domain.Ideaboard.service.IdeaBoardService;
+import kr.joljak.domain.ideaboard.dto.SimpleIdeaBoard;
+import kr.joljak.domain.ideaboard.entity.IdeaBoard;
+import kr.joljak.domain.ideaboard.entity.ProjectStatus;
+import kr.joljak.domain.ideaboard.service.IdeaBoardService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
