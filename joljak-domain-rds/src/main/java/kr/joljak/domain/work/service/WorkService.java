@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.upload.entity.MediaType;
 import kr.joljak.domain.upload.exception.NotMatchingFileNameException;
+import kr.joljak.domain.upload.repository.MediaRepository;
 import kr.joljak.domain.upload.service.UploadService;
 import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.service.UserService;
@@ -32,6 +33,7 @@ public class WorkService {
   private final WorkRepository workRepository;
   private final UploadService uploadService;
   private final UserService userService;
+  private final MediaRepository mediaRepository;
   
   @Transactional
   public Work addWork(SimpleWork simpleWork) {
@@ -47,9 +49,9 @@ public class WorkService {
     }
     
     Media file = null;
-    if(simpleWork.getFile() != null){
+    if (simpleWork.getFile() != null) {
       file = uploadService
-        .uploadFile(simpleWork.getFile(), "/"+user.getClassOf(), MediaType.FILE);
+        .uploadFile(simpleWork.getFile(), "/" + user.getClassOf(), MediaType.FILE);
     }
     
     Work work = Work.of(simpleWork, imageList, file);
@@ -62,6 +64,10 @@ public class WorkService {
     
     List<MultipartFile> images = updateWork.getImages();
     Work work = getWorkById(id);
+    List<Long> deleteImageIds = work.getImages()
+      .stream()
+      .map(Media::getId)
+      .collect(Collectors.toList());
     
     String classOf = work.getUser().getClassOf();
     userService.validAuthenticationClassOf(classOf);
@@ -77,6 +83,11 @@ public class WorkService {
     deleteImageByModifyFileName(work, updateWork.getDeleteImagesName());
     addImages(images, work);
     
+    if (work.getImages().isEmpty()) {
+      work.setImages(null);
+    }
+    
+    mediaRepository.deleteByIdIn(deleteImageIds);
     updateFile(updateWork, work);
     
     return work;
@@ -119,7 +130,6 @@ public class WorkService {
       .findByProjectCategoryOrExhibitedYear(projectCategory, exhibitedYear, pageRequest);
   }
   
-  @Transactional
   private void deleteImageByModifyFileName(Work work, List<String> deleteFileNames) {
     List<Media> mediaList = work.getImages();
     
@@ -140,7 +150,6 @@ public class WorkService {
     }
   }
   
-  @Transactional
   private void addImages(List<MultipartFile> images, Work work) {
     
     List<Media> imageList = null;
@@ -165,18 +174,18 @@ public class WorkService {
   }
   
   private void updateFile(UpdateWork updateWork, Work work) {
-    if (updateWork.getDeleteFileName() != null){
+    if (updateWork.getDeleteFileName() != null) {
       Media media = work.getMedia();
-      if (media!=null && !media.getModifyName().equals(updateWork.getDeleteFileName())){
+      if (media != null && !media.getModifyName().equals(updateWork.getDeleteFileName())) {
         throw new NotMatchingFileNameException("file name does not match when you delete.");
       }
       work.setMedia(null);
       uploadService.deleteFile(media.getModifyName(), "/" + work.getUser().getClassOf());
     }
     
-    if(updateWork.getFile() != null){
+    if (updateWork.getFile() != null) {
       Media mediaFile = uploadService
-        .uploadFile(updateWork.getFile(), "/"+work.getUser().getClass(), MediaType.FILE);
+        .uploadFile(updateWork.getFile(), "/" + work.getUser().getClass(), MediaType.FILE);
       work.setMedia(mediaFile);
     }
   }
