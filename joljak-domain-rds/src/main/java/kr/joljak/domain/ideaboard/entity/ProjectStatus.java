@@ -1,4 +1,4 @@
-package kr.joljak.domain.Ideaboard.entity;
+package kr.joljak.domain.ideaboard.entity;
 
 public enum ProjectStatus {
   COMPLETE("마감"),

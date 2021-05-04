@@ -70,6 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .antMatchers(HttpMethod.GET, "/api/v1/ideaboards/**").permitAll()
       .antMatchers(HttpMethod.GET, "/api/v1/notices/**").permitAll()
       .antMatchers(HttpMethod.GET, "/api/v1/teams/**").permitAll()
+      .antMatchers(HttpMethod.GET, "/api/v1/works/**").permitAll()
       .antMatchers(
         "/api/v1/invites/**"
       ).hasRole(UserRole.ADMIN.getKey())

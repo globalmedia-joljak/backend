@@ -9,7 +9,7 @@ import kr.joljak.api.notice.request.NoticeRequest;
 import kr.joljak.api.work.request.RegisterWorkRequest;
 import kr.joljak.core.jwt.JwtTokenProvider;
 import kr.joljak.core.security.UserRole;
-import kr.joljak.domain.Ideaboard.entity.ProjectStatus;
+import kr.joljak.domain.ideaboard.entity.ProjectStatus;
 import kr.joljak.domain.invite.entity.Invite;
 import kr.joljak.domain.invite.repository.InviteRepository;
 import kr.joljak.domain.user.entity.User;
