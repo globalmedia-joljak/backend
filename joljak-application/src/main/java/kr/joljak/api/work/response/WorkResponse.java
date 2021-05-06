@@ -63,7 +63,7 @@ public class WorkResponse {
     List<MediaInfo> imageList = null;
     MediaInfo file = null;
 
-    if (work.getImages() != null) {
+    if (work.getImages() != null && work.getImages().size()!=0) {
       imageList = work.getImages().stream()
         .map(image -> MediaInfo.of(image))
         .collect(Collectors.toList());
