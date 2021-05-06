@@ -63,8 +63,7 @@ public class Work extends ExtendEntity {
   @Column
   private String teamVideoUrl;
   
-  @OneToMany(fetch = FetchType.EAGER,
-    cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JoinColumn(name = "work_id")
   @Size(max = 5)
   private List<Media> images;
@@ -119,15 +118,19 @@ public class Work extends ExtendEntity {
     this.images = images;
   }
   
-  public void setProjectCategory(ProjectCategory projectCategory) { this.projectCategory = projectCategory; }
+  public void setProjectCategory(ProjectCategory projectCategory) {
+    this.projectCategory = projectCategory;
+  }
   
-  public void setExhibitedYear(String exhibitedYear) { this.exhibitedYear = exhibitedYear;  }
+  public void setExhibitedYear(String exhibitedYear) {
+    this.exhibitedYear = exhibitedYear;
+  }
   
   public void setUser(User user) {
     this.user = user;
   }
   
-  public void setMedia(Media media){
+  public void setMedia(Media media) {
     this.media = media;
   }
   
