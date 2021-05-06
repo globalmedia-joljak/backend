@@ -13,6 +13,7 @@ import kr.joljak.domain.notice.service.NoticeService;
 import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/notices")
@@ -33,11 +35,13 @@ public class NoticeController {
   
   private final NoticeService noticeService;
   private final UserService userService;
-  
+
   @ApiOperation("공지사항 생성 API")
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public NoticeResponse create(@Valid @RequestBody NoticeRequest noticeRequest) {
+    log.info("]-----] NoticeController::create [-----[ classOf : {}", noticeRequest.getClassOf());
+
     User user = userService.getUserByClassOf(noticeRequest.getClassOf());
     Notice notice = noticeService.addNotice(noticeRequest.toNotice(user));
     return getNoticeResponse(SimpleNotice.of(notice));
@@ -50,6 +54,8 @@ public class NoticeController {
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "10") int size
   ) {
+    log.info("]-----] NoticeController::getNotices [-----[ page : {}, size : {}", page, size);
+
     Page<NoticeResponse> noticeResponseList = noticeService.getNoticesByPage(page, size)
       .map(NoticeResponse::of);
     
@@ -62,7 +68,8 @@ public class NoticeController {
   @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
   public NoticeResponse getNotice(@PathVariable("id") Long id) {
-    
+    log.info("]-----] NoticeController::getNotices [-----[ id : {}", id);
+
     Notice notice = noticeService.getNoticeById(id);
     return getNoticeResponse(SimpleNotice.of(notice));
   }
@@ -74,6 +81,8 @@ public class NoticeController {
     @PathVariable("id") Long id,
     @Valid @RequestBody NoticeRequest noticeRequest
   ) {
+    log.info("]-----] NoticeController::updateNotice [-----[ classOf : {}", noticeRequest.getClassOf());
+
     Notice newNotice = noticeService
       .updateNotice(id, NoticeRequest.toDomainNoticeRequest(noticeRequest));
     return getNoticeResponse(SimpleNotice.of(newNotice));
@@ -86,6 +95,8 @@ public class NoticeController {
   public void deleteNotice(
     @PathVariable("id") Long id
   ) {
+    log.info("]-----] NoticeController::deleteNotice [-----[ id : {}", id);
+
     noticeService.deleteNotice(id);
   }
   

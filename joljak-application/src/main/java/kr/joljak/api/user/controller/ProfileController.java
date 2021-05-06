@@ -11,6 +11,7 @@ import kr.joljak.domain.user.entity.UserProjectRole;
 import kr.joljak.domain.user.service.ProfileService;
 import kr.joljak.domain.util.FetchPages;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/profiles")
@@ -37,6 +39,8 @@ public class ProfileController {
     RegisterProfileRequest registerProfileRequest,
     @PathVariable String classOf
   ) {
+    log.info("]-----] ProfileController::registerProfile [-----[ classOf : {}", classOf);
+
     Profile profile = profileService
       .registerProfile(registerProfileRequest.of(classOf, registerProfileRequest.getImage()));
     
@@ -52,6 +56,8 @@ public class ProfileController {
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "10") int size
   ) {
+    log.info("]-----] ProfileController::getProfiles [-----[ page : {}, size : {}", page, size);
+
     Page<SimpleProfile> simpleProfilePage = profileService.getProfiles(FetchPages.of(page, size))
       .map(SimpleProfile::of);
     
@@ -64,6 +70,8 @@ public class ProfileController {
   @GetMapping("/{classOf}")
   @ResponseStatus(HttpStatus.OK)
   public GetProfileResponse getProfile(@PathVariable String classOf) {
+    log.info("]-----] ProfileController::getProfile [-----[ classOf: {}", classOf);
+
     Profile profile = profileService.getProfile(classOf);
     
     return GetProfileResponse.builder()
@@ -81,6 +89,9 @@ public class ProfileController {
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "10") int size
   ) {
+    log.info("]-----] ProfileController::searchProfiles [-----[ name: {}, classOf: {}, role: {}, page : {}, size : {}"
+      , name, classOf, role, page, size);
+
     Page<SimpleProfile> simpleProfilePage = profileService
       .getProfilesByKeyWord(name, classOf, role, FetchPages.of(page, size))
       .map(SimpleProfile::of);
@@ -97,6 +108,8 @@ public class ProfileController {
     @PathVariable String classOf,
     UpdateProfileRequest updateProfileRequest
   ) {
+    log.info("]-----] ProfileController::updateProfile [-----[ classOf : {}", classOf);
+
     Profile profile = profileService
       .updateProfile(updateProfileRequest.of(classOf, updateProfileRequest.getImage()));
     
@@ -109,6 +122,8 @@ public class ProfileController {
   @DeleteMapping("/{classOf}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteProfile(@PathVariable String classOf) {
+    log.info("]-----] ProfileController::deleteProfile [-----[ classOf : {}", classOf);
+
     profileService.deleteProfile(classOf);
   }
 }

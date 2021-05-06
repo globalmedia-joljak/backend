@@ -24,10 +24,15 @@ spring:
 
 ## log
 logging:
+#  file:
+#    name: /home/ubuntu/springlog/spring.log
+#    path: /home/ubuntu/springlog
   level:
     com:amazonaws.util.EC2MetadataUtils: error
     com.amazonaws.internal.InstanceMetadataServiceResourceFetcher: error
+    MySQL: WARN
     org:
+      springframework: INFO
       hibernate:
         type:
           descriptor:
