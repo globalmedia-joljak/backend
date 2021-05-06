@@ -13,13 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
       .allowCredentials(false)
       .allowedOrigins(
           HttpMethod.OPTIONS.name(),
-          HttpMethod.GET.name(),
-          HttpMethod.POST.name(),
-          HttpMethod.PUT.name(),
-          HttpMethod.PATCH.name(),
-          HttpMethod.DELETE.name(),
-          HttpMethod.HEAD.name(),
-          HttpMethod.TRACE.name()
+          "*"
       )
       .allowedMethods("*")
       .allowedHeaders("*");
