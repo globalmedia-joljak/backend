@@ -65,28 +65,6 @@ public class WorkService {
 
     return workRepository.save(work);
   }
-
-  private String convertYoutubeUrl(String url) {
-    String convertUrl = url;
-    if (url.contains("https://www.youtube.com/watch?")) {
-      convertUrl = url.split("https://www.youtube.com/watch?")[1]
-        .split("v=")[1]
-        .split("&t")[0];
-    }
-    else if (url.contains("https://youtu.be/")) {
-      convertUrl = url.split("https://youtu.be/")[1];
-    }
-    else if(url.contains("<iframe")) {
-      convertUrl = url.split("src=")[1]
-        .split(" ")[0]
-        .replaceAll("\"", "")
-        .split("https://www.youtube.com/embed/")[1];
-    }
-
-    log.info( "]-----] WorkService::convertYoutubeUrl [-----[ {} => {}", url, convertUrl);
-
-    return convertUrl;
-  }
   
   @Transactional
   public Work updateWorkById(Long id, UpdateWork updateWork) {
@@ -108,7 +86,7 @@ public class WorkService {
     work.setContent(updateWork.getContent());
     work.setExhibitedYear(updateWork.getExhibitedYear());
     work.setProjectCategory(updateWork.getProjectCategory());
-    work.setTeamVideoUrl(updateWork.getTeamVideoUrl());
+    work.setTeamVideoUrl(convertYoutubeUrl(updateWork.getTeamVideoUrl()));
     
     deleteImageByModifyFileName(work, updateWork.getDeleteImagesName());
     addImages(images, work);
@@ -122,7 +100,29 @@ public class WorkService {
     
     return work;
   }
-  
+
+  private String convertYoutubeUrl(String url) {
+    String convertUrl = url;
+    if (url.contains("https://www.youtube.com/watch?")) {
+      convertUrl = url.split("https://www.youtube.com/watch?")[1]
+          .split("v=")[1]
+          .split("&t")[0];
+    }
+    else if (url.contains("https://youtu.be/")) {
+      convertUrl = url.split("https://youtu.be/")[1];
+    }
+    else if(url.contains("<iframe")) {
+      convertUrl = url.split("src=")[1]
+          .split(" ")[0]
+          .replaceAll("\"", "")
+          .split("https://www.youtube.com/embed/")[1];
+    }
+
+    log.info( "]-----] WorkService::convertYoutubeUrl [-----[ {} => {}", url, convertUrl);
+
+    return convertUrl;
+  }
+
   @Transactional(readOnly = true)
   public Page<Work> getWorksByPage(PageRequest pageRequest) {
     return workRepository.findAll(pageRequest);
