@@ -85,7 +85,7 @@ public class WorkService {
 
     log.info( "]-----] WorkService::convertYoutubeUrl [-----[ {} => {}", url, convertUrl);
 
-    return url;
+    return convertUrl;
   }
   
   @Transactional
