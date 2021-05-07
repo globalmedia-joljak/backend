@@ -71,7 +71,7 @@ public class IdeaBoardController {
   public IdeaBoardResponse getIdeaBoard(
     @PathVariable("id") Long id
   ) {
-    log.info( "]-----] IdeaBoardController::getAllIdeaBoard [-----[ id : {}", id);
+    log.info( "]-----] IdeaBoardController::getIdeaBoard [-----[ id : {}", id);
 
     IdeaBoard ideaBoard = ideaBoardService.getIdeaBoardsById(id);
     return IdeaBoardResponse.of(ideaBoard);

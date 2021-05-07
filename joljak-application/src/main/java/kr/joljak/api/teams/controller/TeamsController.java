@@ -69,7 +69,7 @@ public class TeamsController {
   @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
   public GetTeamResponse getTeam(@PathVariable Long id){
-    log.info("]-----] TeamsController::getTeams [-----[ id : {}", id);
+    log.info("]-----] TeamsController::getTeam [-----[ id : {}", id);
 
     Team team = teamService.getTeam(id);
     return GetTeamResponse.of(team);
@@ -109,7 +109,7 @@ public class TeamsController {
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "10") int size
   ){
-    log.info("]-----] TeamsController::getTeams [-----[ category : {}, page : {}, size : {}", category, page, size);
+    log.info("]-----] TeamsController::searchTeams [-----[ category : {}, page : {}, size : {}", category, page, size);
 
     Page<GetTeamResponse> teamResponsePage = teamService.getTeamByCategory(category, FetchPages.of(page, size))
       .map(GetTeamResponse::of);

@@ -68,7 +68,7 @@ public class NoticeController {
   @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
   public NoticeResponse getNotice(@PathVariable("id") Long id) {
-    log.info("]-----] NoticeController::getNotices [-----[ id : {}", id);
+    log.info("]-----] NoticeController::getNotice [-----[ id : {}", id);
 
     Notice notice = noticeService.getNoticeById(id);
     return getNoticeResponse(SimpleNotice.of(notice));
