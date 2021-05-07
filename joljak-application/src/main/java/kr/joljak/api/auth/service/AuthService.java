@@ -15,10 +15,12 @@ import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.exception.InvalidPasswordException;
 import kr.joljak.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -28,6 +30,8 @@ public class AuthService {
 
   @Transactional
   public SignInResponse signUp(SignUpRequest signUpRequest) {
+    log.info( "]-----] AuthService::signUp [-----[ classOf : {}", signUpRequest.getClassOf());
+
     inviteService.validateAndExpireInvite(signUpRequest.getClassOf(), signUpRequest.getInviteCode());
     User user = userService.signUp(signUpRequest.toSignUpUser());
 
@@ -36,6 +40,8 @@ public class AuthService {
 
   @Transactional
   public SignInResponse signIn(SignInRequest signInRequest) {
+    log.info( "]-----] AuthService::signIn [-----[ classOf : {}", signInRequest.getClassOf());
+
     User user = userService.getUserByClassOf(signInRequest.getClassOf());
 
     if (!new BCryptPasswordEncoder().matches(signInRequest.getPassword(), user.getPassword())) {

@@ -1,5 +1,6 @@
 package kr.joljak.domain.ideaboard.service;
 
+import kr.joljak.core.security.AuthenticationUtils;
 import kr.joljak.domain.ideaboard.dto.SimpleIdeaBoard;
 import kr.joljak.domain.ideaboard.entity.IdeaBoard;
 import kr.joljak.domain.ideaboard.exception.IdeaBoardNotFoundException;
@@ -12,11 +13,13 @@ import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.service.UserService;
 import kr.joljak.domain.util.FetchPages;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class IdeaBoardService {
@@ -27,7 +30,8 @@ public class IdeaBoardService {
   
   @Transactional
   public IdeaBoard addIdeaBoard(SimpleIdeaBoard simpleIdeaBoard) {
-    
+    log.info( "]-----] IdeaBoardService::addIdeaBoard [-----[ classOf : {}", AuthenticationUtils.getClassOf());
+
     MultipartFile file = simpleIdeaBoard.getFile();
     User user = userService.getUserByAuthentication();
     
@@ -58,7 +62,8 @@ public class IdeaBoardService {
   @Transactional
   public IdeaBoard updateIdeaBoardById(Long id,
     SimpleIdeaBoard simpleIdeaBoard) {
-    
+    log.info( "]-----] IdeaBoardService::updateIdeaBoardById [-----[ id : {}, classOf : {}", id, AuthenticationUtils.getClassOf());
+
     MultipartFile file = simpleIdeaBoard.getFile();
     
     IdeaBoard ideaBoard = getIdeaBoardsById(id);
@@ -94,6 +99,8 @@ public class IdeaBoardService {
   
   @Transactional
   public void deleteIdeaBoardById(Long id) {
+    log.info( "]-----] IdeaBoardService::deleteIdeaBoardById [-----[ id : {}, classOf : {}", id, AuthenticationUtils.getClassOf());
+
     IdeaBoard ideaBoard = getIdeaBoardsById(id);
     String classOf = ideaBoard.getUser().getClassOf();
     userService.validAuthenticationClassOf(classOf);

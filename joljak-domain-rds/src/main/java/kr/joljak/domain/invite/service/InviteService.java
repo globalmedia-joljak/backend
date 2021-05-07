@@ -1,6 +1,7 @@
 package kr.joljak.domain.invite.service;
 
 import java.util.Random;
+import kr.joljak.core.security.AuthenticationUtils;
 import kr.joljak.domain.invite.entity.Invite;
 import kr.joljak.domain.invite.exception.AlreadyExistInviteException;
 import kr.joljak.domain.invite.exception.InvalidInviteException;
@@ -31,6 +32,8 @@ public class InviteService {
 
   @Transactional
   public Invite issueRandomInvite(String classOf) {
+    log.info( "]-----] InviteService::issueRandomInvite [-----[ classOf : {}", classOf);
+
     String randomInviteCode = generateRandomInviteCode();
 
     return issueInvite(classOf, randomInviteCode);
