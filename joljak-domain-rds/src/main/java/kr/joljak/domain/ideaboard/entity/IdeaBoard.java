@@ -47,11 +47,11 @@ public class IdeaBoard extends ExtendEntity {
   @NotNull
   private String title;
 
+  @Lob
   @Column(nullable = false)
   private String content;
 
-  @Lob
-  @Column
+  @Column(length = 500)
   private String contact;
   
   @Column
