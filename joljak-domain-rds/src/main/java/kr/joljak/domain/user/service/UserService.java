@@ -8,10 +8,12 @@ import kr.joljak.domain.user.exception.AlreadyClassOfExistException;
 import kr.joljak.domain.user.exception.UserNotFoundException;
 import kr.joljak.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -32,6 +34,8 @@ public class UserService {
 
   @Transactional
   public void updatePassword(String classOf, String password) {
+    log.info( "]-----] UserService::updatePassword [-----[ classOf : {}", classOf);
+
     validAuthenticationClassOf(classOf);
     User user = getUserByClassOf(classOf);
     user.setPassword(new BCryptPasswordEncoder().encode(password));
@@ -53,6 +57,8 @@ public class UserService {
 
   @Transactional
   public void updatePhoneNumber(String classOf, String phoneNumber) {
+    log.info( "]-----] UserService::updatePhoneNumber [-----[ classOf : {}", classOf);
+
     validExistClassOf(classOf);
     User user = userRepository.findByClassOf(classOf)
       .orElseThrow(UserNotFoundException::new);
@@ -62,6 +68,8 @@ public class UserService {
 
   @Transactional
   public void updateInstagramId(String classOf, String instagramId) {
+    log.info( "]-----] UserService::updateInstagramId [-----[ classOf : {}", classOf);
+
     validExistClassOf(classOf);
     User user = userRepository.findByClassOf(classOf)
       .orElseThrow(UserNotFoundException::new);
@@ -71,6 +79,8 @@ public class UserService {
 
   @Transactional
   public void updateKakaoId(String classOf, String kakaoId) {
+    log.info( "]-----] UserService::updateKakaoId [-----[ classOf : {}", classOf);
+
     validExistClassOf(classOf);
     User user = userRepository.findByClassOf(classOf)
       .orElseThrow(UserNotFoundException::new);

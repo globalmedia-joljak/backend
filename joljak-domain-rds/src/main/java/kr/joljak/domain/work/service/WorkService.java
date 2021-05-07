@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import kr.joljak.core.security.AuthenticationUtils;
 import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.upload.entity.MediaType;
 import kr.joljak.domain.upload.exception.NotMatchingFileNameException;
@@ -20,12 +21,14 @@ import kr.joljak.domain.work.entity.Work;
 import kr.joljak.domain.work.exception.WorkNotFoundException;
 import kr.joljak.domain.work.repository.WorkRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class WorkService {
@@ -37,7 +40,8 @@ public class WorkService {
   
   @Transactional
   public Work addWork(SimpleWork simpleWork) {
-    
+    log.info( "]-----] WorkService::addWork [-----[ classOf : {}", AuthenticationUtils.getClassOf());
+
     List<MultipartFile> images = simpleWork.getImages();
     User user = userService.getUserByAuthentication();
     simpleWork.setUser(user);
@@ -63,27 +67,31 @@ public class WorkService {
   }
 
   private String convertYoutubeUrl(String url) {
+    String convertUrl = url;
     if (url.contains("https://www.youtube.com/watch?")) {
-      return url.split("https://www.youtube.com/watch?")[1]
+      convertUrl = url.split("https://www.youtube.com/watch?")[1]
         .split("v=")[1]
         .split("&t")[0];
     }
     else if (url.contains("https://youtu.be/")) {
-      return url.split("https://youtu.be/")[1];
+      convertUrl = url.split("https://youtu.be/")[1];
     }
     else if(url.contains("<iframe")) {
-      return url.split("src=")[1]
+      convertUrl = url.split("src=")[1]
         .split(" ")[0]
         .replaceAll("\"", "")
         .split("https://www.youtube.com/embed/")[1];
     }
+
+    log.info( "]-----] WorkService::convertYoutubeUrl [-----[ {} => {}", url, convertUrl);
 
     return url;
   }
   
   @Transactional
   public Work updateWorkById(Long id, UpdateWork updateWork) {
-    
+    log.info( "]-----] WorkService::updateWorkById [-----[ id : {}, classOf : {}", id, AuthenticationUtils.getClassOf());
+
     List<MultipartFile> images = updateWork.getImages();
     Work work = getWorkById(id);
     List<Long> deleteImageIds = work.getImages()
@@ -128,6 +136,8 @@ public class WorkService {
   
   @Transactional
   public void deleteWorkById(Long id) {
+    log.info( "]-----] WorkService::deleteWorkById [-----[ id : {}, classOf : {}", id, AuthenticationUtils.getClassOf());
+
     Work work = getWorkById(id);
     String classOf = work.getUser().getClassOf();
     userService.validExistClassOf(classOf);
@@ -153,6 +163,9 @@ public class WorkService {
   }
   
   private void deleteImageByModifyFileName(Work work, List<String> deleteFileNames) {
+    log.info( "]-----] WorkService::deleteImageByModifyFileName [-----[ classOf : {}"
+      , work.getUser().getClassOf());
+
     List<Media> mediaList = work.getImages();
     
     if (mediaList != null && deleteFileNames != null) {

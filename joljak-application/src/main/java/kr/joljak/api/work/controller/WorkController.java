@@ -7,6 +7,7 @@ import kr.joljak.api.work.request.RegisterWorkRequest;
 import kr.joljak.api.work.request.UpdateWorkRequest;
 import kr.joljak.api.work.response.WorkResponse;
 import kr.joljak.api.work.response.WorksResponse;
+import kr.joljak.core.security.AuthenticationUtils;
 import kr.joljak.domain.util.FetchPages;
 import kr.joljak.domain.work.dto.SimpleWork;
 import kr.joljak.domain.work.dto.UpdateWork;
@@ -14,6 +15,7 @@ import kr.joljak.domain.work.entity.ProjectCategory;
 import kr.joljak.domain.work.entity.Work;
 import kr.joljak.domain.work.service.WorkService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/works")
@@ -40,6 +43,8 @@ public class WorkController {
   public WorkResponse create(
     @Valid RegisterWorkRequest registerWorkRequest
   ) {
+    log.info( "]-----] WorkController::create [-----[ classOf : {}", AuthenticationUtils.getClassOf());
+
     SimpleWork simpleWork = RegisterWorkRequest.toDomainWorkRequest(registerWorkRequest);
     Work work = workService.addWork(simpleWork);
     return WorkResponse.of(work);
@@ -52,6 +57,8 @@ public class WorkController {
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "10") int size
   ) {
+    log.info( "]-----] WorkController::getWorks [-----[ page : {}, size : {}", page, size);
+
     Page<WorkResponse> workPage = workService.getWorksByPage(FetchPages.of(page, size))
       .map(WorkResponse::of);
     
@@ -66,6 +73,8 @@ public class WorkController {
   public WorkResponse getWorkById(
     @PathVariable Long id
   ) {
+    log.info( "]-----] WorkController::getWorkById [-----[ id : {},", id);
+
     Work work = workService.getWorkById(id);
     return WorkResponse.of(work);
   }
@@ -77,6 +86,8 @@ public class WorkController {
     @PathVariable Long id,
     UpdateWorkRequest updateWorkRequest
   ) {
+    log.info( "]-----] WorkController::updateWork [-----[ id : {}, classOf : {}", id, AuthenticationUtils.getClassOf());
+
     UpdateWork updateWork = UpdateWorkRequest.toUpdateWork(updateWorkRequest);
     Work work = workService.updateWorkById(id, updateWork);
     return WorkResponse.of(work);
@@ -88,6 +99,8 @@ public class WorkController {
   public void deleteWork(
     @PathVariable Long id
   ) {
+    log.info( "]-----] WorkController::deleteWork [-----[ id : {}, classOf : {}", id, AuthenticationUtils.getClassOf());
+
     workService.deleteWorkById(id);
   }
   
@@ -95,7 +108,7 @@ public class WorkController {
   @GetMapping("/years")
   @ResponseStatus(HttpStatus.OK)
   public List<String> getYears() {
-    
+
     return workService.getExhibitedYear();
   }
   
@@ -108,6 +121,9 @@ public class WorkController {
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "10") int size
   ) {
+    log.info( "]-----] WorkController::searchWorks [-----[ category : {}, year : {}, page : {}, size : {}"
+      , category, exhibitedYear, page, size);
+
     Page<WorkResponse> workPage = workService
       .getWorkByExhibitedYearAndCategory(category, exhibitedYear, FetchPages.of(page, size))
       .map(WorkResponse::of);

@@ -6,6 +6,7 @@ import kr.joljak.api.teams.request.RegisterTeamRequest;
 import kr.joljak.api.teams.request.UpdateTeamRequest;
 import kr.joljak.api.teams.response.GetTeamResponse;
 import kr.joljak.api.teams.response.GetTeamsResponse;
+import kr.joljak.core.security.AuthenticationUtils;
 import kr.joljak.domain.team.dto.SimpleTeam;
 import kr.joljak.domain.team.dto.UpdateTeam;
 import kr.joljak.domain.team.entity.Team;
@@ -13,6 +14,7 @@ import kr.joljak.domain.team.service.TeamService;
 import kr.joljak.domain.util.FetchPages;
 import kr.joljak.domain.work.entity.ProjectCategory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/teams")
@@ -38,6 +41,8 @@ public class TeamsController {
   public GetTeamResponse create(
     @Valid RegisterTeamRequest registerTeamRequest
   ) {
+    log.info("]-----] TeamsController::create [-----[ classOf : {}", AuthenticationUtils.getClassOf());
+
     SimpleTeam simpleTeam = RegisterTeamRequest.toRegisterTeam(registerTeamRequest);
     Team team = teamService.addTeam(simpleTeam);
     return GetTeamResponse.of(team);
@@ -50,6 +55,8 @@ public class TeamsController {
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "10") int size
   ){
+    log.info("]-----] TeamsController::getTeams [-----[ page : {}, size : {}", page, size);
+
     Page<GetTeamResponse> teamResponsePage = teamService.getTeams(FetchPages.of(page, size))
       .map(GetTeamResponse::of);
     
@@ -62,6 +69,8 @@ public class TeamsController {
   @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
   public GetTeamResponse getTeam(@PathVariable Long id){
+    log.info("]-----] TeamsController::getTeam [-----[ id : {}", id);
+
     Team team = teamService.getTeam(id);
     return GetTeamResponse.of(team);
   }
@@ -73,6 +82,8 @@ public class TeamsController {
     @PathVariable Long id,
     @Valid UpdateTeamRequest updateTeamRequest
   ) {
+    log.info("]-----] TeamsController::updateTeam [-----[ id : {}, classOf : {}", id, AuthenticationUtils.getClassOf());
+
     UpdateTeam updateTeam = UpdateTeamRequest.toUpdateTeam(updateTeamRequest);
     Team team = teamService.updateTeam(id, updateTeam);
     
@@ -85,6 +96,8 @@ public class TeamsController {
   public void deleteTeam(
     @PathVariable Long id
   ) {
+    log.info("]-----] TeamsController::deleteTeam [-----[ id : {}, classOf : {}", id, AuthenticationUtils.getClassOf());
+
     teamService.deleteTeamById(id);
   }
   
@@ -96,6 +109,8 @@ public class TeamsController {
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "10") int size
   ){
+    log.info("]-----] TeamsController::searchTeams [-----[ category : {}, page : {}, size : {}", category, page, size);
+
     Page<GetTeamResponse> teamResponsePage = teamService.getTeamByCategory(category, FetchPages.of(page, size))
       .map(GetTeamResponse::of);
     

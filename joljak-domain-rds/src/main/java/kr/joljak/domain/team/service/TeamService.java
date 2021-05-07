@@ -1,5 +1,6 @@
 package kr.joljak.domain.team.service;
 
+import kr.joljak.core.security.AuthenticationUtils;
 import kr.joljak.domain.team.dto.SimpleTeam;
 import kr.joljak.domain.team.dto.UpdateTeam;
 import kr.joljak.domain.team.entity.Team;
@@ -13,11 +14,13 @@ import kr.joljak.domain.user.entity.User;
 import kr.joljak.domain.user.service.UserService;
 import kr.joljak.domain.work.entity.ProjectCategory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class TeamService {
@@ -28,6 +31,8 @@ public class TeamService {
   
   @Transactional
   public Team addTeam(SimpleTeam simpleTeam) {
+    log.info( "]-----] TeamService::addTeam [-----[ classOf : {}", AuthenticationUtils.getClassOf());
+
     User user = userService.getUserByAuthentication();
     simpleTeam.setAuthor(user);
     
@@ -55,6 +60,8 @@ public class TeamService {
   
   @Transactional
   public Team updateTeam(Long id, UpdateTeam updateTeam) {
+    log.info( "]-----] TeamService::updateTeam [-----[ id : {}, classOf : {}", id, AuthenticationUtils.getClassOf());
+
     Team team = getTeamById(id);
     
     String classOf = team.getUser().getClassOf();
@@ -96,6 +103,8 @@ public class TeamService {
   
   @Transactional
   public void deleteTeamById(Long id) {
+    log.info( "]-----] TeamService::deleteTeamById [-----[ id : {}, classOf : {}", id, AuthenticationUtils.getClassOf());
+
     Team team = getTeamById(id);
     String classOf = team.getUser().getClassOf();
     userService.validExistClassOf(classOf);

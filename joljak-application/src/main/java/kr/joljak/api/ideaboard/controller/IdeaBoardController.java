@@ -7,10 +7,12 @@ import javax.validation.Valid;
 import kr.joljak.api.ideaboard.request.IdeaBoardRequest;
 import kr.joljak.api.ideaboard.response.IdeaBoardResponse;
 import kr.joljak.api.ideaboard.response.IdeaBoardsResponse;
+import kr.joljak.core.security.AuthenticationUtils;
 import kr.joljak.domain.ideaboard.dto.SimpleIdeaBoard;
 import kr.joljak.domain.ideaboard.entity.IdeaBoard;
 import kr.joljak.domain.ideaboard.service.IdeaBoardService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,19 +25,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/ideaboards")
 public class IdeaBoardController {
   
   private final IdeaBoardService ideaBoardService;
-  
+
   @ApiOperation("아이디어 게시판 생성 API")
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public IdeaBoardResponse create(
     @Valid IdeaBoardRequest ideaBoardRequest
   ) {
+    log.info( "]-----] IdeaBoardController::create [-----[ classOf : {}", AuthenticationUtils.getClassOf());
+
     SimpleIdeaBoard simpleIdeaBoard = ideaBoardRequest
       .toDomainIdeaBoardRequest(ideaBoardRequest);
     IdeaBoard ideaBoard = ideaBoardService.addIdeaBoard(simpleIdeaBoard);
@@ -50,6 +55,8 @@ public class IdeaBoardController {
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "10") int size
   ) {
+    log.info( "]-----] IdeaBoardController::getAllIdeaBoard [-----[ page : {}, size : {}", page, size);
+
     Page<IdeaBoardResponse> ideaBoardResponsePage = ideaBoardService.getIdeaBoardsByPage(page, size)
       .map(IdeaBoardResponse::of);
     
@@ -64,6 +71,8 @@ public class IdeaBoardController {
   public IdeaBoardResponse getIdeaBoard(
     @PathVariable("id") Long id
   ) {
+    log.info( "]-----] IdeaBoardController::getIdeaBoard [-----[ id : {}", id);
+
     IdeaBoard ideaBoard = ideaBoardService.getIdeaBoardsById(id);
     return IdeaBoardResponse.of(ideaBoard);
   }
@@ -75,6 +84,9 @@ public class IdeaBoardController {
     @PathVariable Long id,
     @Valid IdeaBoardRequest ideaBoardRequest
   ) {
+    log.info( "]-----] IdeaBoardController::updateIdeaBoard [-----[ id : {}, classOf : {}"
+      , id, AuthenticationUtils.getClassOf());
+
     SimpleIdeaBoard simpleIdeaBoard = ideaBoardRequest
       .toDomainIdeaBoardRequest(ideaBoardRequest);
     IdeaBoard ideaBoard = ideaBoardService.updateIdeaBoardById(id, simpleIdeaBoard);
@@ -87,6 +99,9 @@ public class IdeaBoardController {
   public void deleteIdeaBoard(
     @PathVariable Long id
   ) {
+    log.info( "]-----] IdeaBoardController::deleteIdeaBoard [-----[ id : {}, classOf : {}"
+      , id, AuthenticationUtils.getClassOf());
+
     ideaBoardService.deleteIdeaBoardById(id);
   }
   

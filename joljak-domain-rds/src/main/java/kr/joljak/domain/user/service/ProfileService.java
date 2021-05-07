@@ -3,6 +3,7 @@ package kr.joljak.domain.user.service;
 import java.util.List;
 import java.util.stream.Collectors;
 import kr.joljak.core.jwt.PermissionException;
+import kr.joljak.core.security.AuthenticationUtils;
 import kr.joljak.domain.upload.entity.Media;
 import kr.joljak.domain.upload.exception.NotMatchingFileNameException;
 import kr.joljak.domain.upload.service.UploadService;
@@ -17,11 +18,13 @@ import kr.joljak.domain.user.exception.ProfileNotFoundException;
 import kr.joljak.domain.user.repository.PortfolioRepository;
 import kr.joljak.domain.user.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProfileService {
@@ -33,6 +36,8 @@ public class ProfileService {
   
   @Transactional
   public Profile registerProfile(RegisterProfile registerProfile) {
+    log.info( "]-----] ProfileService::registerProfile [-----[ classOf : {}", registerProfile.getClassOf());
+
     String classOf = registerProfile.getClassOf();
     userService.validExistClassOf(classOf);
     checkRegisteredProfile(classOf);
@@ -64,6 +69,8 @@ public class ProfileService {
   
   @Transactional
   public Profile updateProfile(UpdateProfile updateProfile) {
+    log.info( "]-----] ProfileService::updateProfile [-----[ classOf : {}", updateProfile.getClassOf());
+
     String classOf = updateProfile.getClassOf();
     UserService.validAuthenticationClassOf(classOf);
     Profile profile = getProfile(classOf);
@@ -111,6 +118,8 @@ public class ProfileService {
   
   @Transactional
   public void deleteProfile(String classOf) {
+    log.info( "]-----] ProfileService::deleteProfile [-----[ classOf : {}", classOf);
+
     UserService.validAuthenticationClassOf(classOf);
     
     Profile profile = getProfile(classOf);
