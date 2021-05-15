@@ -103,8 +103,8 @@ public class WorkService {
 
   private String convertYoutubeUrl(String url) {
     String convertUrl = url;
-    if (url.contains("https://www.youtube.com/watch?")) {
-      convertUrl = url.split("https://www.youtube.com/watch?")[1]
+    if (url.contains("watch?")) {
+      convertUrl = url.split("watch?")[1]
           .split("v=")[1]
           .split("&t")[0];
     }
