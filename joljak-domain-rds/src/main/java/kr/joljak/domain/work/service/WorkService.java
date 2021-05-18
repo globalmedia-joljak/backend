@@ -102,6 +102,8 @@ public class WorkService {
   }
 
   private String convertYoutubeUrl(String url) {
+    if (url == null) return "";
+
     String convertUrl = url;
     if (url.contains("watch?")) {
       convertUrl = url.split("watch?")[1]
