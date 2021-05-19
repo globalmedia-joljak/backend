@@ -108,7 +108,7 @@ public class WorkService {
     if (url.contains("watch?")) {
       convertUrl = url.split("watch?")[1]
           .split("v=")[1]
-          .split("&t")[0];
+          .split("&")[0];
     }
     else if (url.contains("https://youtu.be/")) {
       convertUrl = url.split("https://youtu.be/")[1];
